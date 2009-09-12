@@ -23,8 +23,9 @@ namespace IDOSwitcher
     /// </summary>
     public partial class MainWindow : Window
     {
-        private IEnumerable<string> windows;
+        List<window> windows = new List<window>();
         private System.Windows.Forms.NotifyIcon m_notifyIcon;
+        private WindowState m_storedWindowState = WindowState.Normal;
                 
         public MainWindow()
         {           
@@ -45,10 +46,8 @@ namespace IDOSwitcher
         {
             //m_notifyIcon.Dispose();
             //m_notifyIcon = null;
-            Hide();
+            //Hide();
         }
-
-        private WindowState m_storedWindowState = WindowState.Normal;
 
         private void OnStateChanged(object sender, EventArgs e)
         {
@@ -90,20 +89,43 @@ namespace IDOSwitcher
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool SwitchToThisWindow(IntPtr hWnd);
 
+
+        private void getwindows()
+        {
+            winapi.EnumWindowsProc callback = new winapi.EnumWindowsProc(enumwindows);
+            winapi.EnumWindows(callback, 0);
+        }
+
+        private bool enumwindows(IntPtr hWnd, int lParam)
+        {
+            if (!winapi.IsWindowVisible(hWnd))
+                return true;
+
+            StringBuilder title = new StringBuilder(256);
+            winapi.GetWindowText(hWnd, title, 256);
+
+            if (string.IsNullOrEmpty(title.ToString())) {
+                return true;
+            }
+
+            if (title.Length != 0 || (title.Length == 0 & hWnd != winapi.statusbar)) {
+                windows.Add(new window(hWnd, title.ToString(), winapi.IsIconic(hWnd), winapi.IsZoomed(hWnd)));
+            }
+
+            return true;
+        }
+
         void LoadData()
         {
-            windows = from p in Process.GetProcesses()
-                      where p.MainWindowTitle != "" 
-                      orderby p.MainWindowTitle
-                      select p.MainWindowTitle;
-
+            windows.Clear();
+            getwindows();            
             lb.DataContext = windows;
         }
 
         void FilterList(Regex filter)
         {
             var filtered_windows =  from w in windows
-                                    where filter.Match(w).Success
+                                    where filter.Match(w.title).Success
                                     select w;
             lb.DataContext = filtered_windows;
         }
@@ -120,8 +142,7 @@ namespace IDOSwitcher
 
         void PrintText(object sender, SelectionChangedEventArgs args)
         {
-            ListBoxItem lbi = ((sender as ListBox).SelectedItem as ListBoxItem);
-            //tb.Text = "   You selected " + lbi.Content.ToString() + ".";
+            ListBoxItem lbi = ((sender as ListBox).SelectedItem as ListBoxItem);            
         }
 
         void TextChanged(object sender, TextChangedEventArgs args)
@@ -135,16 +156,8 @@ namespace IDOSwitcher
 
         private void tb_KeyUp(object sender, KeyEventArgs e)
         {            
-            if (e.Key == System.Windows.Input.Key.Enter) {
-                //MessageBox.Show("Enter!");
-
-                var w = from p in Process.GetProcesses()
-                        where p.MainWindowTitle == lb.SelectedValue.ToString()
-                        select p;
-                foreach (Process p in w) {
-                    SwitchToThisWindow(p.MainWindowHandle);
-                }
-
+            if (e.Key == System.Windows.Input.Key.Enter) {                
+                SwitchToThisWindow(((window)lb.Items.CurrentItem).handle);
                 Environment.Exit(0);
             }
             else if (lb.SelectedIndex != lb.Items.Count - 1  && e.Key == System.Windows.Input.Key.Down) {
@@ -155,10 +168,6 @@ namespace IDOSwitcher
             }
 
         }
-
-
-
-      
 
     }
 }
