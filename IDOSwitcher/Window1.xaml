@@ -1,0 +1,16 @@
+﻿<Window x:Class="IDOSwitcher.MainWindow" WindowStartupLocation="CenterScreen" Topmost="True"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"   
+       StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged"
+        Closing="OnClose"
+        ResizeMode="NoResize"
+    Title="IDOSwitcher" Height="150" Width="400">
+    <Grid>    
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Name="tb" Height="20" VerticalAlignment="Top" TextChanged="TextChanged"  KeyUp="tb_KeyUp"></TextBox>
+        <ListBox Name="lb" SelectionChanged="PrintText" SelectionMode="Single" Margin="0,22,0,0" ItemsSource="{Binding}" />        
+    </Grid>
+</Window>
