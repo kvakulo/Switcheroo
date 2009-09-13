@@ -128,7 +128,7 @@ namespace IDOSwitcher
             }
 
             if (title.Length != 0 || (title.Length == 0 & hWnd != winapi.statusbar)) {
-                windows.Add(new window(hWnd, title.ToString(), winapi.IsIconic(hWnd), winapi.IsZoomed(hWnd)));
+                windows.Add(new window(hWnd, title.ToString(), winapi.IsIconic(hWnd), winapi.IsZoomed(hWnd), winapi.GetAppIcon(hWnd)));
             }
 
             return true;
@@ -142,8 +142,13 @@ namespace IDOSwitcher
             tb.Clear();
             tb.Focus();
             Focus();
+            //These two lines size upon load, but don't whiplash resize during typing
+            SizeToContent = SizeToContent.Width;
+            SizeToContent = SizeToContent.Manual;
         }
 
+
+        // TODO: Change so that any line that matches a .contains() exactly is first and highlighted
         void FilterList(Regex filter)
         {
             var filtered_windows =  from w in windows
@@ -213,12 +218,15 @@ namespace IDOSwitcher
         {
             if (e.Control && e.Key == System.Windows.Forms.Keys.Space) {
                 LoadData();
-                Show();                
+                Show();  
                 Activate();
-                WindowState = m_storedWindowState;                
+                WindowState = m_storedWindowState;
+                Keyboard.Focus(tb);
                 //tb.Clear();
             }
         }
+      
+ 
 
     }
 }
