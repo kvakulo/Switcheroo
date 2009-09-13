@@ -37,8 +37,10 @@ namespace IDOSwitcher
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
             m_notifyIcon.BalloonTipText = "Fantastic is active.";
             m_notifyIcon.BalloonTipTitle = "Fantastic";
-            m_notifyIcon.Icon = new System.Drawing.Icon(@"B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\notifyicon.ico");
+            m_notifyIcon.Icon = new System.Drawing.Icon(GetType(), @"notifyicon.ico");
             m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
+            Hide();
+            m_notifyIcon.Visible = true;
 
         }
 
@@ -46,7 +48,8 @@ namespace IDOSwitcher
         {
             //m_notifyIcon.Dispose();
             //m_notifyIcon = null;
-            //Hide();
+            e.Cancel = true;
+            Hide();
         }
 
         private void OnStateChanged(object sender, EventArgs e)
@@ -70,6 +73,7 @@ namespace IDOSwitcher
 
         void m_notifyIcon_Click(object sender, EventArgs e)
         {
+            LoadData();
             Show();
             WindowState = m_storedWindowState;
         }
@@ -120,6 +124,9 @@ namespace IDOSwitcher
             windows.Clear();
             getwindows();            
             lb.DataContext = windows;
+            tb.Clear();
+            tb.Focus();
+            Focus();
         }
 
         void FilterList(Regex filter)
@@ -135,6 +142,10 @@ namespace IDOSwitcher
             string newPattern = "";
             foreach (char c in input) {
                 newPattern += ".{0,5}";
+                // escape regex reserved characters
+                if (@"[\^$.|?*+(){}".Contains(c)) {
+                    newPattern += @"\";
+                }                
                 newPattern += c;
             }
             return new Regex(newPattern, RegexOptions.IgnoreCase);
@@ -157,8 +168,9 @@ namespace IDOSwitcher
         private void tb_KeyUp(object sender, KeyEventArgs e)
         {            
             if (e.Key == System.Windows.Input.Key.Enter) {                
-                SwitchToThisWindow(((window)lb.Items.CurrentItem).handle);
-                Environment.Exit(0);
+                SwitchToThisWindow(((window)lb.SelectedItem).handle);
+                //Environment.Exit(0);
+                Hide();
             }
             else if (lb.SelectedIndex != lb.Items.Count - 1  && e.Key == System.Windows.Input.Key.Down) {
                 lb.SelectedIndex = lb.SelectedIndex + 1;
