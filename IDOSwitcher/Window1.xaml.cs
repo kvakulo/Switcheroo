@@ -26,6 +26,8 @@ namespace IDOSwitcher
         List<window> windows = new List<window>();
         private System.Windows.Forms.NotifyIcon m_notifyIcon;
         private WindowState m_storedWindowState = WindowState.Normal;
+        // system-wide keyboard hook
+        private KeyboardHook _hook;
                 
         public MainWindow()
         {           
@@ -38,16 +40,29 @@ namespace IDOSwitcher
             m_notifyIcon.BalloonTipText = "Fantastic is active.";
             m_notifyIcon.BalloonTipTitle = "Fantastic";
             m_notifyIcon.Icon = new System.Drawing.Icon(GetType(), @"notifyicon.ico");
-            m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
-            Hide();
+            m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);            
             m_notifyIcon.Visible = true;
+            m_notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
+            {
+                new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit())
+            });
+            Hide();
+            
+            // Set keyboard hooks
+            _hook = new KeyboardHook();
+            _hook.KeyDown += new KeyboardHook.HookEventHandler(OnHookKeyDown);
 
         }
 
-        private void OnClose(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Quit()
         {
-            //m_notifyIcon.Dispose();
-            //m_notifyIcon = null;
+            m_notifyIcon.Dispose();
+            m_notifyIcon = null;            
+            Environment.Exit(0);  
+        }
+
+        private void OnClose(object sender, System.ComponentModel.CancelEventArgs e)
+        {           
             e.Cancel = true;
             Hide();
         }
@@ -73,9 +88,9 @@ namespace IDOSwitcher
 
         void m_notifyIcon_Click(object sender, EventArgs e)
         {
-            LoadData();
-            Show();
-            WindowState = m_storedWindowState;
+            //LoadData();
+            //Show();
+            //WindowState = m_storedWindowState;
         }
 
         void CheckTrayIcon()
@@ -140,8 +155,9 @@ namespace IDOSwitcher
         static Regex BuildPattern(string input)
         {
             string newPattern = "";
+            input = input.Trim();
             foreach (char c in input) {
-                newPattern += ".{0,5}";
+                newPattern += ".*";
                 // escape regex reserved characters
                 if (@"[\^$.|?*+(){}".Contains(c)) {
                     newPattern += @"\";
@@ -157,7 +173,13 @@ namespace IDOSwitcher
         }
 
         void TextChanged(object sender, TextChangedEventArgs args)
-        {                        
+        {
+            // This compensates for text added as part of the hotkey event.
+            // May need to be made smarter later.
+            if (tb.Text == " ") {
+                tb.Text = "";
+                return;
+            }
             Regex pattern = BuildPattern(tb.Text);
             FilterList(pattern);
             if (lb.Items.Count > 0) {
@@ -167,9 +189,10 @@ namespace IDOSwitcher
 
         private void tb_KeyUp(object sender, KeyEventArgs e)
         {            
-            if (e.Key == System.Windows.Input.Key.Enter) {                
-                SwitchToThisWindow(((window)lb.SelectedItem).handle);
-                //Environment.Exit(0);
+            if (e.Key == System.Windows.Input.Key.Enter) {
+                if (lb.Items.Count > 0) {
+                    SwitchToThisWindow(((window)lb.SelectedItem).handle);                                      
+                }
                 Hide();
             }
             else if (lb.SelectedIndex != lb.Items.Count - 1  && e.Key == System.Windows.Input.Key.Down) {
@@ -178,7 +201,23 @@ namespace IDOSwitcher
             else if (lb.SelectedIndex != 0 && e.Key == System.Windows.Input.Key.Up) {
                 lb.SelectedIndex = lb.SelectedIndex - 1;
             }
+            else if (e.Key == System.Windows.Input.Key.Escape) {
+                Hide();
+            }
 
+        }
+
+
+        // keyboard hook handler
+        void OnHookKeyDown(object sender, HookEventArgs e)
+        {
+            if (e.Control && e.Key == System.Windows.Forms.Keys.Space) {
+                LoadData();
+                Show();                
+                Activate();
+                WindowState = m_storedWindowState;                
+                //tb.Clear();
+            }
         }
 
     }

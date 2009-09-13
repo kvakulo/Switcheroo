@@ -4,6 +4,7 @@
        StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged"
         Closing="OnClose"
         ResizeMode="NoResize"
+        ShowInTaskbar="False"
     Title="IDOSwitcher" Height="150" Width="400">
     <Grid>    
         <Grid.ColumnDefinitions>
