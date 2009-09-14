@@ -112,7 +112,7 @@ namespace IDOSwitcher
         private void getwindows()
         {
             winapi.EnumWindowsProc callback = new winapi.EnumWindowsProc(enumwindows);
-            winapi.EnumWindows(callback, 0);
+            winapi.EnumWindows(callback, 0);            
         }
 
         private bool enumwindows(IntPtr hWnd, int lParam)
@@ -137,7 +137,8 @@ namespace IDOSwitcher
         void LoadData()
         {
             windows.Clear();
-            getwindows();            
+            getwindows();
+            windows.Sort((x, y) => string.Compare(x.title, y.title));
             lb.DataContext = windows;
             tb.Clear();
             tb.Focus();
@@ -216,13 +217,12 @@ namespace IDOSwitcher
         // keyboard hook handler
         void OnHookKeyDown(object sender, HookEventArgs e)
         {
-            if (e.Control && e.Key == System.Windows.Forms.Keys.Space) {
+            if (!tb.IsKeyboardFocused && e.Control && e.Key == System.Windows.Forms.Keys.Space) {
                 LoadData();
                 Show();  
                 Activate();
                 WindowState = m_storedWindowState;
                 Keyboard.Focus(tb);
-                //tb.Clear();
             }
         }
       
