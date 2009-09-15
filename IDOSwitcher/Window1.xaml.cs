@@ -27,8 +27,9 @@ namespace IDOSwitcher
         private System.Windows.Forms.NotifyIcon m_notifyIcon;
         private WindowState m_storedWindowState = WindowState.Normal;
         // system-wide keyboard hook
-        private KeyboardHook _hook;
-                
+        //private KeyboardHook _hook;
+        private ManagedWinapi.Hotkey hotkey;
+        
         public MainWindow()
         {           
             InitializeComponent();
@@ -49,17 +50,45 @@ namespace IDOSwitcher
             Hide();
             
             // Set keyboard hooks
-            _hook = new KeyboardHook();
-            _hook.KeyDown += new KeyboardHook.HookEventHandler(OnHookKeyDown);
+            //_hook = new KeyboardHook();
+            //_hook.KeyDown += new KeyboardHook.HookEventHandler(OnHookKeyDown);
+
+            hotkey = new ManagedWinapi.Hotkey();
+            //hotkey.WindowsKey = true;
+            hotkey.Ctrl = true;
+            hotkey.KeyCode = System.Windows.Forms.Keys.Space;
+            hotkey.HotkeyPressed += new EventHandler(hotkey_HotkeyPressed);
+            try
+            {
+                hotkey.Enabled = true;
+            }
+            catch (ManagedWinapi.HotkeyAlreadyInUseException)
+            {
+                System.Windows.MessageBox.Show("Could not register hotkey (already in use).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
 
         private void Quit()
         {
             m_notifyIcon.Dispose();
-            m_notifyIcon = null;            
+            m_notifyIcon = null;
+            hotkey.Dispose();
             Environment.Exit(0);  
         }
+
+        void hotkey_HotkeyPressed(object sender, EventArgs e)
+        {
+            //System.Windows.MessageBox.Show("Hello!");
+            LoadData();            
+            this.Left = (SystemParameters.PrimaryScreenWidth / 2) - (this.ActualWidth / 2);
+            this.Top = (SystemParameters.PrimaryScreenHeight / 2) - (this.ActualHeight / 2);
+            Show();
+            Activate();
+            WindowState = m_storedWindowState;
+            Keyboard.Focus(tb);
+        }
+
 
         private void OnClose(object sender, System.ComponentModel.CancelEventArgs e)
         {           
@@ -134,7 +163,7 @@ namespace IDOSwitcher
             return true;
         }
 
-        void LoadData()
+        public void LoadData()
         {
             windows.Clear();
             getwindows();
@@ -146,15 +175,18 @@ namespace IDOSwitcher
             //These two lines size upon load, but don't whiplash resize during typing
             SizeToContent = SizeToContent.Width;
             SizeToContent = SizeToContent.Manual;
+            
         }
 
-
-        // TODO: Change so that any line that matches a .contains() exactly is first and highlighted
-        void FilterList(Regex filter)
+        void FilterList()
         {
+            Regex filter = BuildPattern(tb.Text);
             var filtered_windows =  from w in windows
-                                    where filter.Match(w.title).Success
+                                    where filter.Match(w.title).Success                                                                                         
+                                    orderby !w.title.StartsWith(tb.Text, StringComparison.OrdinalIgnoreCase)
+                                    orderby (w.title.IndexOf(tb.Text, StringComparison.OrdinalIgnoreCase) < 0)
                                     select w;
+
             lb.DataContext = filtered_windows;
         }
 
@@ -186,8 +218,8 @@ namespace IDOSwitcher
                 tb.Text = "";
                 return;
             }
-            Regex pattern = BuildPattern(tb.Text);
-            FilterList(pattern);
+            
+            FilterList();
             if (lb.Items.Count > 0) {
                 lb.SelectedItem = lb.Items[0];
             }            
@@ -215,16 +247,16 @@ namespace IDOSwitcher
 
 
         // keyboard hook handler
-        void OnHookKeyDown(object sender, HookEventArgs e)
-        {
-            if (!tb.IsKeyboardFocused && e.Control && e.Key == System.Windows.Forms.Keys.Space) {
-                LoadData();
-                Show();  
-                Activate();
-                WindowState = m_storedWindowState;
-                Keyboard.Focus(tb);
-            }
-        }
+        //void OnHookKeyDown(object sender, HookEventArgs e)
+        //{
+        //    if (!tb.IsKeyboardFocused && e.Control && e.Key == System.Windows.Forms.Keys.Space) {
+        //        LoadData();
+        //        Show();  
+        //        Activate();
+        //        WindowState = m_storedWindowState;
+        //        Keyboard.Focus(tb);
+        //    }
+        //}
       
  
 
