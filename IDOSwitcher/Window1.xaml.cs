@@ -110,29 +110,13 @@ namespace IDOSwitcher
             }
         }
 
-        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            CheckTrayIcon();
-        }
-
+       
         void m_notifyIcon_Click(object sender, EventArgs e)
         {
-            //LoadData();
-            //Show();
-            //WindowState = m_storedWindowState;
-        }
-
-        void CheckTrayIcon()
-        {
-            ShowTrayIcon(!IsVisible);
-        }
-
-        void ShowTrayIcon(bool show)
-        {
-            if (m_notifyIcon != null) {
-                m_notifyIcon.Visible = show;
-            }
-        }
+            LoadData();
+            Show();
+            WindowState = m_storedWindowState;
+        }       
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool SwitchToThisWindow(IntPtr hWnd);
