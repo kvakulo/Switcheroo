@@ -25,9 +25,7 @@ namespace IDOSwitcher
     {
         List<window> windows = new List<window>();
         private System.Windows.Forms.NotifyIcon m_notifyIcon;
-        private WindowState m_storedWindowState = WindowState.Normal;
-        // system-wide keyboard hook
-        //private KeyboardHook _hook;
+        private WindowState m_storedWindowState = WindowState.Normal;       
         private ManagedWinapi.Hotkey hotkey;
         
         public MainWindow()
@@ -40,21 +38,17 @@ namespace IDOSwitcher
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
             m_notifyIcon.BalloonTipText = "Fantastic is active.";
             m_notifyIcon.BalloonTipTitle = "Fantastic";
-            m_notifyIcon.Icon = new System.Drawing.Icon(GetType(), @"notifyicon.ico");
-            m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);            
+            m_notifyIcon.Icon = new System.Drawing.Icon(GetType(), @"notifyicon.ico");                     
             m_notifyIcon.Visible = true;
             m_notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
             {
                 new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit())
             });
-            Hide();
-            
-            // Set keyboard hooks
-            //_hook = new KeyboardHook();
-            //_hook.KeyDown += new KeyboardHook.HookEventHandler(OnHookKeyDown);
+            Hide();           
 
-            hotkey = new ManagedWinapi.Hotkey();
-            //hotkey.WindowsKey = true;
+            // Set hotkey
+
+            hotkey = new ManagedWinapi.Hotkey();            
             hotkey.Ctrl = true;
             hotkey.KeyCode = System.Windows.Forms.Keys.Space;
             hotkey.HotkeyPressed += new EventHandler(hotkey_HotkeyPressed);
@@ -78,8 +72,7 @@ namespace IDOSwitcher
         }
 
         void hotkey_HotkeyPressed(object sender, EventArgs e)
-        {
-            //System.Windows.MessageBox.Show("Hello!");
+        {            
             LoadData();            
             this.Left = (SystemParameters.PrimaryScreenWidth / 2) - (this.ActualWidth / 2);
             this.Top = (SystemParameters.PrimaryScreenHeight / 2) - (this.ActualHeight / 2);
@@ -108,19 +101,10 @@ namespace IDOSwitcher
                 m_storedWindowState = WindowState;
                 LoadData();
             }
-        }
-
-       
-        void m_notifyIcon_Click(object sender, EventArgs e)
-        {
-            LoadData();
-            Show();
-            WindowState = m_storedWindowState;
-        }       
+        }          
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool SwitchToThisWindow(IntPtr hWnd);
-
 
         private void getwindows()
         {
@@ -195,14 +179,7 @@ namespace IDOSwitcher
         }
 
         void TextChanged(object sender, TextChangedEventArgs args)
-        {
-            // This compensates for text added as part of the hotkey event.
-            // May need to be made smarter later.
-            if (tb.Text == " ") {
-                tb.Text = "";
-                return;
-            }
-            
+        {                       
             FilterList();
             if (lb.Items.Count > 0) {
                 lb.SelectedItem = lb.Items[0];
