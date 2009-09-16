@@ -25,12 +25,13 @@ namespace IDOSwitcher
     {
         List<window> windows = new List<window>();
         private System.Windows.Forms.NotifyIcon m_notifyIcon;
-        private WindowState m_storedWindowState = WindowState.Normal;       
+        //private WindowState m_storedWindowState = WindowState.Normal;       
         private ManagedWinapi.Hotkey hotkey;
         
         public MainWindow()
         {           
             InitializeComponent();
+            Hide();  
             LoadData();
             tb.Focus();
 
@@ -44,10 +45,8 @@ namespace IDOSwitcher
             {
                 new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit())
             });
-            Hide();           
-
+                     
             // Set hotkey
-
             hotkey = new ManagedWinapi.Hotkey();            
             hotkey.Ctrl = true;
             hotkey.KeyCode = System.Windows.Forms.Keys.Space;
@@ -69,19 +68,7 @@ namespace IDOSwitcher
             m_notifyIcon = null;
             hotkey.Dispose();
             Environment.Exit(0);  
-        }
-
-        void hotkey_HotkeyPressed(object sender, EventArgs e)
-        {            
-            LoadData();            
-            this.Left = (SystemParameters.PrimaryScreenWidth / 2) - (this.ActualWidth / 2);
-            this.Top = (SystemParameters.PrimaryScreenHeight / 2) - (this.ActualHeight / 2);
-            Show();
-            Activate();
-            WindowState = m_storedWindowState;
-            Keyboard.Focus(tb);
-        }
-
+        }       
 
         private void OnClose(object sender, System.ComponentModel.CancelEventArgs e)
         {           
@@ -89,19 +76,19 @@ namespace IDOSwitcher
             Hide();
         }
 
-        private void OnStateChanged(object sender, EventArgs e)
-        {
-            if (WindowState == WindowState.Minimized) {
-                Hide();
-                if (m_notifyIcon != null) {
-                    m_notifyIcon.ShowBalloonTip(2000);
-                }
-            }
-            else {
-                m_storedWindowState = WindowState;
-                LoadData();
-            }
-        }          
+        //private void OnStateChanged(object sender, EventArgs e)
+        //{
+        //    if (WindowState == WindowState.Minimized) {
+        //        Hide();
+        //        if (m_notifyIcon != null) {
+        //            m_notifyIcon.ShowBalloonTip(2000);
+        //        }
+        //    }
+        //    else {
+        //        m_storedWindowState = WindowState;
+        //        LoadData();
+        //    }
+        //}          
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool SwitchToThisWindow(IntPtr hWnd);
@@ -114,21 +101,36 @@ namespace IDOSwitcher
 
         private bool enumwindows(IntPtr hWnd, int lParam)
         {
+            string[] excludeList = { "Program Manager", "VirtuaWinMainClass" };
             if (!winapi.IsWindowVisible(hWnd))
                 return true;
 
             StringBuilder title = new StringBuilder(256);
-            winapi.GetWindowText(hWnd, title, 256);
+            winapi.GetWindowText(hWnd, title, 256);            
 
             if (string.IsNullOrEmpty(title.ToString())) {
+                return true;
+            }
+
+            //Exclude windows on the exclusion list
+            if (excludeList.Contains(title.ToString())) {
                 return true;
             }
 
             if (title.Length != 0 || (title.Length == 0 & hWnd != winapi.statusbar)) {
                 windows.Add(new window(hWnd, title.ToString(), winapi.IsIconic(hWnd), winapi.IsZoomed(hWnd), winapi.GetAppIcon(hWnd)));
             }
-
+            
             return true;
+        }
+
+        void hotkey_HotkeyPressed(object sender, EventArgs e)
+        {
+            LoadData();            
+            Show();
+            Activate();
+            //WindowState = m_storedWindowState;
+            Keyboard.Focus(tb);
         }
 
         public void LoadData()
@@ -143,7 +145,8 @@ namespace IDOSwitcher
             //These two lines size upon load, but don't whiplash resize during typing
             SizeToContent = SizeToContent.Width;
             SizeToContent = SizeToContent.Manual;
-            
+            this.Left = (SystemParameters.PrimaryScreenWidth / 2) - (this.ActualWidth / 2);
+            this.Top = (SystemParameters.PrimaryScreenHeight / 2) - (this.ActualHeight / 2);            
         }
 
         void FilterList()
@@ -186,40 +189,33 @@ namespace IDOSwitcher
             }            
         }
 
-        private void tb_KeyUp(object sender, KeyEventArgs e)
+        private void tb_KeyDown(object sender, KeyEventArgs e)
         {            
-            if (e.Key == System.Windows.Input.Key.Enter) {
-                if (lb.Items.Count > 0) {
-                    SwitchToThisWindow(((window)lb.SelectedItem).handle);                                      
-                }
-                Hide();
+            switch (e.Key)
+            {
+                case Key.Enter:
+                    if (lb.Items.Count > 0) {
+                        SwitchToThisWindow(((window)lb.SelectedItem).handle);
+                        m_notifyIcon.Icon = ((window)lb.SelectedItem).icon;
+                    }
+                    Hide();
+                    break;
+                case Key.Down:
+                    if (lb.SelectedIndex != lb.Items.Count - 1) {
+                        lb.SelectedIndex++;
+                    }
+                    break;
+                case Key.Up:
+                    if (lb.SelectedIndex != 0) {
+                        lb.SelectedIndex--;
+                    }
+                    break;
+                case Key.Escape:
+                    Hide();
+                    break;
+                default:
+                    break;
             }
-            else if (lb.SelectedIndex != lb.Items.Count - 1  && e.Key == System.Windows.Input.Key.Down) {
-                lb.SelectedIndex = lb.SelectedIndex + 1;
-            }
-            else if (lb.SelectedIndex != 0 && e.Key == System.Windows.Input.Key.Up) {
-                lb.SelectedIndex = lb.SelectedIndex - 1;
-            }
-            else if (e.Key == System.Windows.Input.Key.Escape) {
-                Hide();
-            }
-
-        }
-
-
-        // keyboard hook handler
-        //void OnHookKeyDown(object sender, HookEventArgs e)
-        //{
-        //    if (!tb.IsKeyboardFocused && e.Control && e.Key == System.Windows.Forms.Keys.Space) {
-        //        LoadData();
-        //        Show();  
-        //        Activate();
-        //        WindowState = m_storedWindowState;
-        //        Keyboard.Focus(tb);
-        //    }
-        //}
-      
- 
-
+        } 
     }
 }
