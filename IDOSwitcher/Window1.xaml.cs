@@ -35,11 +35,13 @@ namespace IDOSwitcher
             LoadData();
             tb.Focus();
 
-            // Handle notification icon stuff
+            // Handle notification icon stuff            
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
             m_notifyIcon.BalloonTipText = "Fantastic is active.";
             m_notifyIcon.BalloonTipTitle = "Fantastic";
-            m_notifyIcon.Icon = new System.Drawing.Icon(GetType(), @"notifyicon.ico");                     
+            Bitmap bmp = IDOSwitcher.Properties.Resources.arrow_switch;
+            m_notifyIcon.Icon = System.Drawing.Icon.FromHandle(bmp.GetHicon());
+            //m_notifyIcon.Icon = new System.Drawing.Icon(GetType(), @"notifyicon.ico");                                 
             m_notifyIcon.Visible = true;
             m_notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
             {
@@ -196,7 +198,7 @@ namespace IDOSwitcher
                 case Key.Enter:
                     if (lb.Items.Count > 0) {
                         SwitchToThisWindow(((window)lb.SelectedItem).handle);
-                        m_notifyIcon.Icon = ((window)lb.SelectedItem).icon;
+                        //m_notifyIcon.Icon = ((window)lb.SelectedItem).icon;
                     }
                     Hide();
                     break;
