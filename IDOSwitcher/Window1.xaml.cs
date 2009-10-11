@@ -32,16 +32,12 @@ namespace IDOSwitcher
         {           
             InitializeComponent();
             Hide();  
-            LoadData();
-            tb.Focus();
-
+        
             // Handle notification icon stuff            
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
-            m_notifyIcon.BalloonTipText = "Fantastic is active.";
-            m_notifyIcon.BalloonTipTitle = "Fantastic";
+            m_notifyIcon.Text = "FantastSwitch";           
             Bitmap bmp = IDOSwitcher.Properties.Resources.arrow_switch;
-            m_notifyIcon.Icon = System.Drawing.Icon.FromHandle(bmp.GetHicon());
-            //m_notifyIcon.Icon = new System.Drawing.Icon(GetType(), @"notifyicon.ico");                                 
+            m_notifyIcon.Icon = System.Drawing.Icon.FromHandle(bmp.GetHicon());                                          
             m_notifyIcon.Visible = true;
             m_notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
             {
@@ -49,9 +45,11 @@ namespace IDOSwitcher
             });
                      
             // Set hotkey
-            hotkey = new ManagedWinapi.Hotkey();            
-            hotkey.Ctrl = true;
-            hotkey.KeyCode = System.Windows.Forms.Keys.Space;
+            hotkey = new ManagedWinapi.Hotkey();
+            //hotkey.Ctrl = true;
+            hotkey.KeyCode = System.Windows.Forms.Keys.W;
+            hotkey.WindowsKey = true;
+            //hotkey.KeyCode = System.Windows.Forms.Keys.Space;
             hotkey.HotkeyPressed += new EventHandler(hotkey_HotkeyPressed);
             try
             {
@@ -76,21 +74,7 @@ namespace IDOSwitcher
         {           
             e.Cancel = true;
             Hide();
-        }
-
-        //private void OnStateChanged(object sender, EventArgs e)
-        //{
-        //    if (WindowState == WindowState.Minimized) {
-        //        Hide();
-        //        if (m_notifyIcon != null) {
-        //            m_notifyIcon.ShowBalloonTip(2000);
-        //        }
-        //    }
-        //    else {
-        //        m_storedWindowState = WindowState;
-        //        LoadData();
-        //    }
-        //}          
+        }      
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool SwitchToThisWindow(IntPtr hWnd);
@@ -104,6 +88,7 @@ namespace IDOSwitcher
         private bool enumwindows(IntPtr hWnd, int lParam)
         {
             string[] excludeList = { "Program Manager", "VirtuaWinMainClass" };
+
             if (!winapi.IsWindowVisible(hWnd))
                 return true;
 
@@ -140,10 +125,11 @@ namespace IDOSwitcher
             windows.Clear();
             getwindows();
             windows.Sort((x, y) => string.Compare(x.title, y.title));
+            lb.DataContext = null;
             lb.DataContext = windows;
             tb.Clear();
             tb.Focus();
-            Focus();
+            //Focus();
             //These two lines size upon load, but don't whiplash resize during typing
             SizeToContent = SizeToContent.Width;
             SizeToContent = SizeToContent.Manual;
@@ -214,7 +200,7 @@ namespace IDOSwitcher
                     break;
                 case Key.Escape:
                     Hide();
-                    break;
+                    break;                
                 default:
                     break;
             }
