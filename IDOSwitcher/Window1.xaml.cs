@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,10 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using System.Drawing;
 
 namespace IDOSwitcher
 {
@@ -24,10 +24,10 @@ namespace IDOSwitcher
     public partial class MainWindow : Window
     {
         List<window> windows = new List<window>();
-        private System.Windows.Forms.NotifyIcon m_notifyIcon;
-        //private WindowState m_storedWindowState = WindowState.Normal;       
-        private ManagedWinapi.Hotkey hotkey;
-        
+        private System.Windows.Forms.NotifyIcon m_notifyIcon;        
+        //public ManagedWinapi.Hotkey hotkey;
+        public IDOSwitcher.HotKey hotkey;
+
         public MainWindow()
         {           
             InitializeComponent();
@@ -41,15 +41,13 @@ namespace IDOSwitcher
             m_notifyIcon.Visible = true;
             m_notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
             {
-                new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit())
+                new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit()),
+                new System.Windows.Forms.MenuItem("Options", (s, e) => Options())
             });
                      
-            // Set hotkey
-            hotkey = new ManagedWinapi.Hotkey();
-            //hotkey.Ctrl = true;
-            hotkey.KeyCode = System.Windows.Forms.Keys.W;
-            hotkey.WindowsKey = true;
-            //hotkey.KeyCode = System.Windows.Forms.Keys.Space;
+            // Set hotkey            
+            hotkey = new IDOSwitcher.HotKey();        
+            hotkey.LoadSettings();
             hotkey.HotkeyPressed += new EventHandler(hotkey_HotkeyPressed);
             try
             {
@@ -61,6 +59,15 @@ namespace IDOSwitcher
             }
 
         }
+
+        private void Options()
+        {
+            //System.Windows.MessageBox.Show("Hello!", "Howdy", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            Window opts = new IDOSwitcher.options();            
+            opts.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            opts.ShowDialog();
+        }
+        
 
         private void Quit()
         {
@@ -128,8 +135,7 @@ namespace IDOSwitcher
             lb.DataContext = null;
             lb.DataContext = windows;
             tb.Clear();
-            tb.Focus();
-            //Focus();
+            tb.Focus();          
             //These two lines size upon load, but don't whiplash resize during typing
             SizeToContent = SizeToContent.Width;
             SizeToContent = SizeToContent.Manual;
