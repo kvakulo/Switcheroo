@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace IDOSwitcher
 {
@@ -18,9 +20,43 @@ namespace IDOSwitcher
     /// </summary>
     public partial class options : Window
     {
+        private HotKey hotkey;
+
         public options()
         {
             InitializeComponent();
+
+            Regex filter = new Regex("^([A-Z]|F([1-9]|1[0-2]))$");
+            var keyList = Enum.GetValues(typeof(Keys))
+                              .Cast<Keys>()
+                              .Where(x => filter.Match(x.ToString()).Success);  
+            Keys.DataContext = keyList;
+            
+            // Highlight what's already selected     
+            hotkey = MainWindow.hotkey;
+            Keys.SelectedItem = hotkey.KeyCode;
+            Alt.IsChecked = hotkey.Alt;
+            Ctrl.IsChecked = hotkey.Ctrl;
+            WindowsKey.IsChecked = hotkey.WindowsKey;
+            Shift.IsChecked = hotkey.Shift;           
+
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Ok_Click(object sender, RoutedEventArgs e)
+        {
+            // Change the active hotkey
+            hotkey.Alt = (bool)Alt.IsChecked;
+            hotkey.Shift = (bool)Shift.IsChecked;
+            hotkey.Ctrl = (bool)Ctrl.IsChecked;
+            hotkey.WindowsKey = (bool)WindowsKey.IsChecked;
+            hotkey.KeyCode = (Keys)Keys.SelectedItem;
+            hotkey.SaveSettings();
+            this.Close();
         }
     }
 }

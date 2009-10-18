@@ -15,5 +15,15 @@ namespace IDOSwitcher
             this.Ctrl = Properties.Settings.Default.Ctrl;
             this.Shift = Properties.Settings.Default.Shift;
         }
+
+        public void SaveSettings()
+        {
+            Properties.Settings.Default.HotKey = (int)this.KeyCode;
+            Properties.Settings.Default.WindowsKey = this.WindowsKey;
+            Properties.Settings.Default.Alt = this.Alt;
+            Properties.Settings.Default.Ctrl = this.Ctrl;
+            Properties.Settings.Default.Shift = this.Shift;
+            Properties.Settings.Default.Save();
+        }
     }
 }

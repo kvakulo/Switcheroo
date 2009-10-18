@@ -24,9 +24,8 @@ namespace IDOSwitcher
     public partial class MainWindow : Window
     {
         List<window> windows = new List<window>();
-        private System.Windows.Forms.NotifyIcon m_notifyIcon;        
-        //public ManagedWinapi.Hotkey hotkey;
-        public IDOSwitcher.HotKey hotkey;
+        private System.Windows.Forms.NotifyIcon m_notifyIcon;                
+        public static IDOSwitcher.HotKey hotkey {get; set;}
 
         public MainWindow()
         {           
@@ -39,13 +38,15 @@ namespace IDOSwitcher
             Bitmap bmp = IDOSwitcher.Properties.Resources.arrow_switch;
             m_notifyIcon.Icon = System.Drawing.Icon.FromHandle(bmp.GetHicon());                                          
             m_notifyIcon.Visible = true;
+
+            //Create right-click menu on notification icon
             m_notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
             {
                 new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit()),
                 new System.Windows.Forms.MenuItem("Options", (s, e) => Options())
             });
                      
-            // Set hotkey            
+            // Setup hotkey
             hotkey = new IDOSwitcher.HotKey();        
             hotkey.LoadSettings();
             hotkey.HotkeyPressed += new EventHandler(hotkey_HotkeyPressed);
@@ -61,8 +62,7 @@ namespace IDOSwitcher
         }
 
         private void Options()
-        {
-            //System.Windows.MessageBox.Show("Hello!", "Howdy", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        {            
             Window opts = new IDOSwitcher.options();            
             opts.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             opts.ShowDialog();
