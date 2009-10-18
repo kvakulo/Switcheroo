@@ -26,7 +26,7 @@ namespace IDOSwitcher
         {
             InitializeComponent();
 
-            Regex filter = new Regex("^([A-Z]|F([1-9]|1[0-2]))$");
+            Regex filter = new Regex("^([A-Z]|F([1-9]|1[0-2])|Space)$");
             var keyList = Enum.GetValues(typeof(Keys))
                               .Cast<Keys>()
                               .Where(x => filter.Match(x.ToString()).Success);  
