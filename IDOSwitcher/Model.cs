@@ -6,6 +6,9 @@ using System.Text.RegularExpressions;
 
 namespace IDOSwitcher
 {
+    /// <summary>
+    /// This class contains the main logic for the program.
+    /// </summary>
     public static class Model
     {
         public static IDOSwitcher.HotKey hotkey = new IDOSwitcher.HotKey();

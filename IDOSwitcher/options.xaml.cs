@@ -18,11 +18,11 @@ namespace IDOSwitcher
     /// <summary>
     /// Interaction logic for options.xaml
     /// </summary>
-    public partial class options : Window
+    public partial class OptionsWindow : Window
     {
         private HotKey hotkey;
 
-        public options()
+        public OptionsWindow()
         {
             InitializeComponent();
 
@@ -39,7 +39,6 @@ namespace IDOSwitcher
             Ctrl.IsChecked = hotkey.Ctrl;
             WindowsKey.IsChecked = hotkey.WindowsKey;
             Shift.IsChecked = hotkey.Shift;
-
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

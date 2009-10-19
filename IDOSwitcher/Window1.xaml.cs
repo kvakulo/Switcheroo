@@ -50,7 +50,7 @@ namespace IDOSwitcher
 
         private void Options()
         {            
-            Window opts = new IDOSwitcher.options();            
+            Window opts = new IDOSwitcher.OptionsWindow();            
             opts.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             opts.ShowDialog();
         }

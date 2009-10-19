@@ -1,8 +1,21 @@
-﻿using System;
+﻿//
+// Window.cs
+//
+// Authors:
+//  James Sulak <jsulak@gmail.com>
+//
+// Copyright (C) 2009 James SUlak
+
+
+using System;
 using System.Drawing;
 
 namespace IDOSwitcher
 {
+
+    /// <summary>
+    /// This class is a wrapper around the Win32 api window handles
+    /// </summary>
     public class AppWindow
     {
         public IntPtr handle { get; set; }
@@ -10,7 +23,7 @@ namespace IDOSwitcher
         public bool isminimzed;
         public bool ismaximized;
         public Icon icon;
-        //public ImageSource img {get; set;}
+        ////public ImageSource img {get; set;}
                
         public AppWindow()
         {

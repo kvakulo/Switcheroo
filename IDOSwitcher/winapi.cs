@@ -93,9 +93,5 @@ namespace IDOSwitcher
 
             return icn;            
         }
-
-
-
-
     }
 }
