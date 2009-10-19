@@ -33,12 +33,12 @@ namespace IDOSwitcher
             Keys.DataContext = keyList;
             
             // Highlight what's already selected     
-            hotkey = MainWindow.hotkey;
+            hotkey = Model.hotkey;
             Keys.SelectedItem = hotkey.KeyCode;
             Alt.IsChecked = hotkey.Alt;
             Ctrl.IsChecked = hotkey.Ctrl;
             WindowsKey.IsChecked = hotkey.WindowsKey;
-            Shift.IsChecked = hotkey.Shift;           
+            Shift.IsChecked = hotkey.Shift;
 
         }
 

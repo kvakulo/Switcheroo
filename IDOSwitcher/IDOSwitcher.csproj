@@ -107,6 +107,7 @@
     <Compile Include="HotKey.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Model.cs" />
     <Compile Include="options.xaml.cs">
       <DependentUpon>options.xaml</DependentUpon>
     </Compile>

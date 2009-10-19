@@ -23,9 +23,9 @@ namespace IDOSwitcher
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<window> windows = new List<window>();
+        private List<window> WindowList;
         private System.Windows.Forms.NotifyIcon m_notifyIcon;                
-        public static IDOSwitcher.HotKey hotkey {get; set;}
+        private HotKey hotkey;
 
         public MainWindow()
         {           
@@ -42,20 +42,18 @@ namespace IDOSwitcher
             //Create right-click menu on notification icon
             m_notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
             {
-                new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit()),
-                new System.Windows.Forms.MenuItem("Options", (s, e) => Options())
+                new System.Windows.Forms.MenuItem("Options", (s, e) => Options()),
+                new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit())               
             });
-                     
-            // Setup hotkey
-            hotkey = new IDOSwitcher.HotKey();        
-            hotkey.LoadSettings();
+
+            Model.Initialize();
+            hotkey = Model.hotkey;
+            WindowList = Model.WindowList;
             hotkey.HotkeyPressed += new EventHandler(hotkey_HotkeyPressed);
-            try
-            {
+            try {
                 hotkey.Enabled = true;
             }
-            catch (ManagedWinapi.HotkeyAlreadyInUseException)
-            {
+            catch (ManagedWinapi.HotkeyAlreadyInUseException) {
                 System.Windows.MessageBox.Show("Could not register hotkey (already in use).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
@@ -68,7 +66,6 @@ namespace IDOSwitcher
             opts.ShowDialog();
         }
         
-
         private void Quit()
         {
             m_notifyIcon.Dispose();
@@ -81,59 +78,23 @@ namespace IDOSwitcher
         {           
             e.Cancel = true;
             Hide();
-        }      
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool SwitchToThisWindow(IntPtr hWnd);
-
-        private void getwindows()
-        {
-            winapi.EnumWindowsProc callback = new winapi.EnumWindowsProc(enumwindows);
-            winapi.EnumWindows(callback, 0);            
-        }
-
-        private bool enumwindows(IntPtr hWnd, int lParam)
-        {
-            string[] excludeList = { "Program Manager", "VirtuaWinMainClass" };
-
-            if (!winapi.IsWindowVisible(hWnd))
-                return true;
-
-            StringBuilder title = new StringBuilder(256);
-            winapi.GetWindowText(hWnd, title, 256);            
-
-            if (string.IsNullOrEmpty(title.ToString())) {
-                return true;
-            }
-
-            //Exclude windows on the exclusion list
-            if (excludeList.Contains(title.ToString())) {
-                return true;
-            }
-
-            if (title.Length != 0 || (title.Length == 0 & hWnd != winapi.statusbar)) {
-                windows.Add(new window(hWnd, title.ToString(), winapi.IsIconic(hWnd), winapi.IsZoomed(hWnd), winapi.GetAppIcon(hWnd)));
-            }
-            
-            return true;
-        }
-
+        }            
+        
         void hotkey_HotkeyPressed(object sender, EventArgs e)
         {
             LoadData();            
             Show();
             Activate();
-            //WindowState = m_storedWindowState;
             Keyboard.Focus(tb);
         }
 
         public void LoadData()
         {
-            windows.Clear();
-            getwindows();
-            windows.Sort((x, y) => string.Compare(x.title, y.title));
+            WindowList.Clear();
+            Model.getwindows();
+            WindowList.Sort((x, y) => string.Compare(x.title, y.title));
             lb.DataContext = null;
-            lb.DataContext = windows;
+            lb.DataContext = WindowList;
             tb.Clear();
             tb.Focus();          
             //These two lines size upon load, but don't whiplash resize during typing
@@ -143,41 +104,14 @@ namespace IDOSwitcher
             this.Top = (SystemParameters.PrimaryScreenHeight / 2) - (this.ActualHeight / 2);            
         }
 
-        void FilterList()
-        {
-            Regex filter = BuildPattern(tb.Text);
-            var filtered_windows =  from w in windows
-                                    where filter.Match(w.title).Success                                                                                         
-                                    orderby !w.title.StartsWith(tb.Text, StringComparison.OrdinalIgnoreCase)
-                                    orderby (w.title.IndexOf(tb.Text, StringComparison.OrdinalIgnoreCase) < 0)
-                                    select w;
-
-            lb.DataContext = filtered_windows;
-        }
-
-        static Regex BuildPattern(string input)
-        {
-            string newPattern = "";
-            input = input.Trim();
-            foreach (char c in input) {
-                newPattern += ".*";
-                // escape regex reserved characters
-                if (@"[\^$.|?*+(){}".Contains(c)) {
-                    newPattern += @"\";
-                }                
-                newPattern += c;
-            }
-            return new Regex(newPattern, RegexOptions.IgnoreCase);
-        }
-
         void PrintText(object sender, SelectionChangedEventArgs args)
         {
             ListBoxItem lbi = ((sender as ListBox).SelectedItem as ListBoxItem);            
         }
 
         void TextChanged(object sender, TextChangedEventArgs args)
-        {                       
-            FilterList();
+        {            
+            lb.DataContext = Model.FilterList(tb.Text);
             if (lb.Items.Count > 0) {
                 lb.SelectedItem = lb.Items[0];
             }            
@@ -189,8 +123,7 @@ namespace IDOSwitcher
             {
                 case Key.Enter:
                     if (lb.Items.Count > 0) {
-                        SwitchToThisWindow(((window)lb.SelectedItem).handle);
-                        //m_notifyIcon.Icon = ((window)lb.SelectedItem).icon;
+                        winapi.SwitchToThisWindow(((window)lb.SelectedItem).handle);
                     }
                     Hide();
                     break;
