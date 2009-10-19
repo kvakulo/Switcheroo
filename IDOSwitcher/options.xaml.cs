@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
 
 namespace IDOSwitcher
 {
@@ -44,7 +44,7 @@ namespace IDOSwitcher
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
@@ -56,7 +56,7 @@ namespace IDOSwitcher
             hotkey.WindowsKey = (bool)WindowsKey.IsChecked;
             hotkey.KeyCode = (Keys)Keys.SelectedItem;
             hotkey.SaveSettings();
-            this.Close();
+            Close();
         }
     }
 }

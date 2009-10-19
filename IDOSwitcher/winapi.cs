@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace IDOSwitcher
 {
-    static public class winapi
+    static public class WinAPI
     {
         public delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
@@ -42,7 +41,6 @@ namespace IDOSwitcher
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
-
         // This stuff is for getting the application icons
         // From: http://codeutopia.net/blog/2007/12/18/find-an-applications-icon-with-winapi/
 
@@ -58,9 +56,13 @@ namespace IDOSwitcher
         public static IntPtr GetClassLongPtr(IntPtr hWnd, int nIndex)
         {
             if (IntPtr.Size > 4)
+            {
                 return GetClassLongPtr64(hWnd, nIndex);
-            else
+            }
+            else 
+            {
                 return new IntPtr(GetClassLongPtr32(hWnd, nIndex));
+            }
         }
 
         [DllImport("user32.dll", EntryPoint = "GetClassLong")]

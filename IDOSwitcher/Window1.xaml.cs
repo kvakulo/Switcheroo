@@ -1,20 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace IDOSwitcher
 {
@@ -23,7 +12,7 @@ namespace IDOSwitcher
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<window> WindowList;
+        private List<AppWindow> WindowList;
         private System.Windows.Forms.NotifyIcon m_notifyIcon;                
         private HotKey hotkey;
 
@@ -91,7 +80,7 @@ namespace IDOSwitcher
         public void LoadData()
         {
             WindowList.Clear();
-            Model.getwindows();
+            Model.GetWindows();
             WindowList.Sort((x, y) => string.Compare(x.title, y.title));
             lb.DataContext = null;
             lb.DataContext = WindowList;
@@ -100,16 +89,16 @@ namespace IDOSwitcher
             //These two lines size upon load, but don't whiplash resize during typing
             SizeToContent = SizeToContent.Width;
             SizeToContent = SizeToContent.Manual;
-            this.Left = (SystemParameters.PrimaryScreenWidth / 2) - (this.ActualWidth / 2);
-            this.Top = (SystemParameters.PrimaryScreenHeight / 2) - (this.ActualHeight / 2);            
+            Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
+            Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);            
         }
 
-        void PrintText(object sender, SelectionChangedEventArgs args)
+        private void PrintText(object sender, SelectionChangedEventArgs args)
         {
-            ListBoxItem lbi = ((sender as ListBox).SelectedItem as ListBoxItem);            
+            ListBoxItem lbi = (sender as ListBox).SelectedItem as ListBoxItem;            
         }
 
-        void TextChanged(object sender, TextChangedEventArgs args)
+        private void TextChanged(object sender, TextChangedEventArgs args)
         {            
             lb.DataContext = Model.FilterList(tb.Text);
             if (lb.Items.Count > 0) {
@@ -123,7 +112,7 @@ namespace IDOSwitcher
             {
                 case Key.Enter:
                     if (lb.Items.Count > 0) {
-                        winapi.SwitchToThisWindow(((window)lb.SelectedItem).handle);
+                        WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).handle);
                     }
                     Hide();
                     break;

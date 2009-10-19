@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
-using System.Windows.Interop;
 
 namespace IDOSwitcher
 {
-    public class window
+    public class AppWindow
     {
-        public IntPtr handle;
+        public IntPtr handle { get; set; }
         public string title { get; set; }
         public bool isminimzed;
         public bool ismaximized;
         public Icon icon;
         //public ImageSource img {get; set;}
                
-        public window()
+        public AppWindow()
         {
             handle = IntPtr.Zero;
             title = "";
@@ -25,7 +20,7 @@ namespace IDOSwitcher
             ismaximized = false;
         }
         
-        public window(IntPtr handle, string title, bool isminimized, bool ismaximized, Icon icon)
+        public AppWindow(IntPtr handle, string title, bool isminimized, bool ismaximized, Icon icon)
         {
                                     
             this.handle = handle;
@@ -34,11 +29,10 @@ namespace IDOSwitcher
             this.ismaximized = ismaximized;
             this.icon = icon;
 
-            //Bitmap bitmap = icon.ToBitmap();
-            //IntPtr hBitmap = bitmap.GetHbitmap();
-            //ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            //img = wpfBitmap;
-            
+            ////Bitmap bitmap = icon.ToBitmap();
+            ////IntPtr hBitmap = bitmap.GetHbitmap();
+            ////ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            ////img = wpfBitmap;            
         }
 
         public override string ToString()
