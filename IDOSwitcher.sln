@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C# Express 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDOSwitcher", "IDOSwitcher\IDOSwitcher.csproj", "{B28E183B-0E38-48A8-8A4E-B4AB7B23CE93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Switcheroo", "IDOSwitcher\Switcheroo.csproj", "{B28E183B-0E38-48A8-8A4E-B4AB7B23CE93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSwitcher", "ConsoleSwitcher\ConsoleSwitcher.csproj", "{B536F3C7-E6F2-4687-928F-4DFE8BFD249F}"
 EndProject

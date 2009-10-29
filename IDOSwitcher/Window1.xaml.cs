@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace IDOSwitcher
+namespace Switcheroo
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
@@ -23,8 +23,8 @@ namespace IDOSwitcher
         
             // Handle notification icon stuff            
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
-            m_notifyIcon.Text = "FantastSwitch";           
-            Bitmap bmp = IDOSwitcher.Properties.Resources.arrow_switch;
+            m_notifyIcon.Text = "Switcheroo";           
+            Bitmap bmp = Switcheroo.Properties.Resources.arrow_switch;
             m_notifyIcon.Icon = System.Drawing.Icon.FromHandle(bmp.GetHicon());                                          
             m_notifyIcon.Visible = true;
 
@@ -50,7 +50,7 @@ namespace IDOSwitcher
 
         private void Options()
         {            
-            Window opts = new IDOSwitcher.OptionsWindow();            
+            Window opts = new Switcheroo.OptionsWindow();            
             opts.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             opts.ShowDialog();
         }

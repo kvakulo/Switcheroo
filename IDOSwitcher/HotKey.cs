@@ -1,5 +1,5 @@
 ﻿
-namespace IDOSwitcher
+namespace Switcheroo
 {
     public class HotKey : ManagedWinapi.Hotkey
     {

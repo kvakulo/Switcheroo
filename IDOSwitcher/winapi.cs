@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace IDOSwitcher
+namespace Switcheroo
 {
     static public class WinAPI
     {

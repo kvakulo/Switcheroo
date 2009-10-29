@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace IDOSwitcher
+namespace Switcheroo
 {
     /// <summary>
     /// Interaction logic for App.xaml

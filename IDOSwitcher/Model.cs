@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace IDOSwitcher
+namespace Switcheroo
 {
     /// <summary>
     /// This class contains the main logic for the program.
     /// </summary>
     public static class Model
     {
-        public static IDOSwitcher.HotKey hotkey = new IDOSwitcher.HotKey();
+        public static Switcheroo.HotKey hotkey = new Switcheroo.HotKey();
         public static List<AppWindow> WindowList = new List<AppWindow>();
 
         public static void Initialize() 
@@ -25,7 +25,7 @@ namespace IDOSwitcher
             WinAPI.EnumWindows(callback, 0);
         }
 
-        public static IEnumerable<IDOSwitcher.AppWindow> FilterList(string filterText)
+        public static IEnumerable<Switcheroo.AppWindow> FilterList(string filterText)
         {
             Regex filter = BuildPattern(filterText);
             var filtered_windows = from w in WindowList
