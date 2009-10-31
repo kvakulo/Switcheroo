@@ -29,7 +29,7 @@ Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
-Name: startupfolder; Description: CreateStartupFolder
+Name: startupfolder; Description: Startup with windows
 
 [Files]
 Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\switcheroo.exe; DestDir: {app}; Flags: ignoreversion

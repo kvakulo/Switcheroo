@@ -66,5 +66,12 @@ namespace Switcheroo.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Icon arrow_switch1 {
+            get {
+                object obj = ResourceManager.GetObject("arrow_switch1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }
