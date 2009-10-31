@@ -29,6 +29,7 @@ Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+Name: startupfolder; Description: CreateStartupFolder
 
 [Files]
 Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\switcheroo.exe; DestDir: {app}; Flags: ignoreversion
@@ -39,6 +40,45 @@ Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\ManagedWina
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
 Name: {commondesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
+Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: startupfolder
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
+
+
+[Code]
+const
+
+// The following was stolen from the Witty Twitter installer.
+// http://code.google.com/p/wittytwitter/source/browse/trunk/Witty/Installer/Installer.iss
+
+//Use these values for .NET 3.5
+dotnetRedistURL = 'http://www.microsoft.com/downloads/details.aspx?FamilyID=333325FD-AE52-4E35-B531-508D977D32A6';
+dotnetRegKey = 'SOFTWARE\Microsoft\Net Framework Setup\NDP\v3.5';
+version = '3.5';
+
+function InitializeSetup(): Boolean;
+var
+    ErrorCode: Integer;
+    NetFrameWorkInstalled : Boolean;
+    InstallDotNetResponse : Boolean;
+begin
+	NetFrameWorkInstalled := RegKeyExists(HKLM,dotnetRegKey);
+	if NetFrameWorkInstalled =true then
+	   begin
+		  Result := true;
+	   end
+	else
+	   begin
+		  InstallDotNetResponse := MsgBox('This setup requires version ' + version + ' of the .NET Framework. Please download and install the .NET Framework and run this setup again. Do you want to download the framework now?',mbConfirmation,MB_YESNO)= idYes;
+		  if InstallDotNetResponse =false then
+			begin
+			  Result:=false;
+			end
+		  else
+			begin
+			  Result:=false;
+			  ShellExec('open',dotnetRedistURL,'','',SW_SHOWNORMAL,ewNoWait,ErrorCode);
+			end;
+	   end;
+	end;
