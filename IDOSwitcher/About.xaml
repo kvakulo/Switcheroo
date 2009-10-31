@@ -1,0 +1,14 @@
+﻿<Window x:Class="Switcheroo.About"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="About Switcheroo" Height="214" Width="234"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False">
+    <Grid Height="139" Width="216">
+        <Label Height="28" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" FontSize="18">Switcheroo</Label>
+        <Label Margin="12,46,0,65" Name="label2">version .15</Label>
+        <Label Margin="12,0,0,41" Name="label3" Height="28" VerticalAlignment="Bottom">Copyright 2009 James Sulak</Label>
+        <Label Height="28" Margin="12,0,12,22" Name="label4" VerticalAlignment="Bottom">Released under the GPL License</Label>
+    </Grid>
+</Window>
