@@ -1,0 +1,138 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ManagedWinapi</RootNamespace>
+    <AssemblyName>ManagedWinapi</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\ManagedWinapi.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\ManagedWinapi.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessibleObjectListener.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Contents\AccessibleWindowParser.cs" />
+    <Compile Include="ExtendedFileInfo.cs" />
+    <Compile Include="CodepointRange.cs" />
+    <Compile Include="Hook.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InputBlocker.cs" />
+    <Compile Include="JournalHook.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="KeyboardKey.cs" />
+    <Compile Include="LowLevelHook.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MachineIdentifiers.cs" />
+    <Compile Include="ProcessMemoryChunk.cs" />
+    <Compile Include="ShortcutBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ShortcutBox.Designer.cs">
+      <DependentUpon>ShortcutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrivilegedActions.cs" />
+    <Compile Include="SystemAccessibleObject.cs" />
+    <Compile Include="ApiHelper.cs" />
+    <Compile Include="ClipboardNotifier.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Contents\ContentParserRegistry.cs" />
+    <Compile Include="Contents\ListParser.cs" />
+    <Compile Include="Contents\TextFieldParser.cs" />
+    <Compile Include="Contents\WindowContent.cs" />
+    <Compile Include="Contents\WindowContentParser.cs" />
+    <Compile Include="Crosshair.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Crosshair.Designer.cs">
+      <DependentUpon>Crosshair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mixer.cs" />
+    <Compile Include="MixerControl.cs" />
+    <Compile Include="MixerLine.cs" />
+    <Compile Include="PInvokeTypes.cs" />
+    <Compile Include="SendKeysEscaper.cs" />
+    <Compile Include="EventDispatchingNativeWindow.cs" />
+    <Compile Include="Hotkey.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LockKeyResetter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemListBox.cs" />
+    <Compile Include="SystemListView.cs" />
+    <Compile Include="SystemTreeView.cs" />
+    <Compile Include="SystemWindow.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Crosshair.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Crosshair.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="crosshair.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="crosshair.cur" />
+    <EmbeddedResource Include="ShortcutBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ShortcutBox.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ManagedWinapiNativeHelper.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -34,17 +34,19 @@ Name: startupfolder; Description: Startup with windows
 [Files]
 Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\switcheroo.exe; DestDir: {app}; Flags: ignoreversion
 Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\ManagedWinapi.dll; DestDir: {app}; Flags: ignoreversion
+Source: B:\workspace\idoswitcher\IDOSwitcher\readme.txt; DestDir: {app}; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
+Name: {group}\Readme; Filename: {app}\readme.txt
 Name: {commondesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
 Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: startupfolder
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
-
+Filename: {app}\README.TXT; Description: View the README file; Flags: postinstall shellexec skipifsilent
 
 [Code]
 const

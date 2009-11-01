@@ -4,15 +4,18 @@ Switcheroo version 0.2
 Copyright 2009 James Sulak
 jsulak@gmail.com
 
+This is an ALPHA release.  I've been happily using it in my day-to-day
+work, but there are still bugs and hasn't been thoroughly tested
+across platforms.
 
 Usage:
 
-The default keybinding for Switcheroo is Win+w.  Pressing this key
+The default key binding for Switcheroo is Win+w.  Pressing this key
 combination will bring up the Switcheroo window, which lists the titles
 of every open window.  Typing filters the list.  Press enter to switch
 to the selected window.
 
-The keybinding can be changed by right-clicking the notification
+The key binding can be changed by right-clicking the notification
 icon. 
 
 
@@ -39,4 +42,10 @@ set 1.3.  It is available at: <http://www.famfamfam.com/lab/icons/silk/>.
 This program uses the Managed Windows API to establish its hotkey
 bindings.  It's licensed under the GNU LGPL and is available at
 <http://mwinapi.sourceforge.net/>. 
+
+
+Changelog:
+
+2009-11-01: Released v0.2
+2009-10-11: Released v0.1
 
