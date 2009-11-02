@@ -7,7 +7,7 @@
     <StackPanel Margin="10">                
         <TextBlock >
             <Bold>Switcheroo</Bold>
-            <LineBreak/><Italic>The humble progressive-search task switcher for Windows</Italic>
+            <LineBreak/><Italic>The humble incremental-search task switcher for Windows</Italic>
             <LineBreak/>Version: 0.2            
             <LineBreak/>
             Copyright 2009 James Sulak
