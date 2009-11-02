@@ -51,6 +51,7 @@ namespace Switcheroo
             m_notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
             {
                 new System.Windows.Forms.MenuItem("Options", (s, e) => Options()),
+                new System.Windows.Forms.MenuItem("About", (s, e) => About()),
                 new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit())               
             });
 
@@ -73,7 +74,14 @@ namespace Switcheroo
             opts.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             opts.ShowDialog();
         }
-        
+
+        private void About()
+        {
+            Window about = new Switcheroo.About();           
+            //about.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            about.ShowDialog();
+        }
+
         private void Quit()
         {
             m_notifyIcon.Dispose();

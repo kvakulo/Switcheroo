@@ -165,7 +165,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="arrow_switch.ico" />
+    <Resource Include="arrow_switch.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ManagedWinapi\ManagedWinapi.csproj">

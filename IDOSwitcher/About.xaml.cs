@@ -29,6 +29,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace Switcheroo
 {
@@ -41,5 +42,21 @@ namespace Switcheroo
         {
             InitializeComponent();
         }
+
+        void HandleRequestNavigate(object sender, RoutedEventArgs e)
+        {
+            string navigateUri = hl.NavigateUri.ToString();
+            // if the URI somehow came from an untrusted source, make sure to
+            // validate it before calling Process.Start(), e.g. check to see
+            // the scheme is HTTP, etc.
+            Process.Start(new ProcessStartInfo(navigateUri));
+            e.Handled = true;
+        }
+
+        private void Ok_Click(object sender, RoutedEventArgs e)
+        {         
+            Close();
+        }
+
     }
 }
