@@ -155,7 +155,17 @@ namespace Switcheroo
                     break;
                 case Key.Escape:
                     Hide();
-                    break;                
+                    break;
+                case Key.LeftCtrl:
+                    if (lb.Items.Count > 0)
+                    {
+                        WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).handle);
+                        // Hmm.  Maybe I should be using this for all the window handling.
+                        ManagedWinapi.Windows.SystemWindow win = new ManagedWinapi.Windows.SystemWindow(((AppWindow)lb.SelectedItem).handle);
+                        Hide();
+                        win.SendClose();                 
+                    }                        
+                    break;
                 default:
                     break;
             }

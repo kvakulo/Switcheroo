@@ -43,14 +43,14 @@ namespace Switcheroo
             ismaximized = false;
         }
         
-        public AppWindow(IntPtr handle, string title, bool isminimized, bool ismaximized, Icon icon)
+        public AppWindow(IntPtr handle, string title, bool isminimized, bool ismaximized)
         {
                                     
             this.handle = handle;
             this.title = title;
             this.isminimzed = isminimized;
             this.ismaximized = ismaximized;
-            this.icon = icon;
+            //this.icon = icon;
 
             ////Bitmap bitmap = icon.ToBitmap();
             ////IntPtr hBitmap = bitmap.GetHbitmap();

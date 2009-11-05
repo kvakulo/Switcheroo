@@ -3,6 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"          
         Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="ToolWindow"
     Title="" Height="150" Width="400">    
+    <!--<Window.InputBindings>
+        <KeyBinding Command="CloseWindow" Gesture="CTRL+C" />
+    </Window.InputBindings>-->
     <Grid>          
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
