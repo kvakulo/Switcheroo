@@ -1,25 +1,45 @@
 ﻿<Window x:Class="Switcheroo.MainWindow" WindowStartupLocation="CenterScreen" Topmost="True"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"    
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"          
-        Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="ToolWindow"
-    Title="" Height="150" Width="400">    
-    <!--<Window.InputBindings>
-        <KeyBinding Command="CloseWindow" Gesture="CTRL+C" />
-    </Window.InputBindings>-->
+    xmlns:local="clr-namespace:Switcheroo"
+    Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="ToolWindow"
+    Title="" Height="150" Width="400">  
+      
+    <Window.CommandBindings>
+        <CommandBinding Command="local:MainWindow.CloseWindowCommand"                        
+                        Executed="CloseWindow" />
+        <CommandBinding Command="local:MainWindow.SwitchToWindowCommand" 
+                        Executed="SwitchToWindow"/>  
+        <CommandBinding Command="Close" 
+                        Executed="Hide" />
+        <CommandBinding Command="local:MainWindow.ScrollListUpCommand"
+                        Executed="ScrollListUp" />
+        <CommandBinding Command="local:MainWindow.ScrollListDownCommand"
+                        Executed="ScrollListDown" />
+    </Window.CommandBindings>
+        
+    <Window.InputBindings>        
+        <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="Enter" Modifiers="Ctrl" />
+        <KeyBinding Command="local:MainWindow.SwitchToWindowCommand" Key="Enter" />                
+        <KeyBinding Command="Close" Key="Escape" />
+        <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
+        <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
+    </Window.InputBindings>    
+    
     <Grid>          
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>                
-        <TextBox Name="tb" Height="20" VerticalAlignment="Top" TextChanged="TextChanged"  PreviewKeyDown="tb_KeyDown" />
-        <ListBox Name="lb" SelectionChanged="PrintText" SelectionMode="Single" Margin="0,22,0,0" ItemsSource="{Binding}" >
-            <ListBox.Resources>
-                <!--SelectedItem with focus-->
-                <!--<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Blue" Opacity=".4"/>-->
-                <!--SelectedItem without focus-->
-                <!--<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Blue" Opacity=".4"/>-->
-            </ListBox.Resources>                
-                <ListBox.ItemTemplate>
+        </Grid.ColumnDefinitions>                     
+        <TextBox Name="tb" Height="20" VerticalAlignment="Top" TextChanged="TextChanged">
+            <TextBox.InputBindings>
+                <!-- For now, leave these here.  Would it be better to route them upward? -->
+                <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
+                <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
+            </TextBox.InputBindings>
+        </TextBox>
+        <ListBox Name="lb" SelectionChanged="PrintText" SelectionMode="Single" Margin="0,22,0,0" ItemsSource="{Binding}" >            
+            <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <!--<Image Name="imgDisp" Source="" />-->                        

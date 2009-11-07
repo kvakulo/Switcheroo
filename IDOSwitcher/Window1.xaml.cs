@@ -35,6 +35,11 @@ namespace Switcheroo
         private System.Windows.Forms.NotifyIcon m_notifyIcon;                
         private HotKey hotkey;
 
+        public readonly static RoutedUICommand CloseWindowCommand = new RoutedUICommand();
+        public readonly static RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
+        public readonly static RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
+        public readonly static RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+
         public MainWindow()
         {           
             InitializeComponent();
@@ -133,42 +138,48 @@ namespace Switcheroo
             }            
         }
 
-        private void tb_KeyDown(object sender, KeyEventArgs e)
-        {            
-            switch (e.Key)
+        private void Hide(object sender, ExecutedRoutedEventArgs e)
+        {
+            Hide();
+        }
+     
+        private void SwitchToWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (lb.Items.Count > 0)
             {
-                case Key.Enter:
-                    if (lb.Items.Count > 0) {
-                        WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).handle);
-                    }
-                    Hide();
-                    break;
-                case Key.Down:
-                    if (lb.SelectedIndex != lb.Items.Count - 1) {
-                        lb.SelectedIndex++;
-                    }
-                    break;
-                case Key.Up:
-                    if (lb.SelectedIndex != 0) {
-                        lb.SelectedIndex--;
-                    }
-                    break;
-                case Key.Escape:
-                    Hide();
-                    break;
-                case Key.LeftCtrl:
-                    if (lb.Items.Count > 0)
-                    {
-                        WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).handle);
-                        // Hmm.  Maybe I should be using this for all the window handling.
-                        ManagedWinapi.Windows.SystemWindow win = new ManagedWinapi.Windows.SystemWindow(((AppWindow)lb.SelectedItem).handle);
-                        Hide();
-                        win.SendClose();                 
-                    }                        
-                    break;
-                default:
-                    break;
+                WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).handle);
             }
-        } 
+            Hide();
+            e.Handled = true;
+        }
+
+        private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).handle);
+            // Hmm.  Maybe I should be using this for all the window handling.
+            ManagedWinapi.Windows.SystemWindow win = new ManagedWinapi.Windows.SystemWindow(((AppWindow)lb.SelectedItem).handle);
+            Hide();
+            win.SendClose();
+            e.Handled = true;
+        }
+
+        private void ScrollListUp(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (lb.SelectedIndex != 0)
+            {
+                lb.SelectedIndex--;
+            }
+            e.Handled = true;
+        }
+
+        private void ScrollListDown(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (lb.SelectedIndex != lb.Items.Count - 1)
+            {
+                lb.SelectedIndex++;
+            }
+            e.Handled = true;
+        }
+
     }
 }
