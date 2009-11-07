@@ -48,9 +48,9 @@ namespace Switcheroo
         {
             Regex filter = BuildPattern(filterText);
             var filtered_windows = from w in WindowList
-                                   where filter.Match(w.title).Success
-                                   orderby !w.title.StartsWith(filterText, StringComparison.OrdinalIgnoreCase)
-                                   orderby (w.title.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) < 0)
+                                   where filter.Match(w.Title).Success
+                                   orderby !w.Title.StartsWith(filterText, StringComparison.OrdinalIgnoreCase)
+                                   orderby (w.Title.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) < 0)
                                    select w;
 
             return filtered_windows;

@@ -43,7 +43,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <!--<Image Name="imgDisp" Source="" />-->                        
-                        <TextBlock Text="{Binding Path=title}" />
+                        <TextBlock Text="{Binding Path=Title}" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

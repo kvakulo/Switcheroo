@@ -28,8 +28,8 @@ namespace Switcheroo
     /// </summary>
     public class AppWindow
     {
-        public IntPtr handle { get; set; }
-        public string title { get; set; }
+        public IntPtr HWnd { get; set; }
+        public string Title { get; set; }
         public bool isminimzed;
         public bool ismaximized;
         public Icon icon;
@@ -37,8 +37,8 @@ namespace Switcheroo
                
         public AppWindow()
         {
-            handle = IntPtr.Zero;
-            title = "";
+            HWnd = IntPtr.Zero;
+            Title = "";
             isminimzed = false;
             ismaximized = false;
         }
@@ -46,8 +46,8 @@ namespace Switcheroo
         public AppWindow(IntPtr handle, string title, bool isminimized, bool ismaximized)
         {
                                     
-            this.handle = handle;
-            this.title = title;
+            this.HWnd = handle;
+            this.Title = title;
             this.isminimzed = isminimized;
             this.ismaximized = ismaximized;
             //this.icon = icon;
@@ -60,7 +60,7 @@ namespace Switcheroo
 
         public override string ToString()
         {
-            return this.title;
+            return this.Title;
         }
     }
 }

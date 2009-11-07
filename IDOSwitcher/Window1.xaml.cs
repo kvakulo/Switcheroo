@@ -113,7 +113,7 @@ namespace Switcheroo
         {
             WindowList.Clear();
             Model.GetWindows();
-            WindowList.Sort((x, y) => string.Compare(x.title, y.title));
+            WindowList.Sort((x, y) => string.Compare(x.Title, y.Title));
             lb.DataContext = null;
             lb.DataContext = WindowList;
             tb.Clear();
@@ -147,7 +147,7 @@ namespace Switcheroo
         {
             if (lb.Items.Count > 0)
             {
-                WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).handle);
+                WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).HWnd);
             }
             Hide();
             e.Handled = true;
@@ -155,9 +155,9 @@ namespace Switcheroo
 
         private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).handle);
+            WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).HWnd);
             // Hmm.  Maybe I should be using this for all the window handling.
-            ManagedWinapi.Windows.SystemWindow win = new ManagedWinapi.Windows.SystemWindow(((AppWindow)lb.SelectedItem).handle);
+            ManagedWinapi.Windows.SystemWindow win = new ManagedWinapi.Windows.SystemWindow(((AppWindow)lb.SelectedItem).HWnd);
             Hide();
             win.SendClose();
             e.Handled = true;
