@@ -19,6 +19,7 @@
 
 using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Switcheroo
 {
@@ -28,11 +29,25 @@ namespace Switcheroo
     /// </summary>
     public class AppWindow : ManagedWinapi.Windows.SystemWindow
     {
-        public AppWindow(IntPtr HWnd) : base(HWnd) { }
+        private const UInt32 WM_CLOSE = 0x0010;
         
-        //public override string ToString()
-        //{
-        //    return this.Title;
-        //}
+        public AppWindow(IntPtr HWnd) : base(HWnd) { }
+               
+        public void PostClose() 
+        {
+            PostMessage(this.HWnd, WM_CLOSE, 0, 0);        
+        }
+
+        public void SwitchTo()
+        {
+            SwitchToThisWindow(this.HWnd);
+        }
+
+        [DllImport("user32.Dll")]
+        private static extern int PostMessage(IntPtr hWnd, UInt32 msg, int wParam, int lParam);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SwitchToThisWindow(IntPtr hWnd);
+
     }
 }

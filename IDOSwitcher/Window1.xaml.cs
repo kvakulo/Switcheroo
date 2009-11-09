@@ -146,8 +146,9 @@ namespace Switcheroo
         private void SwitchToWindow(object sender, ExecutedRoutedEventArgs e)
         {
             if (lb.Items.Count > 0)
-            {
-                WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).HWnd);
+            {                
+                AppWindow win = (AppWindow)lb.SelectedItem;
+                win.SwitchTo();
             }
             Hide();
             e.Handled = true;
@@ -157,9 +158,10 @@ namespace Switcheroo
         {
             if (lb.Items.Count > 0)
             {                
-                Hide();                                
-                WinAPI.PostMessage(((AppWindow)lb.SelectedItem).HWnd, WinAPI.WM_CLOSE, 0, 0);
-                WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).HWnd);
+                Hide();
+                AppWindow win = (AppWindow)lb.SelectedItem;
+                win.PostClose();
+                win.SwitchTo();               
             }
             else
             {
