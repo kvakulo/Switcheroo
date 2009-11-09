@@ -26,41 +26,13 @@ namespace Switcheroo
     /// <summary>
     /// This class is a wrapper around the Win32 api window handles
     /// </summary>
-    public class AppWindow
+    public class AppWindow : ManagedWinapi.Windows.SystemWindow
     {
-        public IntPtr HWnd { get; set; }
-        public string Title { get; set; }
-        public bool isminimzed;
-        public bool ismaximized;
-        public Icon icon;
-        ////public ImageSource img {get; set;}
-               
-        public AppWindow()
-        {
-            HWnd = IntPtr.Zero;
-            Title = "";
-            isminimzed = false;
-            ismaximized = false;
-        }
+        public AppWindow(IntPtr HWnd) : base(HWnd) { }
         
-        public AppWindow(IntPtr handle, string title, bool isminimized, bool ismaximized)
-        {
-                                    
-            this.HWnd = handle;
-            this.Title = title;
-            this.isminimzed = isminimized;
-            this.ismaximized = ismaximized;
-            //this.icon = icon;
-
-            ////Bitmap bitmap = icon.ToBitmap();
-            ////IntPtr hBitmap = bitmap.GetHbitmap();
-            ////ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            ////img = wpfBitmap;            
-        }
-
-        public override string ToString()
-        {
-            return this.Title;
-        }
+        //public override string ToString()
+        //{
+        //    return this.Title;
+        //}
     }
 }

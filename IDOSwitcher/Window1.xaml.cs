@@ -155,11 +155,16 @@ namespace Switcheroo
 
         private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).HWnd);
-            // Hmm.  Maybe I should be using this for all the window handling.
-            ManagedWinapi.Windows.SystemWindow win = new ManagedWinapi.Windows.SystemWindow(((AppWindow)lb.SelectedItem).HWnd);
-            Hide();
-            win.SendClose();
+            if (lb.Items.Count > 0)
+            {                
+                Hide();                                
+                WinAPI.PostMessage(((AppWindow)lb.SelectedItem).HWnd, WinAPI.WM_CLOSE, 0, 0);
+                WinAPI.SwitchToThisWindow(((AppWindow)lb.SelectedItem).HWnd);
+            }
+            else
+            {
+                Hide();
+            }
             e.Handled = true;
         }
 

@@ -25,7 +25,12 @@ using System.Text;
 namespace Switcheroo
 {
     static public class WinAPI
-    {
+    {       
+        [DllImport("user32.Dll")]
+        public static extern int PostMessage(IntPtr hWnd, UInt32 msg, int wParam, int lParam);
+
+        public const UInt32 WM_CLOSE = 0x0010;
+        
         public delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
         public static IntPtr statusbar = FindWindow("Shell_TrayWnd", "");

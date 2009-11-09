@@ -77,7 +77,7 @@ namespace Switcheroo
             }
 
             if (title.Length != 0 || (title.Length == 0 & hWnd != WinAPI.statusbar)) {
-                WindowList.Add(new AppWindow(hWnd, title.ToString(), WinAPI.IsIconic(hWnd), WinAPI.IsZoomed(hWnd)));
+                WindowList.Add(new AppWindow(hWnd));
             }
 
             return true;
