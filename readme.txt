@@ -1,4 +1,4 @@
-Switcheroo version 0.2
+Switcheroo version 0.3
 ----------------------
 
 Copyright 2009 James Sulak
@@ -13,7 +13,7 @@ Usage:
 The default key binding for Switcheroo is Win+w.  Pressing this key
 combination will bring up the Switcheroo window, which lists the titles
 of every open window.  Typing filters the list.  Press enter to switch
-to the selected window.
+to the selected window.  Press Ctrl-enter to close the selected window.
 
 The key binding can be changed by right-clicking the notification
 icon. 
@@ -46,6 +46,10 @@ bindings.  It's licensed under the GNU LGPL and is available at
 
 Changelog:
 
+2009-11-09: Released v0.3
+  * Added ctrl-enter functionality.
+  * Mostly migrated to using the Managed Windows API instead of custom 
+    window class.
 2009-11-01: Released v0.2
 2009-10-11: Released v0.1
 
