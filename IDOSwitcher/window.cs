@@ -33,19 +33,6 @@ namespace Switcheroo
         
         public AppWindow(IntPtr HWnd) : base(HWnd) { }
 
-
-        /// <summary>
-        /// Post a message to this window that it should close. This is equivalent
-        /// to clicking the "X" in the upper right corner or pressing Alt+F4.
-        /// It sometimes works in instances where SendClose() does not 
-        /// (for example, in Windows Explorer windows.)
-        /// </summary>
-        public void PostClose() 
-        {
-            PostMessage(this.HWnd, WM_CLOSE, 0, 0);        
-        }
-
-
         /// <summary>
         /// Sets the focus to this window and brings it to the foreground.
         /// </summary>
@@ -56,9 +43,6 @@ namespace Switcheroo
             //ShowWindow(this.HWnd, 1);
             //SetForegroundWindow(this.HWnd);            
         }
-
-        [DllImport("user32.Dll")]
-        private static extern int PostMessage(IntPtr hWnd, UInt32 msg, int wParam, int lParam);
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool SwitchToThisWindow(IntPtr hWnd);

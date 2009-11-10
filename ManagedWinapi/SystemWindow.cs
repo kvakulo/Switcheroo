@@ -1030,6 +1030,17 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// Post a message to this window that it should close. This is equivalent
+        /// to clicking the "X" in the upper right corner or pressing Alt+F4.
+        /// It sometimes works in instances where the <see cref="SendClose"/> function does 
+        /// not (for example, Windows Explorer windows.)
+        /// </summary>
+        public void PostClose()
+        {
+            PostMessage(HWnd, WM_CLOSE, 0, 0);
+        }
+
+        /// <summary>
         /// Highlights the window with a red border.
         /// </summary>
         public void Highlight()
@@ -1308,6 +1319,9 @@ namespace ManagedWinapi.Windows
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, [Out] StringBuilder lParam);
+
+        [DllImport("user32.Dll")]
+        private static extern int PostMessage(IntPtr hWnd, UInt32 msg, int wParam, int lParam);
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X,
