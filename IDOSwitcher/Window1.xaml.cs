@@ -73,6 +73,9 @@ namespace Switcheroo
 
         }
 
+        /// <summary>
+        /// Show Options dialog.
+        /// </summary>
         private void Options()
         {            
             Window opts = new Switcheroo.OptionsWindow();            
@@ -80,6 +83,9 @@ namespace Switcheroo
             opts.ShowDialog();
         }
 
+        /// <summary>
+        /// Show About dialog.
+        /// </summary>
         private void About()
         {
             Window about = new Switcheroo.About();           
@@ -87,6 +93,9 @@ namespace Switcheroo
             about.ShowDialog();
         }
 
+        /// <summary>
+        /// Quit Switcheroo
+        /// </summary>
         private void Quit()
         {
             m_notifyIcon.Dispose();
@@ -187,6 +196,5 @@ namespace Switcheroo
             }
             e.Handled = true;
         }
-
     }
 }

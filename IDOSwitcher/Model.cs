@@ -83,6 +83,11 @@ namespace Switcheroo
             return true;
         }
       
+        /// <summary>
+        /// Builds a regex to filter the titles of open windows.
+        /// </summary>
+        /// <param name="input">The user-created string to create the regex from</param>
+        /// <returns>A filter regex</returns>
         private static Regex BuildPattern(string input)
         {
             string newPattern = "";
@@ -97,7 +102,5 @@ namespace Switcheroo
             }
             return new Regex(newPattern, RegexOptions.IgnoreCase);
         }
-
-
     }
 }
