@@ -1037,7 +1037,7 @@ namespace ManagedWinapi.Windows
         /// </summary>
         public void PostClose()
         {
-            PostMessage(HWnd, WM_CLOSE, 0, 0);
+            PostMessage(HWnd, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
         }
 
         /// <summary>
@@ -1320,8 +1320,8 @@ namespace ManagedWinapi.Windows
         [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, [Out] StringBuilder lParam);
 
-        [DllImport("user32.Dll")]
-        private static extern int PostMessage(IntPtr hWnd, UInt32 msg, int wParam, int lParam);
+        [DllImport("user32.dll")]
+        private static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X,
