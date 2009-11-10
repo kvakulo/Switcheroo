@@ -41,7 +41,7 @@
         <ListBox Name="lb" SelectionChanged="PrintText" SelectionMode="Single" Margin="0,22,0,0" ItemsSource="{Binding}" >            
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">                      
                         <!--<Image Name="imgDisp" Source="" />-->                        
                         <TextBlock Text="{Binding Path=Title}" />
                     </StackPanel>

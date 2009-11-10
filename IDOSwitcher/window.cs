@@ -1,5 +1,5 @@
 ﻿/*
- * Switcheroo - The progressive-search task switcher for Windows.
+ * Switcheroo - The incremental-search task switcher for Windows.
  * http://bitbucket.org/jasulak/switcheroo/
  * Copyright 2009 James Sulak
  * 
@@ -32,15 +32,29 @@ namespace Switcheroo
         private const UInt32 WM_CLOSE = 0x0010;
         
         public AppWindow(IntPtr HWnd) : base(HWnd) { }
-               
+
+
+        /// <summary>
+        /// Post a message to this window that it should close. This is equivalent
+        /// to clicking the "X" in the upper right corner or pressing Alt+F4.
+        /// It sometimes works in instances where SendClose() does not 
+        /// (for example, in Windows Explorer windows.)
+        /// </summary>
         public void PostClose() 
         {
             PostMessage(this.HWnd, WM_CLOSE, 0, 0);        
         }
 
+
+        /// <summary>
+        /// Sets the focus to this window and brings it to the foreground.
+        /// </summary>
         public void SwitchTo()
         {
+            // This function is deprecated, so should probably be replaced.
             SwitchToThisWindow(this.HWnd);
+            //ShowWindow(this.HWnd, 1);
+            //SetForegroundWindow(this.HWnd);            
         }
 
         [DllImport("user32.Dll")]
@@ -48,6 +62,13 @@ namespace Switcheroo
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool SwitchToThisWindow(IntPtr hWnd);
+
+        //[DllImport("user32.dll")]
+        //private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        //[DllImport("user32.dll")]
+        //[return: MarshalAs(UnmanagedType.Bool)]
+        //private static extern bool SetForegroundWindow(IntPtr hWnd);
 
     }
 }

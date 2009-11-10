@@ -1,5 +1,5 @@
 ﻿/*
- * Switcheroo - The progressive-search task switcher for Windows.
+ * Switcheroo - The incremental-search task switcher for Windows.
  * http://bitbucket.org/jasulak/switcheroo/
  * Copyright 2009 James Sulak
  * 

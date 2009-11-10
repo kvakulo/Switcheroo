@@ -508,6 +508,22 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// The text inside of this window (by sending a <c>WM_GETTEXT</c> message).
+        /// For child windows of other applications, this is more reliable
+        /// than the <see cref="Title"/> function.
+        /// </summary>
+        public string Text
+        {
+            get
+            {
+                int length = SendGetMessage(WM_GETTEXTLENGTH);
+                StringBuilder sb = new StringBuilder(length + 1);
+                SendMessage(new HandleRef(this, HWnd), WM_GETTEXT, new IntPtr(sb.Capacity), sb);
+                return sb.ToString();
+            }
+        }
+
+        /// <summary>
         /// The name of the window class (by the <c>GetClassName</c> API function).
         /// This class has nothing to do with classes in C# or other .NET languages.
         /// </summary>
@@ -1306,7 +1322,7 @@ namespace ManagedWinapi.Windows
         [DllImport("user32.dll")]
         static extern IntPtr GetDC(IntPtr hWnd);
 
-        private const int WM_CLOSE = 16;
+        private const int WM_CLOSE = 16, WM_GETTEXT = 13, WM_GETTEXTLENGTH = 14;
 
         private enum GetWindow_Cmd
         {
