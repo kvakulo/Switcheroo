@@ -69,8 +69,7 @@ namespace Switcheroo
             }
             catch (ManagedWinapi.HotkeyAlreadyInUseException) {
                 System.Windows.MessageBox.Show("Could not register hotkey (already in use).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
+            }            
         }
 
         /// <summary>
@@ -128,8 +127,8 @@ namespace Switcheroo
             tb.Clear();
             tb.Focus();          
             //These two lines size upon load, but don't whiplash resize during typing
-            SizeToContent = SizeToContent.Width;
-            SizeToContent = SizeToContent.Manual;
+            SizeToContent = SizeToContent.WidthAndHeight;            
+            SizeToContent = SizeToContent.Manual;            
             Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
             Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);            
         }
