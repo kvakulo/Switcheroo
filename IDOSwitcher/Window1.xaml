@@ -31,19 +31,23 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>                     
-        <TextBox Name="tb" Height="20" VerticalAlignment="Top" TextChanged="TextChanged">
+        <TextBox Name="tb" Height="20" VerticalAlignment="Top" TextChanged="TextChanged" >
             <TextBox.InputBindings>
                 <!-- For now, leave these here.  Would it be better to route them upward? -->
                 <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
-                <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
+                <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />                
             </TextBox.InputBindings>
         </TextBox>
-        <ListBox Name="lb" SelectionChanged="PrintText" SelectionMode="Single" Margin="0,22,0,0" ItemsSource="{Binding}" >            
-            <ListBox.ItemTemplate>
+        <ListBox Name="lb" SelectionChanged="PrintText" SelectionMode="Single" Margin="0,22,0,0" ItemsSource="{Binding}" >                       
+            <ListBox.ItemTemplate>                     
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">                      
-                        <!--<Image Name="imgDisp" Source="" />-->                        
+                    <StackPanel Orientation="Horizontal">
+                        <!--<StackPanel Orientation="Horizontal" MouseEnter="StackPanel_MouseEnter">-->
+                        <!--<StackPanel.InputBindings>
+                            <MouseBinding Command="local:MainWindow.SwitchToWindowCommand" Gesture="LeftClick"  />
+                        </StackPanel.InputBindings>                        -->
                         <TextBlock Text="{Binding Path=Title}" />
+                                  <!-- Width="{Binding ElementName=lb,Path=ActualWidth}" />-->
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

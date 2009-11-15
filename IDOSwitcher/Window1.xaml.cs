@@ -128,7 +128,7 @@ namespace Switcheroo
             tb.Focus();          
             //These two lines size upon load, but don't whiplash resize during typing
             SizeToContent = SizeToContent.WidthAndHeight;            
-            SizeToContent = SizeToContent.Manual;            
+            SizeToContent = SizeToContent.Manual;                        
             Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
             Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);            
         }
@@ -195,5 +195,14 @@ namespace Switcheroo
             }
             e.Handled = true;
         }
+
+        private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            lb.SelectedItem = (sender as StackPanel).DataContext;
+            if (!lb.IsFocused) {
+                lb.Focus();
+            }
+        }
+       
     }
 }
