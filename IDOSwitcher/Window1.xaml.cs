@@ -61,7 +61,7 @@ namespace Switcheroo
             });
 
             Model.Initialize();
-            hotkey = Model.hotkey;
+            hotkey = Model.HotKey;
             WindowList = Model.WindowList;
             hotkey.HotkeyPressed += new EventHandler(hotkey_HotkeyPressed);
             try {

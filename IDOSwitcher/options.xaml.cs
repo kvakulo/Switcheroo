@@ -33,7 +33,7 @@ namespace Switcheroo
             Keys.DataContext = keyList;
             
             // Highlight what's already selected     
-            hotkey = Model.hotkey;
+            hotkey = Model.HotKey;
             Keys.SelectedItem = hotkey.KeyCode;
             Alt.IsChecked = hotkey.Alt;
             Ctrl.IsChecked = hotkey.Ctrl;

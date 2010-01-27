@@ -82,5 +82,20 @@ namespace Switcheroo.Properties {
                 this["Shift"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
+            "tring>Program Manager</string>\r\n  <string>VirtuaWinMainClass</string>\r\n</ArrayOf" +
+            "String>")]
+        public global::System.Collections.Specialized.StringCollection Exceptions {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["Exceptions"]));
+            }
+            set {
+                this["Exceptions"] = value;
+            }
+        }
     }
 }

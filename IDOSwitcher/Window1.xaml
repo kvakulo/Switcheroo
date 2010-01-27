@@ -41,13 +41,8 @@
         <ListBox Name="lb" SelectionChanged="PrintText" SelectionMode="Single" Margin="0,22,0,0" ItemsSource="{Binding}" >                       
             <ListBox.ItemTemplate>                     
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <!--<StackPanel Orientation="Horizontal" MouseEnter="StackPanel_MouseEnter">-->
-                        <!--<StackPanel.InputBindings>
-                            <MouseBinding Command="local:MainWindow.SwitchToWindowCommand" Gesture="LeftClick"  />
-                        </StackPanel.InputBindings>                        -->
-                        <TextBlock Text="{Binding Path=Title}" />
-                                  <!-- Width="{Binding ElementName=lb,Path=ActualWidth}" />-->
+                    <StackPanel Orientation="Horizontal">                        
+                        <TextBlock Text="{Binding Path=Title}" />                                 
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

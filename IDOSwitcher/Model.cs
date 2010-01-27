@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -30,12 +31,14 @@ namespace Switcheroo
     /// </summary>
     public static class Model
     {
-        public static Switcheroo.HotKey hotkey = new Switcheroo.HotKey();
+        public static Switcheroo.HotKey HotKey = new Switcheroo.HotKey();
         public static List<AppWindow> WindowList = new List<AppWindow>();
+        public static List<string> ExcludeList;
 
         public static void Initialize() 
         {       
-            hotkey.LoadSettings();          
+            HotKey.LoadSettings();
+            LoadSettings();
         }
        
         public static void GetWindows()
@@ -56,11 +59,13 @@ namespace Switcheroo
             return filtered_windows;
         }
 
-        private static bool EnumWindows(IntPtr hWnd, int lParam)
+        private static void LoadSettings()
         {
-            // TODO: Make this a settable option
-            string[] excludeList = { "Program Manager", "VirtuaWinMainClass" };
-
+            ExcludeList = Properties.Settings.Default.Exceptions.Cast<string>().ToList();
+        }
+        
+        private static bool EnumWindows(IntPtr hWnd, int lParam)
+        {           
             if (!WinAPI.IsWindowVisible(hWnd))
                 return true;
 
@@ -72,7 +77,7 @@ namespace Switcheroo
             }
 
             //Exclude windows on the exclusion list
-            if (excludeList.Contains(title.ToString())) {
+            if (ExcludeList.Contains(title.ToString())) {
                 return true;
             }
 
