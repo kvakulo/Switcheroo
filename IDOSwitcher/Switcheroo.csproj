@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B28E183B-0E38-48A8-8A4E-B4AB7B23CE93}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -111,7 +111,7 @@
     <Compile Include="HotKey.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Model.cs" />
+    <Compile Include="Core.cs" />
     <Compile Include="options.xaml.cs">
       <DependentUpon>options.xaml</DependentUpon>
     </Compile>

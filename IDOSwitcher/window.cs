@@ -39,20 +39,10 @@ namespace Switcheroo
         public void SwitchTo()
         {
             // This function is deprecated, so should probably be replaced.
-            SwitchToThisWindow(this.HWnd);
-            //ShowWindow(this.HWnd, 1);
-            //SetForegroundWindow(this.HWnd);            
+            SwitchToThisWindow(this.HWnd);                   
         }
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool SwitchToThisWindow(IntPtr hWnd);
-
-        //[DllImport("user32.dll")]
-        //private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        //[DllImport("user32.dll")]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //private static extern bool SetForegroundWindow(IntPtr hWnd);
-
     }
 }

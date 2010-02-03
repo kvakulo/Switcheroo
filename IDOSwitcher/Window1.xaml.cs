@@ -60,9 +60,9 @@ namespace Switcheroo
                 new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit())               
             });
 
-            Model.Initialize();
-            hotkey = Model.HotKey;
-            WindowList = Model.WindowList;
+            Core.Initialize();
+            hotkey = Core.HotKey;
+            WindowList = Core.WindowList;
             hotkey.HotkeyPressed += new EventHandler(hotkey_HotkeyPressed);
             try {
                 hotkey.Enabled = true;
@@ -120,7 +120,7 @@ namespace Switcheroo
         public void LoadData()
         {
             WindowList.Clear();
-            Model.GetWindows();
+            Core.GetWindows();
             WindowList.Sort((x, y) => string.Compare(x.Title, y.Title));
             lb.DataContext = null;
             lb.DataContext = WindowList;
@@ -140,7 +140,7 @@ namespace Switcheroo
 
         private void TextChanged(object sender, TextChangedEventArgs args)
         {            
-            lb.DataContext = Model.FilterList(tb.Text);
+            lb.DataContext = Core.FilterList(tb.Text);
             if (lb.Items.Count > 0) {
                 lb.SelectedItem = lb.Items[0];
             }            
@@ -202,7 +202,6 @@ namespace Switcheroo
             if (!lb.IsFocused) {
                 lb.Focus();
             }
-        }
-       
+        }       
     }
 }

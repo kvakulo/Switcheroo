@@ -29,7 +29,7 @@ namespace Switcheroo
     /// <summary>
     /// This class contains the main logic for the program.
     /// </summary>
-    public static class Model
+    public static class Core
     {
         public static Switcheroo.HotKey HotKey = new Switcheroo.HotKey();
         public static List<AppWindow> WindowList = new List<AppWindow>();
@@ -99,6 +99,7 @@ namespace Switcheroo
             input = input.Trim();
             foreach (char c in input) {
                 newPattern += ".*";
+                
                 // escape regex reserved characters
                 if (@"[\^$.|?*+(){}".Contains(c)) {
                     newPattern += @"\";
