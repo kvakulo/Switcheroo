@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Collections.Specialized;
 
 namespace Switcheroo
 {
@@ -39,6 +40,10 @@ namespace Switcheroo
             Ctrl.IsChecked = hotkey.Ctrl;
             WindowsKey.IsChecked = hotkey.WindowsKey;
             Shift.IsChecked = hotkey.Shift;
+
+            // Populate text box
+            ExceptionList.Text = String.Join(Environment.NewLine, Core.ExceptionList.ToArray());
+
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -55,6 +60,13 @@ namespace Switcheroo
             hotkey.WindowsKey = (bool)WindowsKey.IsChecked;
             hotkey.KeyCode = (Keys)Keys.SelectedItem;
             hotkey.SaveSettings();
+
+            // Save edited text list to app config
+            string[] tempExclusionList = ExceptionList.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); ;
+            Core.ExceptionList = tempExclusionList.ToList();           
+            Properties.Settings.Default.Exceptions.Clear();
+            Properties.Settings.Default.Exceptions.AddRange(Core.ExceptionList.ToArray());
+            Properties.Settings.Default.Save();
             Close();
         }
     }

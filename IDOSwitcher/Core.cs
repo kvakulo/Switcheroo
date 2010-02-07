@@ -33,7 +33,7 @@ namespace Switcheroo
     {
         public static Switcheroo.HotKey HotKey = new Switcheroo.HotKey();
         public static List<AppWindow> WindowList = new List<AppWindow>();
-        public static List<string> ExcludeList;
+        public static List<string> ExceptionList;
 
         public static void Initialize() 
         {       
@@ -61,7 +61,7 @@ namespace Switcheroo
 
         private static void LoadSettings()
         {
-            ExcludeList = Properties.Settings.Default.Exceptions.Cast<string>().ToList();
+            ExceptionList = Properties.Settings.Default.Exceptions.Cast<string>().ToList();
         }
         
         private static bool EnumWindows(IntPtr hWnd, int lParam)
@@ -77,7 +77,7 @@ namespace Switcheroo
             }
 
             //Exclude windows on the exclusion list
-            if (ExcludeList.Contains(title.ToString())) {
+            if (ExceptionList.Contains(title.ToString())) {
                 return true;
             }
 
