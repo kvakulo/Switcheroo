@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Switcheroo"
-#define MyAppVerName "Switcheroo v0.3"
+#define MyAppVerName "Switcheroo v0.4"
 #define MyAppPublisher "James Sulak"
 #define MyAppURL "http://bitbucket.org/jasulak/switcheroo"
 #define MyAppExeName "switcheroo.exe"
@@ -34,6 +34,7 @@ Name: startupfolder; Description: Startup with windows
 [Files]
 Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\switcheroo.exe; DestDir: {app}; Flags: ignoreversion
 Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\ManagedWinapi.dll; DestDir: {app}; Flags: ignoreversion
+Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\switcheroo.exe.config; DestDir: {app}; Flags: ignoreversion
 Source: B:\workspace\idoswitcher\IDOSwitcher\readme.txt; DestDir: {app}; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
