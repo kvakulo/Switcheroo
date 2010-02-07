@@ -42,8 +42,7 @@ namespace Switcheroo
 
         public MainWindow()
         {           
-            InitializeComponent();
-            Hide();  
+            InitializeComponent();            
         
             // Handle notification icon stuff            
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
@@ -69,7 +68,13 @@ namespace Switcheroo
             }
             catch (ManagedWinapi.HotkeyAlreadyInUseException) {
                 System.Windows.MessageBox.Show("Could not register hotkey (already in use).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }            
+            }
+
+            // TODO: HACK: This bit is just so the winow opens up at the proper size the first time.  
+            // Otherwise, it's too small the very first time it is activated.
+            LoadData();
+            Show();
+            Hide();
         }
 
         /// <summary>
@@ -111,12 +116,15 @@ namespace Switcheroo
         
         void hotkey_HotkeyPressed(object sender, EventArgs e)
         {
-            LoadData();            
+            LoadData();                        
             Show();
             Activate();
             Keyboard.Focus(tb);
         }
 
+        /// <summary>
+        /// Populates the window list with the current running windows.
+        /// </summary>
         public void LoadData()
         {
             WindowList.Clear();
@@ -125,12 +133,20 @@ namespace Switcheroo
             lb.DataContext = null;
             lb.DataContext = WindowList;
             tb.Clear();
-            tb.Focus();          
-            //These two lines size upon load, but don't whiplash resize during typing
-            SizeToContent = SizeToContent.WidthAndHeight;            
-            SizeToContent = SizeToContent.Manual;                        
+            tb.Focus();
+            Resize();
+        }
+
+        /// <summary>
+        /// Resizes window to match width and height of list.
+        /// </summary>
+        public void Resize()
+        {
+            // These two lines size upon load, but don't whiplash resize during typing
+            SizeToContent = SizeToContent.WidthAndHeight;
+            SizeToContent = SizeToContent.Manual;
             Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
-            Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);            
+            Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);
         }
 
         private void PrintText(object sender, SelectionChangedEventArgs args)
