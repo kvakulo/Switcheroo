@@ -1,7 +1,7 @@
 ﻿/*
  * Switcheroo - The incremental-search task switcher for Windows.
  * http://bitbucket.org/jasulak/switcheroo/
- * Copyright 2009 James Sulak
+ * Copyright 2009, 2010 James Sulak
  * 
  * Switcheroo is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

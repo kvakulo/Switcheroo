@@ -1,7 +1,7 @@
-Switcheroo version 0.3
+Switcheroo version 0.4
 ----------------------
 
-Copyright 2009 James Sulak
+Copyright 2009, 2010 James Sulak
 jsulak@gmail.com
 
 This is an ALPHA release.  I've been happily using it in my day-to-day
@@ -46,6 +46,10 @@ bindings.  It's licensed under the GNU LGPL and is available at
 
 Changelog:
 
+2010-02-07: Released v0.4
+  * Window now resizes to match height and width of all entries
+  * Window exception list is now user-editable.  
+  * Tested on 32-bit Windows 7.
 2009-11-09: Released v0.3
   * Added ctrl-enter functionality.
   * Mostly migrated to using the Managed Windows API instead of custom 
