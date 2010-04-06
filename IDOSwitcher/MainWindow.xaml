@@ -42,7 +42,7 @@
             <ListBox.ItemTemplate>                     
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">                        
-                        <TextBlock Text="{Binding Path=Title}" />                                 
+                        <TextBlock Text="{Binding Path=TruncatedTitle}" />                                 
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

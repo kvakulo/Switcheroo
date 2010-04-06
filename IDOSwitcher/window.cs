@@ -29,8 +29,23 @@ namespace Switcheroo
     /// </summary>
     public class AppWindow : ManagedWinapi.Windows.SystemWindow
     {
+        private const int MAX_TITLE_LENGTH = 100;
         private const UInt32 WM_CLOSE = 0x0010;
         
+        // Returns a short version of the title
+        public string TruncatedTitle 
+        { 
+            get 
+            {
+                if (Title.Length > MAX_TITLE_LENGTH) {
+                    return Title.Substring(0, MAX_TITLE_LENGTH) + "...";
+                }
+                else {
+                    return Title;
+                }
+            } 
+        }
+
         public AppWindow(IntPtr HWnd) : base(HWnd) { }
 
         /// <summary>

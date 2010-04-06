@@ -1,12 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C# Express 2008
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Switcheroo", "IDOSwitcher\Switcheroo.csproj", "{B28E183B-0E38-48A8-8A4E-B4AB7B23CE93}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A} = {FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSwitcher", "ConsoleSwitcher\ConsoleSwitcher.csproj", "{B536F3C7-E6F2-4687-928F-4DFE8BFD249F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedWinapi", "ManagedWinapi\ManagedWinapi.csproj", "{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}"
 EndProject
@@ -20,10 +18,6 @@ Global
 		{B28E183B-0E38-48A8-8A4E-B4AB7B23CE93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B28E183B-0E38-48A8-8A4E-B4AB7B23CE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B28E183B-0E38-48A8-8A4E-B4AB7B23CE93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B536F3C7-E6F2-4687-928F-4DFE8BFD249F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B536F3C7-E6F2-4687-928F-4DFE8BFD249F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B536F3C7-E6F2-4687-928F-4DFE8BFD249F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B536F3C7-E6F2-4687-928F-4DFE8BFD249F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
