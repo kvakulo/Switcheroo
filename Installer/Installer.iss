@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Switcheroo"
-#define MyAppVerName "Switcheroo v0.4"
+#define MyAppVerName "Switcheroo v0.4.1"
 #define MyAppPublisher "James Sulak"
 #define MyAppURL "http://bitbucket.org/jasulak/switcheroo"
 #define MyAppExeName "switcheroo.exe"

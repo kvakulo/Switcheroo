@@ -1,4 +1,4 @@
-Switcheroo version 0.4
+Switcheroo version 0.4.1
 ----------------------
 
 Copyright 2009, 2010 James Sulak
@@ -46,6 +46,8 @@ bindings.  It's licensed under the GNU LGPL and is available at
 
 Changelog:
 
+2010-05-03: Released bugfix v0.4.1
+  * Long windows titles are now truncated.
 2010-02-07: Released v0.4
   * Window now resizes to match height and width of all entries
   * Window exception list is now user-editable.  
