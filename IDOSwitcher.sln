@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Switcheroo", "IDOSwitcher\Switcheroo.csproj", "{B28E183B-0E38-48A8-8A4E-B4AB7B23CE93}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A} = {FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}
