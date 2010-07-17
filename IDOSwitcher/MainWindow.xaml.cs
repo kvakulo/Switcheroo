@@ -77,6 +77,58 @@ namespace Switcheroo
             Hide();
         }
 
+
+        /// =================================
+        #region Private Methods
+        /// =================================
+
+        /// <summary>
+        /// Populates the window list with the current running windows.
+        /// </summary>
+        private void LoadData()
+        {
+            WindowList.Clear();
+            Core.GetWindows();
+            WindowList.Sort((x, y) => string.Compare(x.Title, y.Title));
+            lb.DataContext = null;
+            lb.DataContext = WindowList;
+            tb.Clear();
+            tb.Focus();
+            Resize();
+        }
+
+        /// <summary>
+        /// Resizes window to match width and height of list.
+        /// </summary>
+        private void Resize()
+        {
+            // These two lines size upon load, but don't whiplash resize during typing
+            SizeToContent = SizeToContent.WidthAndHeight;
+            SizeToContent = SizeToContent.Manual;
+            Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
+            Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);
+        }
+
+        /// <summary>
+        /// Switches the window associated with the selected item.
+        /// </summary>
+        private void Switch()
+        {
+            if (lb.Items.Count > 0)
+            {
+                AppWindow win = (AppWindow)lb.SelectedItem;
+                win.SwitchTo();
+            }
+            Hide();
+        }
+
+        #endregion
+
+
+        /// =================================
+        #region Right-click menu functions
+        /// =================================
+
         /// <summary>
         /// Show Options dialog.
         /// </summary>
@@ -106,8 +158,15 @@ namespace Switcheroo
             m_notifyIcon = null;
             hotkey.Dispose();
             Environment.Exit(0);  
-        }       
+        }
 
+        #endregion
+
+
+        /// =================================
+        #region Event Handlers
+        /// =================================
+        
         private void OnClose(object sender, System.ComponentModel.CancelEventArgs e)
         {           
             e.Cancel = true;
@@ -129,33 +188,6 @@ namespace Switcheroo
             }
         }
 
-        /// <summary>
-        /// Populates the window list with the current running windows.
-        /// </summary>
-        public void LoadData()
-        {
-            WindowList.Clear();
-            Core.GetWindows();
-            WindowList.Sort((x, y) => string.Compare(x.Title, y.Title));
-            lb.DataContext = null;
-            lb.DataContext = WindowList;
-            tb.Clear();
-            tb.Focus();
-            Resize();
-        }
-
-        /// <summary>
-        /// Resizes window to match width and height of list.
-        /// </summary>
-        public void Resize()
-        {
-            // These two lines size upon load, but don't whiplash resize during typing
-            SizeToContent = SizeToContent.WidthAndHeight;
-            SizeToContent = SizeToContent.Manual;
-            Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
-            Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);
-        }
-
         private void PrintText(object sender, SelectionChangedEventArgs args)
         {
             ListBoxItem lbi = (sender as ListBox).SelectedItem as ListBoxItem;            
@@ -174,14 +206,15 @@ namespace Switcheroo
             Hide();
         }
      
-        private void SwitchToWindow(object sender, ExecutedRoutedEventArgs e)
+        private void OnEnterPressed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (lb.Items.Count > 0)
-            {                
-                AppWindow win = (AppWindow)lb.SelectedItem;
-                win.SwitchTo();
-            }
-            Hide();
+            Switch();
+            e.Handled = true;
+        }
+
+        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Switch();
             e.Handled = true;
         }
 
@@ -225,6 +258,8 @@ namespace Switcheroo
             if (!lb.IsFocused) {
                 lb.Focus();
             }
-        }       
-    }
+        }
+
+        #endregion
+    }       
 }

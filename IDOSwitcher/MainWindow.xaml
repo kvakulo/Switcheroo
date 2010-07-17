@@ -9,7 +9,7 @@
         <CommandBinding Command="local:MainWindow.CloseWindowCommand"                        
                         Executed="CloseWindow" />
         <CommandBinding Command="local:MainWindow.SwitchToWindowCommand" 
-                        Executed="SwitchToWindow"/>  
+                        Executed="OnEnterPressed"/>  
         <CommandBinding Command="Close" 
                         Executed="Hide" />
         <CommandBinding Command="local:MainWindow.ScrollListUpCommand"
@@ -44,8 +44,13 @@
                     <StackPanel Orientation="Horizontal">                        
                         <TextBlock Text="{Binding Path=TruncatedTitle}" />                                 
                     </StackPanel>
-                </DataTemplate>
+                </DataTemplate>                
             </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
     </Grid>
 </Window>
