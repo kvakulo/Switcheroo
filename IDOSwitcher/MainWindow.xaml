@@ -48,9 +48,13 @@
             </ListBox.ItemTemplate>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                    <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
+                    <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>                   
                 </Style>
             </ListBox.ItemContainerStyle>
+            <!-- Changes inactive selection color to be same as selected -->
+            <ListBox.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="{x:Static SystemColors.HighlightColor}" Opacity=".4"/>                              
+            </ListBox.Resources>
         </ListBox>
     </Grid>
 </Window>
