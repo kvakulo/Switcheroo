@@ -116,10 +116,17 @@ namespace Switcheroo
         
         void hotkey_HotkeyPressed(object sender, EventArgs e)
         {
-            LoadData();                        
-            Show();
-            Activate();
-            Keyboard.Focus(tb);
+            if (Visibility != System.Windows.Visibility.Visible)
+            {
+                LoadData();
+                Show();
+                Activate();
+                Keyboard.Focus(tb);
+            }
+            else
+            {
+                Hide();
+            }
         }
 
         /// <summary>
