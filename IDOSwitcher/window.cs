@@ -54,10 +54,10 @@ namespace Switcheroo
         public void SwitchTo()
         {
             // This function is deprecated, so should probably be replaced.
-            SwitchToThisWindow(this.HWnd);                   
+            SwitchToThisWindow(this.HWnd, true);                                    
         }
 
         [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool SwitchToThisWindow(IntPtr hWnd);
+        static extern void SwitchToThisWindow(IntPtr hWnd, bool fAltTab);          
     }
 }
