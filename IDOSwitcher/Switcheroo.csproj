@@ -55,6 +55,9 @@
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Switcheroo.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -128,6 +131,7 @@
     <Compile Include="options.xaml.cs">
       <DependentUpon>options.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
