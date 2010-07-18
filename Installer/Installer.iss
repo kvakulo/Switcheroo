@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Switcheroo"
-#define MyAppVerName "Switcheroo v0.4.1"
+#define MyAppVerName "Switcheroo v0.5"
 #define MyAppPublisher "James Sulak"
 #define MyAppURL "http://bitbucket.org/jasulak/switcheroo"
 #define MyAppExeName "switcheroo.exe"
@@ -12,6 +12,7 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{A5AF4C34-70A7-4D3B-BA18-E49C0AEEA5E6}
+AppMutex=DBDE24E4-91F6-11DF-B495-C536DFD72085-switcheroo
 AppName={#MyAppName}
 AppVerName={#MyAppVerName}
 AppPublisher={#MyAppPublisher}

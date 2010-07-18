@@ -56,7 +56,7 @@ namespace Switcheroo
             {
                 new System.Windows.Forms.MenuItem("Options", (s, e) => Options()),
                 new System.Windows.Forms.MenuItem("About", (s, e) => About()),
-                new System.Windows.Forms.MenuItem("Quit", (s, e) => Quit())               
+                new System.Windows.Forms.MenuItem("Exit", (s, e) => Quit())               
             });
 
             Core.Initialize();

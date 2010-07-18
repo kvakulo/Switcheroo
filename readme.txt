@@ -1,4 +1,4 @@
-Switcheroo version 0.4.1
+Switcheroo version 0.5
 ----------------------
 
 Copyright 2009, 2010 James Sulak
@@ -38,7 +38,7 @@ Credits:
 
 The program icon was created by Mark James and is a part of the Silk icon
 set 1.3.  It is available at: <http://www.famfamfam.com/lab/icons/silk/>.
-
+ 
 This program uses the Managed Windows API to establish its hotkey
 bindings.  It's licensed under the GNU LGPL and is available at
 <http://mwinapi.sourceforge.net/>. 
@@ -46,6 +46,11 @@ bindings.  It's licensed under the GNU LGPL and is available at
 
 Changelog:
 
+2010-07-18: Released v0.5
+  * Hotkey now hides Switcheroo window in addition to showing it (Issue 4)
+  * Double-clicking on item now activates that window (Issue 4)
+  * Added mutex to ensure only one instance is running
+  * Attempted bugfix of Windows 7 64-bit window-switching bug (Issue 3).
 2010-05-03: Released bugfix v0.4.1
   * Long windows titles are now truncated.
 2010-02-07: Released v0.4
