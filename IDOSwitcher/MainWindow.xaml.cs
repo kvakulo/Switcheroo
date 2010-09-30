@@ -92,6 +92,7 @@ namespace Switcheroo
             WindowList.Sort((x, y) => string.Compare(x.Title, y.Title));
             lb.DataContext = null;
             lb.DataContext = WindowList;
+            lb.SelectedIndex = 0;
             tb.Clear();
             tb.Focus();
             Resize();
@@ -116,7 +117,7 @@ namespace Switcheroo
         {
             if (lb.Items.Count > 0)
             {
-                AppWindow win = (AppWindow)lb.SelectedItem;
+                AppWindow win = (AppWindow)lb.SelectedItem ?? (AppWindow)lb.Items[0];
                 win.SwitchTo();
             }
             Hide();
