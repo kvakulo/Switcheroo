@@ -37,7 +37,7 @@ bindings.  It’s licensed under the GNU LGPL and is available at
 License
 -------
 
-Copyright 2009, 2010 [James Sulak](jsulak@gmail.com)
+Copyright 2009, 2010 James Sulak
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
