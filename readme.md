@@ -9,7 +9,7 @@ Switcheroo is for anyone who spends more time using a keyboard than a mouse. Ins
 
 Download
 --------
-Download the [installer](Switcheroo_v0.5_setup.exe).
+Download the [installer](https://github.com/downloads/jsulak/Switcheroo/Switcheroo_v0.5_setup.exe).
 
 Usage
 -----
