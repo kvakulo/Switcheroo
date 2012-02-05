@@ -1,25 +1,43 @@
-Switcheroo version 0.5
-----------------------
+Switcheroo
+==========
 
-Copyright 2009, 2010 James Sulak
-jsulak@gmail.com
+*The humble incremental-search task switcher for Windows.*
 
-This is an ALPHA release.  I've been happily using it in my day-to-day
-work, but there are still bugs and hasn't been thoroughly tested
-across platforms.
+![Swictheroo](https://github.com/jsulak/Switcheroo/raw/master/screenshot.png)
 
-Usage:
+Switcheroo is for anyone who spends more time using a keyboard than a mouse. Instead of alt-tabbing through a (long) list of open windows, Switcheroo allows you to quickly switch to any window by typing in just a few characters of its title. It’s inspired by Emacs’s IDO mode buffer switching.
 
-The default key binding for Switcheroo is Win+w.  Pressing this key
+Download
+--------
+Download the [installer](Switcheroo_v0.5_setup.exe).
+
+Usage
+-----
+
+The default key binding for Switcheroo is `Win+w`.  Pressing this key
 combination will bring up the Switcheroo window, which lists the titles
 of every open window.  Typing filters the list.  Press enter to switch
-to the selected window.  Press Ctrl-enter to close the selected window.
+to the selected window.  Press `Ctrl-enter` to close the selected window.
 
 The key binding can be changed by right-clicking the notification
 icon. 
 
+By default, Switcheroo excludes certain “windows” from the list, for example, “Start,” which represents the Start Menu in Windows 7. This list can be edited from the options dialog.
 
-License:
+Credits
+-------
+
+The program icon was created by Mark James and is a part of the Silk icon
+set 1.3.  It is available at: <http://www.famfamfam.com/lab/icons/silk/>.
+ 
+This program uses the Managed Windows API to establish its hotkey
+bindings.  It’s licensed under the GNU LGPL and is available at
+<http://mwinapi.sourceforge.net/>. 
+
+License
+-------
+
+Copyright 2009, 2010 [James Sulak](jsulak@gmail.com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,34 +51,24 @@ GNU General Public License for more details.
 
 For a copy of the license, see <http://www.gnu.org/licenses/>.
 
+Change log
+---------
 
-Credits:
-
-The program icon was created by Mark James and is a part of the Silk icon
-set 1.3.  It is available at: <http://www.famfamfam.com/lab/icons/silk/>.
- 
-This program uses the Managed Windows API to establish its hotkey
-bindings.  It's licensed under the GNU LGPL and is available at
-<http://mwinapi.sourceforge.net/>. 
-
-
-Changelog:
-
-2010-07-18: Released v0.5
-  * Hotkey now hides Switcheroo window in addition to showing it (Issue 4)
-  * Double-clicking on item now activates that window (Issue 4)
-  * Added mutex to ensure only one instance is running
-  * Attempted bugfix of Windows 7 64-bit window-switching bug (Issue 3).
-2010-05-03: Released bugfix v0.4.1
-  * Long windows titles are now truncated.
-2010-02-07: Released v0.4
-  * Window now resizes to match height and width of all entries
-  * Window exception list is now user-editable.  
-  * Tested on 32-bit Windows 7.
-2009-11-09: Released v0.3
-  * Added ctrl-enter functionality.
-  * Mostly migrated to using the Managed Windows API instead of custom 
+- 2010-07-18: Released v0.5
+  	- Hotkey now hides Switcheroo window in addition to showing it (Issue 4)
+    - Double-clicking on item now activates that window (Issue 4)
+    - Added mutex to ensure only one instance is running
+    - Attempted bugfix of Windows 7 64-bit window-switching bug (Issue 3).
+- 2010-05-03: Released bugfix v0.4.1
+    - Long windows titles are now truncated.
+- 2010-02-07: Released v0.4
+    - Window now resizes to match height and width of all entries
+    - Window exception list is now user-editable.  
+    - Tested on 32-bit Windows 7.
+- 2009-11-09: Released v0.3
+    - Added ctrl-enter functionality.
+    - Mostly migrated to using the Managed Windows API instead of custom 
     window class.
-2009-11-01: Released v0.2
-2009-10-11: Released v0.1
+- 2009-11-01: Released v0.2
+- 2009-10-11: Released v0.1
 
