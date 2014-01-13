@@ -12,7 +12,7 @@ It’s inspired by Emacs’s IDO mode buffer switching.
 
 Download
 --------
-Download the [installer](https://github.com/downloads/jsulak/Switcheroo/Switcheroo_v0.5_setup.exe).
+Download the [installer](https://github.com/kvakulo/Switcheroo/releases/latest).
 
 Usage
 -----
