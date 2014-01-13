@@ -2,10 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Switcheroo"
-#define MyAppVerName "Switcheroo v0.5"
-#define MyAppPublisher "James Sulak"
-#define MyAppURL "http://bitbucket.org/jasulak/switcheroo"
+#define MyAppVerName "Switcheroo v0.6"
+#define MyAppPublisher "Regin Larsen"
+#define MyAppURL "https://github.com/kvakulo/Switcheroo"
 #define MyAppExeName "switcheroo.exe"
+#define MyAppPath "C:\Users\regin.larsen\Documents\GitHub\Switcheroo"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -30,13 +31,13 @@ Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
-Name: startupfolder; Description: Startup with windows
+Name: startupfolder; Description: Startup with Windows
 
 [Files]
-Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\switcheroo.exe; DestDir: {app}; Flags: ignoreversion
-Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\ManagedWinapi.dll; DestDir: {app}; Flags: ignoreversion
-Source: B:\workspace\idoswitcher\IDOSwitcher\IDOSwitcher\bin\Release\switcheroo.exe.config; DestDir: {app}; Flags: ignoreversion
-Source: B:\workspace\idoswitcher\IDOSwitcher\readme.txt; DestDir: {app}; Flags: ignoreversion
+Source: {#MyAppPath}\IDOSwitcher\bin\Release\switcheroo.exe; DestDir: {app}; Flags: ignoreversion
+Source: {#MyAppPath}\IDOSwitcher\bin\Release\ManagedWinapi.dll; DestDir: {app}; Flags: ignoreversion
+Source: {#MyAppPath}\IDOSwitcher\bin\Release\switcheroo.exe.config; DestDir: {app}; Flags: ignoreversion
+Source: {#MyAppPath}\readme.md; DestDir: {app}; DestName: "readme.txt"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
