@@ -31,14 +31,14 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>                     
-        <TextBox Name="tb" Height="20" VerticalAlignment="Top" TextChanged="TextChanged" >
+        <TextBox Name="tb" Height="30" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15">
             <TextBox.InputBindings>
                 <!-- For now, leave these here.  Would it be better to route them upward? -->
                 <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
                 <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />                
             </TextBox.InputBindings>
         </TextBox>
-        <ListBox Name="lb" SelectionChanged="PrintText" SelectionMode="Single" Margin="0,20,0,0" ItemsSource="{Binding}" >                       
+        <ListBox Name="lb" SelectionChanged="PrintText" SelectionMode="Single" Margin="0,30,0,0" ItemsSource="{Binding}" >                       
             <ListBox.ItemTemplate>                     
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
