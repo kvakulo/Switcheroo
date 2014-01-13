@@ -19,7 +19,10 @@
 
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Media.Imaging;
 
 namespace Switcheroo
 {
@@ -31,6 +34,7 @@ namespace Switcheroo
     {
         private const int MAX_TITLE_LENGTH = 100;
         private const UInt32 WM_CLOSE = 0x0010;
+        private BitmapImage _iconImage;
         
         // Returns a short version of the title
         public string TruncatedTitle 
@@ -49,6 +53,37 @@ namespace Switcheroo
         public string ProcessTitle
         {
             get { return Process.ProcessName; }
+        }
+
+        public BitmapImage IconImage
+        {
+            get
+            {
+                if (_iconImage == null)
+                {
+                    _iconImage = ExtractIcon();
+                }
+                return _iconImage;
+            }
+        }
+
+        private BitmapImage ExtractIcon()
+        {
+            var extractAssociatedIcon = Icon.ExtractAssociatedIcon(Process.MainModule.FileName);
+            if (extractAssociatedIcon == null) return null;
+
+            using (var memory = new MemoryStream())
+            {
+                var bitmap = extractAssociatedIcon.ToBitmap();
+                bitmap.Save(memory, ImageFormat.Png);
+                memory.Position = 0;
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                return bitmapImage;
+            }
         }
 
         public AppWindow(IntPtr HWnd) : base(HWnd) { }
