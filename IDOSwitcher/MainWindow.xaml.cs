@@ -72,6 +72,7 @@ namespace Switcheroo
 
             // TODO: HACK: This bit is just so the winow opens up at the proper size the first time.  
             // Otherwise, it's too small the very first time it is activated.
+            Opacity = 0;
             LoadData();
             Show();
             Hide();
@@ -178,6 +179,7 @@ namespace Switcheroo
             if (Visibility != System.Windows.Visibility.Visible)
             {
                 LoadData();
+                Opacity = 1;
                 Show();
                 Activate();
                 Keyboard.Focus(tb);
