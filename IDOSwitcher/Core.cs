@@ -51,7 +51,7 @@ namespace Switcheroo
         {
             Regex filter = BuildPattern(filterText);
             var filtered_windows = from w in WindowList
-                                   where filter.Match(w.Title).Success
+                                   where filter.Match(w.Title).Success || filter.Match(w.ProcessTitle).Success
                                    orderby !w.Title.StartsWith(filterText, StringComparison.OrdinalIgnoreCase)
                                    orderby (w.Title.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) < 0)
                                    select w;
