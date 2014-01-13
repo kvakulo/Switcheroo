@@ -8,11 +8,13 @@
         <TextBlock >
             <Bold>Switcheroo</Bold>
             <LineBreak/><Italic>The humble incremental-search task switcher for Windows</Italic>
-            <LineBreak/>Version: 0.5           
+            <LineBreak/>Version: 0.6           
+            <LineBreak/>
+            Copyright 2014 Regin Larsen
             <LineBreak/>
             Copyright 2009, 2010 James Sulak
             <LineBreak />
-            Visit the <Hyperlink RequestNavigate="HandleRequestNavigate" Name="hl" NavigateUri="http://bitbucket.org/jasulak/switcheroo">Project page</Hyperlink>            
+            Visit the <Hyperlink RequestNavigate="HandleRequestNavigate" Name="hl" NavigateUri="https://github.com/kvakulo/Switcheroo">Project page</Hyperlink>            
         </TextBlock>
         <Grid HorizontalAlignment="Center" Margin="0,10,0,0">
             <Button Name="Ok" Width="60" Click="Ok_Click" IsDefault="True">OK</Button>
