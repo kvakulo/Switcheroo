@@ -42,6 +42,7 @@ License
 -------
 
 Copyright 2014 Regin Larsen
+
 Copyright 2009, 2010 James Sulak
 
 This program is free software: you can redistribute it and/or modify
