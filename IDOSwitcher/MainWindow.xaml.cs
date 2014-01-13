@@ -89,7 +89,6 @@ namespace Switcheroo
         {
             WindowList.Clear();
             Core.GetWindows();
-            WindowList.Sort((x, y) => string.Compare(x.Title, y.Title));
             lb.DataContext = null;
             lb.DataContext = WindowList;
             lb.SelectedIndex = 0;
