@@ -46,6 +46,11 @@ namespace Switcheroo
             } 
         }
 
+        public string ProcessTitle
+        {
+            get { return Process.ProcessName; }
+        }
+
         public AppWindow(IntPtr HWnd) : base(HWnd) { }
 
         /// <summary>
