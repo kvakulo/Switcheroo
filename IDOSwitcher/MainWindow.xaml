@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"          
     xmlns:local="clr-namespace:Switcheroo"
     Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="True" 
-    Title="" Height="150" Width="400">  
+    Title="" Height="150" Width="400" Deactivated="MainWindow_OnLostFocus">  
       
     <Window.CommandBindings>
         <CommandBinding Command="local:MainWindow.CloseWindowCommand"                        

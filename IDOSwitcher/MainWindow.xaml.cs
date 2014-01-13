@@ -260,6 +260,11 @@ namespace Switcheroo
             }
         }
 
+        private void MainWindow_OnLostFocus(object sender, EventArgs e)
+        {
+            Hide();
+        }
+
         #endregion
     }       
 }
