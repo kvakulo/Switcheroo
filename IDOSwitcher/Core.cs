@@ -52,11 +52,47 @@ namespace Switcheroo
             Regex filter = BuildPattern(filterText);
             var filtered_windows = from w in WindowList
                                    where filter.Match(w.Title).Success || filter.Match(w.ProcessTitle).Success
-                                   orderby !w.Title.StartsWith(filterText, StringComparison.OrdinalIgnoreCase)
-                                   orderby (w.Title.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) < 0)
+                                   orderby Score(w.Text, filterText) + Score(w.ProcessTitle, filterText) descending
                                    select w;
 
             return filtered_windows;
+        }
+
+        private static int Score(string title, string filterText)
+        {
+            filterText = filterText.ToLowerInvariant();
+
+            var score = 0;
+            if (title.StartsWith(filterText, StringComparison.OrdinalIgnoreCase))
+            {
+                score += 2;
+            }
+
+            if (title.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) > 0)
+            {
+                score++;
+            }
+
+            var firstLettersAndCapitals = new List<string>();
+            var wordTokens = Regex.Split(title, @"[^\w\d]").Where(w => !string.IsNullOrEmpty(w));
+            foreach (var wordToken in wordTokens)
+            {
+                var firstLetter = wordToken.ToCharArray(0, 1)[0];
+                if (!Char.IsUpper(firstLetter))
+                {
+                    firstLettersAndCapitals.Add(firstLetter + "");
+                }
+                firstLettersAndCapitals.AddRange(wordToken.Where(Char.IsUpper).Select(c => c + ""));
+            }
+
+            var firstLettersAndCapitalsString = string.Join("", firstLettersAndCapitals.ToArray()).ToLowerInvariant();
+
+            if (firstLettersAndCapitalsString.Contains(filterText))
+            {
+                score += 2;
+            }
+
+            return score;
         }
 
         private static void LoadSettings()
