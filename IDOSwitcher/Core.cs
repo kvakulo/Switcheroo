@@ -137,10 +137,7 @@ namespace Switcheroo
                 newPattern += ".*";
                 
                 // escape regex reserved characters
-                if (@"[\^$.|?*+(){}".Contains(c)) {
-                    newPattern += @"\";
-                }
-                newPattern += c;
+                newPattern += Regex.Escape(c + "");
             }
             return new Regex(newPattern, RegexOptions.IgnoreCase);
         }
