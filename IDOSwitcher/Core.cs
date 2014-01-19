@@ -117,8 +117,13 @@ namespace Switcheroo
                 return true;
             }
 
-            if (title.Length != 0 || (title.Length == 0 & hWnd != WinApi.statusbar)) {
-                WindowList.Add(new AppWindow(hWnd));
+            if (title.Length != 0 || (title.Length == 0 & hWnd != WinApi.statusbar))
+            {
+                var appWindow = new AppWindow(hWnd);
+                if (appWindow.IsAltTabWindow())
+                {
+                    WindowList.Add(appWindow);
+                }
             }
 
             return true;

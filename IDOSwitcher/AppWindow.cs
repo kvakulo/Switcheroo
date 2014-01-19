@@ -22,8 +22,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
+using ManagedWinapi.Windows;
 
 namespace Switcheroo
 {
@@ -105,10 +105,35 @@ namespace Switcheroo
         public void SwitchTo()
         {
             // This function is deprecated, so should probably be replaced.
-            SwitchToThisWindow(this.HWnd, true);                                    
+            WinApi.SwitchToThisWindow(HWnd, true);                                    
         }
 
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern void SwitchToThisWindow(IntPtr hWnd, bool fAltTab);          
+        public bool IsAltTabWindow()
+        {
+            if (IsToolWindow()) return false;
+            if (IsAppWindow()) return true;
+
+            // Start at the root owner
+            var handleWalk = WinApi.GetAncestor(HWnd, WinApi.GetAncestorFlags.GetRootOwner);
+
+            // See if we are the last active visible popup
+            IntPtr handleTry;
+            while ((handleTry = WinApi.GetLastActivePopup(handleWalk)) != handleTry)
+            {
+                if (WinApi.IsWindowVisible(handleTry)) break;
+                handleWalk = handleTry;
+            }
+            return handleWalk == HWnd;
+        }
+
+        private bool IsToolWindow()
+        {
+            return (ExtendedStyle & WindowExStyleFlags.TOOLWINDOW) == WindowExStyleFlags.TOOLWINDOW;
+        }
+
+        private bool IsAppWindow()
+        {
+            return (ExtendedStyle & WindowExStyleFlags.APPWINDOW) == WindowExStyleFlags.APPWINDOW;
+        }
     }
 }
