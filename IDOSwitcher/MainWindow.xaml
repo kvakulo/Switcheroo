@@ -51,7 +51,7 @@
                                 <ColumnDefinition Width="400" />
                                 <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
-                            <Image Source="{Binding Path=IconImage}" Grid.Row="0" Grid.Column="0" Margin="3" />
+                            <Image Source="{Binding Path=IconImage}" Height="27" Grid.Row="0" Grid.Column="0" Margin="3" />
                             <TextBlock Text="{Binding Path=TruncatedTitle}" Grid.Row="0" Grid.Column="1" Margin="3" />
                             <TextBlock Text="{Binding Path=ProcessTitle}" Grid.Row="0" Grid.Column="2" Margin="3"
                                        Foreground="Gray" TextAlignment="Right" />
