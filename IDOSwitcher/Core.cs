@@ -43,8 +43,8 @@ namespace Switcheroo
        
         public static void GetWindows()
         {
-            WinAPI.EnumWindowsProc callback = new WinAPI.EnumWindowsProc(EnumWindows);
-            WinAPI.EnumWindows(callback, 0);
+            WinApi.EnumWindowsProc callback = new WinApi.EnumWindowsProc(EnumWindows);
+            WinApi.EnumWindows(callback, 0);
         }
 
         public static IEnumerable<Switcheroo.AppWindow> FilterList(string filterText)
@@ -102,11 +102,11 @@ namespace Switcheroo
         
         private static bool EnumWindows(IntPtr hWnd, int lParam)
         {           
-            if (!WinAPI.IsWindowVisible(hWnd))
+            if (!WinApi.IsWindowVisible(hWnd))
                 return true;
 
             StringBuilder title = new StringBuilder(256);
-            WinAPI.GetWindowText(hWnd, title, 256);
+            WinApi.GetWindowText(hWnd, title, 256);
 
             if (string.IsNullOrEmpty(title.ToString())) {
                 return true;
@@ -117,7 +117,7 @@ namespace Switcheroo
                 return true;
             }
 
-            if (title.Length != 0 || (title.Length == 0 & hWnd != WinAPI.statusbar)) {
+            if (title.Length != 0 || (title.Length == 0 & hWnd != WinApi.statusbar)) {
                 WindowList.Add(new AppWindow(hWnd));
             }
 

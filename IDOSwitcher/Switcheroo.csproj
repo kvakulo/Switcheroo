@@ -99,7 +99,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="options.xaml">
+    <Page Include="OptionsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
@@ -128,8 +128,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Core.cs" />
-    <Compile Include="options.xaml.cs">
-      <DependentUpon>options.xaml</DependentUpon>
+    <Compile Include="OptionsWindow.xaml.cs">
+      <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -145,8 +145,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="winapi.cs" />
-    <Compile Include="window.cs" />
+    <Compile Include="WinApi.cs" />
+    <Compile Include="AppWindow.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
