@@ -18,6 +18,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -35,7 +36,8 @@ namespace Switcheroo
         private const int MAX_TITLE_LENGTH = 100;
         private const UInt32 WM_CLOSE = 0x0010;
         private BitmapImage _iconImage;
-        
+        private bool _triedToExtractIcon;
+
         // Returns a short version of the title
         public string TruncatedTitle 
         { 
@@ -59,9 +61,10 @@ namespace Switcheroo
         {
             get
             {
-                if (_iconImage == null)
+                if (_iconImage == null && !_triedToExtractIcon)
                 {
                     _iconImage = ExtractIcon();
+                    _triedToExtractIcon = true;
                 }
                 return _iconImage;
             }
@@ -69,7 +72,15 @@ namespace Switcheroo
 
         private BitmapImage ExtractIcon()
         {
-            var extractAssociatedIcon = Icon.ExtractAssociatedIcon(Process.MainModule.FileName);
+            Icon extractAssociatedIcon = null;
+            try
+            {
+                extractAssociatedIcon = Icon.ExtractAssociatedIcon(Process.MainModule.FileName);
+            }
+            catch (Win32Exception)
+            {
+                // no access to process
+            }
             if (extractAssociatedIcon == null) return null;
 
             using (var memory = new MemoryStream())
