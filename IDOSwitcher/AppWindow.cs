@@ -110,8 +110,8 @@ namespace Switcheroo
 
         public bool IsAltTabWindow()
         {
-            if (IsToolWindow()) return false;
             if (IsAppWindow()) return true;
+            if (IsToolWindow() || IsControlParent()) return false;
 
             // Start at the root owner
             var handleWalk = WinApi.GetAncestor(HWnd, WinApi.GetAncestorFlags.GetRootOwner);
@@ -134,6 +134,11 @@ namespace Switcheroo
         private bool IsAppWindow()
         {
             return (ExtendedStyle & WindowExStyleFlags.APPWINDOW) == WindowExStyleFlags.APPWINDOW;
+        }
+
+        private bool IsControlParent()
+        {
+            return (ExtendedStyle & WindowExStyleFlags.CONTROLPARENT) == WindowExStyleFlags.CONTROLPARENT;
         }
     }
 }
