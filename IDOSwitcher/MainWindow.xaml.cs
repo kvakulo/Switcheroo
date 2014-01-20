@@ -23,6 +23,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Switcheroo
 {
@@ -122,7 +123,22 @@ namespace Switcheroo
                 AppWindow win = (AppWindow)lb.SelectedItem ?? (AppWindow)lb.Items[0];
                 win.SwitchTo();
             }
-            Hide();
+            HideWindow();
+        }
+
+        private void HideWindow()
+        {
+            Opacity = 0;
+
+            // Avoid flicker by delaying the "Hide" a bit. This makes sure
+            // that "Opacity = 0" is taking effekt before the window is hidden.
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(10) };
+            timer.Tick += (sender, args) =>
+            {
+                Hide();
+                timer.Stop();
+            };
+            timer.Start();
         }
 
         #endregion
@@ -194,7 +210,7 @@ namespace Switcheroo
         private void OnClose(object sender, System.ComponentModel.CancelEventArgs e)
         {           
             e.Cancel = true;
-            Hide();
+            HideWindow();
         }            
         
         void hotkey_HotkeyPressed(object sender, EventArgs e)
@@ -209,7 +225,7 @@ namespace Switcheroo
             }
             else
             {
-                Hide();
+                HideWindow();
             }
         }
 
@@ -228,7 +244,7 @@ namespace Switcheroo
 
         private void Hide(object sender, ExecutedRoutedEventArgs e)
         {
-            Hide();
+            HideWindow();
         }
      
         private void OnEnterPressed(object sender, ExecutedRoutedEventArgs e)
@@ -254,7 +270,7 @@ namespace Switcheroo
             }
             else
             {
-                Hide();
+                HideWindow();
             }
             e.Handled = true;
         }
@@ -287,7 +303,7 @@ namespace Switcheroo
 
         private void MainWindow_OnLostFocus(object sender, EventArgs e)
         {
-            Hide();
+            HideWindow();
         }
 
         #endregion
