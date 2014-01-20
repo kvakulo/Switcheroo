@@ -39,6 +39,8 @@ namespace Switcheroo
         public readonly static RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
         public readonly static RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
         public readonly static RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+        private OptionsWindow _optionsWindow;
+        private AboutWindow _aboutWindow;
 
         public MainWindow()
         {           
@@ -135,9 +137,19 @@ namespace Switcheroo
         /// </summary>
         private void Options()
         {            
-            Window opts = new Switcheroo.OptionsWindow();            
-            opts.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            opts.ShowDialog();
+            if(_optionsWindow == null)
+            {
+                _optionsWindow = new OptionsWindow
+                {
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                };
+                _optionsWindow.Closed += (sender, args) => _optionsWindow = null;
+                _optionsWindow.ShowDialog();
+            }
+            else
+            {
+                _optionsWindow.Activate();
+            }
         }
 
         /// <summary>
@@ -145,9 +157,20 @@ namespace Switcheroo
         /// </summary>
         private void About()
         {
-            Window about = new Switcheroo.About();           
-            //about.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            about.ShowDialog();
+            if (_aboutWindow == null)
+            {
+                _aboutWindow = new AboutWindow
+                {
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                };
+                _aboutWindow.Closed += (sender, args) => _aboutWindow = null;
+                _aboutWindow.ShowDialog();
+                
+            }
+            else
+            {
+                _aboutWindow.Activate();
+            }
         }
 
         /// <summary>

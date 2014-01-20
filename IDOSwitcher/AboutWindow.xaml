@@ -1,0 +1,23 @@
+﻿<Window x:Class="Switcheroo.AboutWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="About Switcheroo" 
+    WindowStartupLocation="CenterScreen"
+    ShowInTaskbar="False" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+    <StackPanel Margin="10">                
+        <TextBlock >
+            <Bold>Switcheroo</Bold>
+            <LineBreak/><Italic>The humble incremental-search task switcher for Windows</Italic>
+            <LineBreak/>Version: 0.6           
+            <LineBreak/>
+            Copyright 2014 Regin Larsen
+            <LineBreak/>
+            Copyright 2009, 2010 James Sulak
+            <LineBreak />
+            Visit the <Hyperlink RequestNavigate="HandleRequestNavigate" Name="hl" NavigateUri="https://github.com/kvakulo/Switcheroo">Project page</Hyperlink>            
+        </TextBlock>
+        <Grid HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Button Name="Ok" Width="60" Click="Ok_Click" IsDefault="True">OK</Button>
+        </Grid>
+    </StackPanel>
+</Window>
