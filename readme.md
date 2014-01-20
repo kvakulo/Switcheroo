@@ -30,6 +30,8 @@ from the options dialog.
 
 Credits
 -------
+Switcheroo was originally developed by James Sulak, and his repository is available here:
+<https://github.com/jsulak/Switcheroo/>.
 
 The program icon was created by Mark James and is a part of the Silk icon
 set 1.3.  It is available at: <http://www.famfamfam.com/lab/icons/silk/>.
