@@ -201,11 +201,11 @@ namespace Switcheroo
         {
             if (Visibility != System.Windows.Visibility.Visible)
             {
-                LoadData();
-                Opacity = 1;
                 Show();
                 Activate();
                 Keyboard.Focus(tb);
+                LoadData();
+                Opacity = 1;
             }
             else
             {
