@@ -19,7 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -31,7 +30,7 @@ namespace Switcheroo
     /// </summary>
     public static class Core
     {
-        public static Switcheroo.HotKey HotKey = new Switcheroo.HotKey();
+        public static HotKey HotKey = new HotKey();
         public static List<AppWindow> WindowList = new List<AppWindow>();
         public static List<string> ExceptionList;
 
@@ -43,19 +42,19 @@ namespace Switcheroo
        
         public static void GetWindows()
         {
-            WinApi.EnumWindowsProc callback = new WinApi.EnumWindowsProc(EnumWindows);
+            WinApi.EnumWindowsProc callback = EnumWindows;
             WinApi.EnumWindows(callback, 0);
         }
 
-        public static IEnumerable<Switcheroo.AppWindow> FilterList(string filterText)
+        public static IEnumerable<AppWindow> FilterList(string filterText)
         {
-            Regex filter = BuildPattern(filterText);
-            var filtered_windows = from w in WindowList
-                                   where filter.Match(w.Title).Success || filter.Match(w.ProcessTitle).Success
-                                   orderby Score(w.Title, filterText) + Score(w.ProcessTitle, filterText) descending
-                                   select w;
+            var filter = BuildPattern(filterText);
+            var filteredWindows = from w in WindowList
+                                  where filter.Match(w.Title).Success || filter.Match(w.ProcessTitle).Success
+                                  orderby Score(w.Title, filterText) + Score(w.ProcessTitle, filterText) descending
+                                  select w;
 
-            return filtered_windows;
+            return filteredWindows;
         }
 
         private static int Score(string title, string filterText)
@@ -105,7 +104,7 @@ namespace Switcheroo
             if (!WinApi.IsWindowVisible(hWnd))
                 return true;
 
-            StringBuilder title = new StringBuilder(256);
+            var title = new StringBuilder(256);
             WinApi.GetWindowText(hWnd, title, 256);
 
             if (string.IsNullOrEmpty(title.ToString())) {
@@ -136,9 +135,9 @@ namespace Switcheroo
         /// <returns>A filter regex</returns>
         private static Regex BuildPattern(string input)
         {
-            string newPattern = "";
+            var newPattern = "";
             input = input.Trim();
-            foreach (char c in input) {
+            foreach (var c in input) {
                 newPattern += ".*";
                 
                 // escape regex reserved characters
