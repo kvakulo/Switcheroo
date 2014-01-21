@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -230,11 +231,24 @@ namespace Switcheroo
         }
 
         private void TextChanged(object sender, TextChangedEventArgs args)
-        {            
-            lb.DataContext = Core.FilterList(tb.Text);
-            if (lb.Items.Count > 0) {
-                lb.SelectedItem = lb.Items[0];
-            }            
+        {
+            var text = tb.Text;
+
+            Task.Factory.StartNew(() =>
+            {
+                var appWindows = Core.FilterList(text);
+
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (text != tb.Text) return;
+
+                    lb.DataContext = appWindows;
+                    if (lb.Items.Count > 0)
+                    {
+                        lb.SelectedItem = lb.Items[0];
+                    }
+                }));
+            });
         }
 
         private void Hide(object sender, ExecutedRoutedEventArgs e)
