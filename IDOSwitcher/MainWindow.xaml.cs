@@ -72,13 +72,6 @@ namespace Switcheroo
             catch (ManagedWinapi.HotkeyAlreadyInUseException) {
                 System.Windows.MessageBox.Show("Could not register hotkey (already in use).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-            // TODO: HACK: This bit is just so the winow opens up at the proper size the first time.  
-            // Otherwise, it's too small the very first time it is activated.
-            Opacity = 0;
-            LoadData();
-            Show();
-            Hide();
         }
 
 
