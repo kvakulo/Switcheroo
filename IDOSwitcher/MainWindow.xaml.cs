@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -96,6 +97,13 @@ namespace Switcheroo
         {
             _windowList.Clear();
             Core.GetWindows();
+
+            foreach (var window in _windowList)
+            {
+                window.FormattedTitle = HighlightMatchingLetters("", window.Title);
+                window.FormattedProcessTitle = HighlightMatchingLetters("", window.ProcessTitle);
+            }
+
             lb.DataContext = null;
             lb.DataContext = _windowList;
             lb.SelectedIndex = 0;
@@ -244,6 +252,12 @@ namespace Switcheroo
                 {
                     if (text != tb.Text) return;
 
+                    foreach (var appWindow in appWindows)
+                    {
+                        appWindow.FormattedTitle = HighlightMatchingLetters(text, appWindow.Title);
+                        appWindow.FormattedProcessTitle = HighlightMatchingLetters(text, appWindow.ProcessTitle);
+                    }
+
                     lb.DataContext = appWindows;
                     if (lb.Items.Count > 0)
                     {
@@ -251,6 +265,33 @@ namespace Switcheroo
                     }
                 }));
             });
+        }
+
+        private static string HighlightMatchingLetters(string filterText, string title)
+        {
+            if (string.IsNullOrEmpty(filterText)) return title;
+            var filterChars = filterText.ToCharArray().Select(c => c + "").ToList();
+            var titleChars = title.ToCharArray().Select(c => c + "").ToList();
+
+            var lastTitleIndex = 0;
+
+            for (var filterIndex = 0; filterIndex < filterChars.Count; filterIndex++)
+            {
+                for (var titleIndex = lastTitleIndex; titleIndex < titleChars.Count; titleIndex++)
+                {
+                    lastTitleIndex = titleIndex + 1;
+                    if (filterChars[filterIndex].Equals(titleChars[titleIndex], StringComparison.OrdinalIgnoreCase))
+                    {
+                        titleChars[titleIndex] = "<Bold><![CDATA[" + titleChars[titleIndex] + "]]></Bold>";
+                        break;
+                    }
+                    else
+                    {
+                        titleChars[titleIndex] = "<![CDATA[" + titleChars[titleIndex] + "]]>";
+                    }
+                }
+            }
+            return string.Join("", titleChars.ToArray());
         }
 
         private void Hide(object sender, ExecutedRoutedEventArgs e)

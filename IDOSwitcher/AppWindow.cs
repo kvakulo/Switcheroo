@@ -52,10 +52,14 @@ namespace Switcheroo
             } 
         }
 
+        public string FormattedTitle { get; set; }
+
         public string ProcessTitle
         {
             get { return Process.ProcessName; }
         }
+
+        public string FormattedProcessTitle { get; set; }
 
         public BitmapImage IconImage
         {
