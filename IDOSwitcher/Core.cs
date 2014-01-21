@@ -52,7 +52,7 @@ namespace Switcheroo
             Regex filter = BuildPattern(filterText);
             var filtered_windows = from w in WindowList
                                    where filter.Match(w.Title).Success || filter.Match(w.ProcessTitle).Success
-                                   orderby Score(w.Text, filterText) + Score(w.ProcessTitle, filterText) descending
+                                   orderby Score(w.Title, filterText) + Score(w.ProcessTitle, filterText) descending
                                    select w;
 
             return filtered_windows;
