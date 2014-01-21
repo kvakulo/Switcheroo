@@ -19,22 +19,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using ManagedWinapi;
 
 namespace Switcheroo
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private List<AppWindow> WindowList;
-        private System.Windows.Forms.NotifyIcon m_notifyIcon;                
-        private HotKey hotkey;
+        private List<AppWindow> _windowList;
+        private System.Windows.Forms.NotifyIcon _notifyIcon;                
+        private HotKey _hotkey;
 
         public readonly static RoutedUICommand CloseWindowCommand = new RoutedUICommand();
         public readonly static RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
@@ -47,47 +44,57 @@ namespace Switcheroo
         {           
             InitializeComponent();            
         
-            // Handle notification icon stuff            
-            m_notifyIcon = new System.Windows.Forms.NotifyIcon();
-            m_notifyIcon.Text = "Switcheroo";           
-            Bitmap bmp = Switcheroo.Properties.Resources.arrow_switch;
-            m_notifyIcon.Icon = System.Drawing.Icon.FromHandle(bmp.GetHicon());                                          
-            m_notifyIcon.Visible = true;
+            SetUpNotifyIcon();
 
-            //Create right-click menu on notification icon
-            m_notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
-            {
-                new System.Windows.Forms.MenuItem("Options", (s, e) => Options()),
-                new System.Windows.Forms.MenuItem("About", (s, e) => About()),
-                new System.Windows.Forms.MenuItem("Exit", (s, e) => Quit())               
-            });
-
-            Core.Initialize();
-            hotkey = Core.HotKey;
-            WindowList = Core.WindowList;
-            hotkey.HotkeyPressed += new EventHandler(hotkey_HotkeyPressed);
-            try {
-                hotkey.Enabled = true;
-            }
-            catch (ManagedWinapi.HotkeyAlreadyInUseException) {
-                System.Windows.MessageBox.Show("Could not register hotkey (already in use).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            SetUpHotKey();
         }
-
 
         /// =================================
         #region Private Methods
         /// =================================
+        private void SetUpHotKey()
+        {
+            Core.Initialize();
+            _hotkey = Core.HotKey;
+            _windowList = Core.WindowList;
+            _hotkey.HotkeyPressed += hotkey_HotkeyPressed;
+            try
+            {
+                _hotkey.Enabled = true;
+            }
+            catch (HotkeyAlreadyInUseException)
+            {
+                MessageBox.Show("Could not register hotkey (already in use).", "Error", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        private void SetUpNotifyIcon()
+        {
+            var bmp = Properties.Resources.arrow_switch;
+            _notifyIcon = new System.Windows.Forms.NotifyIcon
+            {
+                Text = "Switcheroo",
+                Icon = System.Drawing.Icon.FromHandle(bmp.GetHicon()),
+                Visible = true,
+                ContextMenu = new System.Windows.Forms.ContextMenu(new[]
+                {
+                    new System.Windows.Forms.MenuItem("Options", (s, e) => Options()),
+                    new System.Windows.Forms.MenuItem("About", (s, e) => About()),
+                    new System.Windows.Forms.MenuItem("Exit", (s, e) => Quit())
+                })
+            };
+        }
 
         /// <summary>
         /// Populates the window list with the current running windows.
         /// </summary>
         private void LoadData()
         {
-            WindowList.Clear();
+            _windowList.Clear();
             Core.GetWindows();
             lb.DataContext = null;
-            lb.DataContext = WindowList;
+            lb.DataContext = _windowList;
             lb.SelectedIndex = 0;
             tb.Clear();
             tb.Focus();
@@ -187,10 +194,10 @@ namespace Switcheroo
         /// </summary>
         private void Quit()
         {
-            m_notifyIcon.Dispose();
-            m_notifyIcon = null;
-            hotkey.Dispose();
-            Environment.Exit(0);  
+            _notifyIcon.Dispose();
+            _notifyIcon = null;
+            _hotkey.Dispose();
+            Application.Current.Shutdown();
         }
 
         #endregion
@@ -208,7 +215,7 @@ namespace Switcheroo
         
         void hotkey_HotkeyPressed(object sender, EventArgs e)
         {
-            if (Visibility != System.Windows.Visibility.Visible)
+            if (Visibility != Visibility.Visible)
             {
                 Show();
                 Activate();
@@ -220,11 +227,6 @@ namespace Switcheroo
             {
                 HideWindow();
             }
-        }
-
-        private void PrintText(object sender, SelectionChangedEventArgs args)
-        {
-            ListBoxItem lbi = (sender as ListBox).SelectedItem as ListBoxItem;            
         }
 
         private void TextChanged(object sender, TextChangedEventArgs args)
@@ -284,14 +286,6 @@ namespace Switcheroo
                 lb.SelectedIndex++;
             }
             e.Handled = true;
-        }
-
-        private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
-        {
-            lb.SelectedItem = (sender as StackPanel).DataContext;
-            if (!lb.IsFocused) {
-                lb.Focus();
-            }
         }
 
         private void MainWindow_OnLostFocus(object sender, EventArgs e)
