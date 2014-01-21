@@ -48,6 +48,8 @@ namespace Switcheroo
             SetUpNotifyIcon();
 
             SetUpHotKey();
+
+            Opacity = 0;
         }
 
         /// =================================
