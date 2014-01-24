@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -329,31 +330,51 @@ namespace Switcheroo
             });
         }
 
+        private static Regex BuildPattern(string input)
+        {
+            var newPattern = "";
+            input = input.Trim();
+            foreach (var c in input)
+            {
+                newPattern += ".*";
+
+                // escape regex reserved characters
+                newPattern += Regex.Escape(c + "");
+            }
+            return new Regex(newPattern, RegexOptions.IgnoreCase);
+        }
+
+
         private static string HighlightMatchingLetters(string filterText, string title)
         {
-            if (string.IsNullOrEmpty(filterText)) return title;
+            var pattern = BuildPattern(filterText);
+            if (string.IsNullOrWhiteSpace(filterText) || !pattern.IsMatch(title))
+            {
+                return "<![CDATA[" + title + "]]>";
+            }
+
+            var filterLower = filterText.ToLowerInvariant();
+            var titleLower = title.ToLowerInvariant();
+            var indexOf = titleLower.IndexOf(filterLower, StringComparison.OrdinalIgnoreCase);
+
             var filterChars = filterText.ToCharArray().Select(c => c + "").ToList();
             var titleChars = title.ToCharArray().Select(c => c + "").ToList();
 
-            var lastTitleIndex = 0;
+            var lastTitleIndex = indexOf > 0 ? indexOf : 0;
 
-            for (var filterIndex = 0; filterIndex < filterChars.Count; filterIndex++)
+            foreach (var filterChar in filterChars)
             {
                 for (var titleIndex = lastTitleIndex; titleIndex < titleChars.Count; titleIndex++)
                 {
                     lastTitleIndex = titleIndex + 1;
-                    if (filterChars[filterIndex].Equals(titleChars[titleIndex], StringComparison.OrdinalIgnoreCase))
+                    if (filterChar.Equals(titleChars[titleIndex], StringComparison.OrdinalIgnoreCase))
                     {
-                        titleChars[titleIndex] = "<Bold><![CDATA[" + titleChars[titleIndex] + "]]></Bold>";
+                        titleChars[titleIndex] = "]]><Bold><![CDATA[" + titleChars[titleIndex] + "]]></Bold><![CDATA[";
                         break;
-                    }
-                    else
-                    {
-                        titleChars[titleIndex] = "<![CDATA[" + titleChars[titleIndex] + "]]>";
                     }
                 }
             }
-            return string.Join("", titleChars.ToArray());
+            return "<![CDATA[" + string.Join("", titleChars.ToArray()) + "]]>";
         }
 
         private void Hide(object sender, ExecutedRoutedEventArgs e)
