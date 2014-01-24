@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.Caching;
 using System.Windows.Media.Imaging;
 using ManagedWinapi.Windows;
 
@@ -35,7 +36,6 @@ namespace Switcheroo
     {
         private const int MAX_TITLE_LENGTH = 100;
         private const UInt32 WM_CLOSE = 0x0010;
-        private BitmapImage _iconImage;
         private bool _triedToExtractIcon;
 
         // Returns a short version of the title
@@ -56,7 +56,17 @@ namespace Switcheroo
 
         public string ProcessTitle
         {
-            get { return Process.ProcessName; }
+            get
+            {
+                var key = "ProcessTitle-" + HWnd;
+                var processTitle = MemoryCache.Default.Get(key) as string;
+                if (processTitle == null)
+                {
+                    processTitle = Process.ProcessName;
+                    MemoryCache.Default.Add(key, processTitle, DateTimeOffset.Now.AddHours(1));
+                }
+                return processTitle;
+            }
         }
 
         public string FormattedProcessTitle { get; set; }
@@ -65,12 +75,15 @@ namespace Switcheroo
         {
             get
             {
-                if (_iconImage == null && !_triedToExtractIcon)
+                var key = "IconImage-" + HWnd;
+                var iconImage = MemoryCache.Default.Get(key) as BitmapImage;
+                if (iconImage == null && !_triedToExtractIcon)
                 {
-                    _iconImage = ExtractIcon();
+                    iconImage = ExtractIcon();
+                    MemoryCache.Default.Add(key, iconImage, DateTimeOffset.Now.AddHours(1));
                     _triedToExtractIcon = true;
                 }
-                return _iconImage;
+                return iconImage;
             }
         }
 
