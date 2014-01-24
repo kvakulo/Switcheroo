@@ -132,7 +132,7 @@ namespace Switcheroo
                 });
             };
 
-            timer.Interval = new TimeSpan(0, 0, 1);
+            timer.Interval = new TimeSpan(0, 5, 0);
             timer.Start();
         }
 

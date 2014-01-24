@@ -2,11 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Switcheroo"
-#define MyAppVerName "Switcheroo v0.6"
+#define MyAppVerName "Switcheroo v0.7"
 #define MyAppPublisher "Regin Larsen"
 #define MyAppURL "https://github.com/kvakulo/Switcheroo"
 #define MyAppExeName "switcheroo.exe"
-#define MyAppPath "C:\Users\regin.larsen\Documents\GitHub\Switcheroo"
+#define MyAppPath "C:\Users\regin.larsen\Documents\GitHub\Switcheroo-master"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -49,7 +49,7 @@ Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: star
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
-Filename: {app}\README.TXT; Description: View the README file; Flags: postinstall shellexec skipifsilent
+Filename: {app}\README.TXT; Description: View the README file; Flags: postinstall shellexec skipifsilent unchecked
 
 [Code]
 const
@@ -57,10 +57,9 @@ const
 // The following was stolen from the Witty Twitter installer.
 // http://code.google.com/p/wittytwitter/source/browse/trunk/Witty/Installer/Installer.iss
 
-//Use these values for .NET 3.5
-dotnetRedistURL = 'http://www.microsoft.com/downloads/details.aspx?FamilyID=333325FD-AE52-4E35-B531-508D977D32A6';
-dotnetRegKey = 'SOFTWARE\Microsoft\Net Framework Setup\NDP\v3.5';
-version = '3.5';
+dotnetRedistURL = 'http://www.microsoft.com/en-us/download/details.aspx?id=30653';
+dotnetRegKey = 'SOFTWARE\Microsoft\Net Framework Setup\NDP\v4.0';
+version = '4.5';
 
 function InitializeSetup(): Boolean;
 var
