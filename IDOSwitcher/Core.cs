@@ -48,13 +48,11 @@ namespace Switcheroo
 
         public static IEnumerable<AppWindow> FilterList(string filterText)
         {
-            var filter = BuildPattern(filterText);
-            var filteredWindows = from w in WindowList
-                                  where filter.Match(w.Title).Success || filter.Match(w.ProcessTitle).Success
-                                  orderby Score(w.Title, filterText) + Score(w.ProcessTitle, filterText) descending
-                                  select w;
-
-            return filteredWindows;
+            return WindowList
+                .Select(w => new { Window = w, Score = Score(w.Title, filterText) + Score(w.ProcessTitle, filterText) })
+                .Where(r => r.Score > 0)
+                .OrderByDescending(r => r.Score)
+                .Select(r => r.Window);
         }
 
         private static int Score(string title, string filterText)
@@ -62,9 +60,16 @@ namespace Switcheroo
             filterText = filterText.ToLowerInvariant();
 
             var score = 0;
+
+            var filter = BuildPattern(filterText);
+            if (filter.Match(title).Success)
+            {
+                score++;
+            }
+
             if (title.StartsWith(filterText, StringComparison.OrdinalIgnoreCase))
             {
-                score += 2;
+                score += 3;
             }
 
             if (title.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) > 0)
