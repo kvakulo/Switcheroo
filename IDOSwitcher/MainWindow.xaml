@@ -47,11 +47,11 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="22" />
                                 <ColumnDefinition Width="400" />
                                 <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
-                            <Image Source="{Binding Path=IconImage}" Height="27" Grid.Row="0" Grid.Column="0" Margin="3" />
+                            <Image Source="{Binding Path=IconImage}" Height="19" Grid.Row="0" Grid.Column="0" Margin="3" />
                             <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedTitle}"
                                        Grid.Row="0" Grid.Column="1" Margin="3" />
                             <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedProcessTitle}"
