@@ -62,6 +62,14 @@ For a copy of the license, see <http://www.gnu.org/licenses/>.
 Change log
 ---------
 
+### 2014-01-24: v0.7 ###
+- Faster load time and filtering
+- Grabs focus right away
+- Highlights matching characters
+- Included windows should be closer to the default alt+tab
+- Informs you when a new version of Switcheroo is available
+- Requires .NET 4.5
+
 ### 2014-01-13: v0.6 ###
 - Development continued by Regin Larsen
 - Shows process icon and process title in addition to window title
@@ -69,7 +77,6 @@ Change log
 - Simple scoring algorithm when filtering
 - Support for ReSharper like filtering, e.g. hc for HipChat
 - New default key binding `Alt + Space` (Windows 8 is using `Win + W`)
-
 
 ### 2010-07-18: v0.5 ###
 - Hotkey now hides Switcheroo window in addition to showing it (Issue 4)
