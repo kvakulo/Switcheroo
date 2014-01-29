@@ -17,6 +17,7 @@
  * along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.Reflection;
 using System.Windows;
 using System.Diagnostics;
 
@@ -27,6 +28,7 @@ namespace Switcheroo
         public AboutWindow()
         {
             InitializeComponent();
+            VersionNumber.Inlines.Add(Assembly.GetEntryAssembly().GetName().Version.ToString());
         }
 
         void HandleRequestNavigate(object sender, RoutedEventArgs e)
