@@ -80,7 +80,10 @@ namespace Switcheroo
                 if (iconImage == null && !_triedToExtractIcon)
                 {
                     iconImage = ExtractIcon();
-                    MemoryCache.Default.Add(key, iconImage, DateTimeOffset.Now.AddHours(1));
+                    if (iconImage != null)
+                    {
+                        MemoryCache.Default.Add(key, iconImage, DateTimeOffset.Now.AddHours(1));
+                    }
                     _triedToExtractIcon = true;
                 }
                 return iconImage;
