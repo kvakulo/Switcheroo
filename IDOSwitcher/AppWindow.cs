@@ -36,7 +36,6 @@ namespace Switcheroo
     {
         private const int MAX_TITLE_LENGTH = 100;
         private const UInt32 WM_CLOSE = 0x0010;
-        private bool _triedToExtractIcon;
 
         // Returns a short version of the title
         public string TruncatedTitle 
@@ -77,14 +76,10 @@ namespace Switcheroo
             {
                 var key = "IconImage-" + HWnd;
                 var iconImage = MemoryCache.Default.Get(key) as BitmapImage;
-                if (iconImage == null && !_triedToExtractIcon)
+                if (iconImage == null)
                 {
-                    iconImage = ExtractIcon();
-                    if (iconImage != null)
-                    {
-                        MemoryCache.Default.Add(key, iconImage, DateTimeOffset.Now.AddHours(1));
-                    }
-                    _triedToExtractIcon = true;
+                    iconImage = ExtractIcon() ?? new BitmapImage();
+                    MemoryCache.Default.Add(key, iconImage, DateTimeOffset.Now.AddHours(1));
                 }
                 return iconImage;
             }
