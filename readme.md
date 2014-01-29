@@ -62,6 +62,9 @@ For a copy of the license, see <http://www.gnu.org/licenses/>.
 Change log
 ---------
 
+### 2014-01-30: v0.7.1 ###
+- Fix crash if process icon could not be found
+
 ### 2014-01-24: v0.7 ###
 - Faster load time and filtering
 - Grabs focus right away
