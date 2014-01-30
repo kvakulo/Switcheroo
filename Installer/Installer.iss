@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Switcheroo"
-#define MyAppVerName "Switcheroo v0.7.0.1"
+#define MyAppVer = GetFileVersion("C:\Users\regin.larsen\Documents\GitHub\Switcheroo-master\IDOSwitcher\bin\Release\switcheroo.exe")
 #define MyAppPublisher "Regin Larsen"
 #define MyAppURL "https://github.com/kvakulo/Switcheroo"
 #define MyAppExeName "switcheroo.exe"
@@ -15,7 +15,7 @@
 AppId={{A5AF4C34-70A7-4D3B-BA18-E49C0AEEA5E6}
 AppMutex=DBDE24E4-91F6-11DF-B495-C536DFD72085-switcheroo
 AppName={#MyAppName}
-AppVerName={#MyAppVerName}
+AppVerName={#MyAppName} v{#MyAppVer}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
