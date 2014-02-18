@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FilterResult.cs" />
     <Compile Include="FormattedTextAttribute.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -133,7 +134,7 @@
     <Compile Include="HotKey.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Core.cs" />
+    <Compile Include="CoreStuff.cs" />
     <Compile Include="OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
@@ -201,8 +202,12 @@
     <Resource Include="arrow_switch.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{b846514d-25be-4274-972a-0e6e74dd0f8b}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ManagedWinapi\ManagedWinapi.csproj">
-      <Project>{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}</Project>
+      <Project>{fbd3ec1e-47e2-4d2d-81c9-d6506125a09a}</Project>
       <Name>ManagedWinapi</Name>
     </ProjectReference>
   </ItemGroup>

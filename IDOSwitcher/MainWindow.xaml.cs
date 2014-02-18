@@ -30,6 +30,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ManagedWinapi;
+using Switcheroo.Core;
+using Switcheroo.Core.Matchers;
 
 namespace Switcheroo
 {
@@ -64,9 +66,9 @@ namespace Switcheroo
         /// =================================
         private void SetUpHotKey()
         {
-            Core.Initialize();
-            _hotkey = Core.HotKey;
-            _windowList = Core.WindowList;
+            CoreStuff.Initialize();
+            _hotkey = CoreStuff.HotKey;
+            _windowList = CoreStuff.WindowList;
             _hotkey.HotkeyPressed += hotkey_HotkeyPressed;
             try
             {
@@ -150,12 +152,12 @@ namespace Switcheroo
         private void LoadData()
         {
             _windowList.Clear();
-            Core.GetWindows();
+            CoreStuff.GetWindows();
 
             foreach (var window in _windowList)
             {
-                window.FormattedTitle = HighlightMatchingLetters("", window.Title);
-                window.FormattedProcessTitle = HighlightMatchingLetters("", window.ProcessTitle);
+                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.Title) });
+                window.FormattedProcessTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.ProcessTitle) });
             }
 
             lb.DataContext = null;
@@ -298,66 +300,25 @@ namespace Switcheroo
         {
             var text = tb.Text;
 
-            var appWindows = Core.FilterList(text);
+            var filterResults = CoreStuff.FilterList(text).ToList();
 
-            foreach (var appWindow in appWindows)
+            foreach (var filterResult in filterResults)
             {
-                appWindow.FormattedTitle = HighlightMatchingLetters(text, appWindow.Title);
-                appWindow.FormattedProcessTitle = HighlightMatchingLetters(text, appWindow.ProcessTitle);
+                filterResult.AppWindow.FormattedTitle = GetFormattedTitleFromBestResult(filterResult.WindowTitleMatchResults);
+                filterResult.AppWindow.FormattedProcessTitle = GetFormattedTitleFromBestResult(filterResult.ProcessTitleMatchResults);
             }
 
-            lb.DataContext = appWindows;
+            lb.DataContext = filterResults.Select(r => r.AppWindow);
             if (lb.Items.Count > 0)
             {
                 lb.SelectedItem = lb.Items[0];
             }
         }
 
-        private static Regex BuildPattern(string input)
+        private static string GetFormattedTitleFromBestResult(IList<MatchResult> matchResults)
         {
-            var newPattern = "";
-            input = input.Trim();
-            foreach (var c in input)
-            {
-                newPattern += ".*";
-
-                // escape regex reserved characters
-                newPattern += Regex.Escape(c + "");
-            }
-            return new Regex(newPattern, RegexOptions.IgnoreCase);
-        }
-
-
-        private static string HighlightMatchingLetters(string filterText, string title)
-        {
-            var pattern = BuildPattern(filterText);
-            if (string.IsNullOrWhiteSpace(filterText) || !pattern.IsMatch(title))
-            {
-                return "<![CDATA[" + title + "]]>";
-            }
-
-            var filterLower = filterText.ToLowerInvariant();
-            var titleLower = title.ToLowerInvariant();
-            var indexOf = titleLower.IndexOf(filterLower, StringComparison.OrdinalIgnoreCase);
-
-            var filterChars = filterText.ToCharArray().Select(c => c + "").ToList();
-            var titleChars = title.ToCharArray().Select(c => c + "").ToList();
-
-            var lastTitleIndex = indexOf > 0 ? indexOf : 0;
-
-            foreach (var filterChar in filterChars)
-            {
-                for (var titleIndex = lastTitleIndex; titleIndex < titleChars.Count; titleIndex++)
-                {
-                    lastTitleIndex = titleIndex + 1;
-                    if (filterChar.Equals(titleChars[titleIndex], StringComparison.OrdinalIgnoreCase))
-                    {
-                        titleChars[titleIndex] = "]]><Bold><![CDATA[" + titleChars[titleIndex] + "]]></Bold><![CDATA[";
-                        break;
-                    }
-                }
-            }
-            return "<![CDATA[" + string.Join("", titleChars.ToArray()) + "]]>";
+            var bestResult = matchResults.FirstOrDefault(r => r.Matched) ?? matchResults.First();
+            return new XamlHighlighter().Highlight(bestResult.StringParts);
         }
 
         private void Hide(object sender, ExecutedRoutedEventArgs e)

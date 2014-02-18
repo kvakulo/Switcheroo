@@ -34,7 +34,7 @@ namespace Switcheroo
             Keys.DataContext = keyList;
             
             // Highlight what's already selected     
-            hotkey = Core.HotKey;
+            hotkey = CoreStuff.HotKey;
             Keys.SelectedItem = hotkey.KeyCode;
             Alt.IsChecked = hotkey.Alt;
             Ctrl.IsChecked = hotkey.Ctrl;
@@ -42,7 +42,7 @@ namespace Switcheroo
             Shift.IsChecked = hotkey.Shift;
 
             // Populate text box
-            ExceptionList.Text = String.Join(Environment.NewLine, Core.ExceptionList.ToArray());
+            ExceptionList.Text = String.Join(Environment.NewLine, CoreStuff.ExceptionList.ToArray());
 
         }
 
@@ -63,9 +63,9 @@ namespace Switcheroo
 
             // Save edited text list to app config
             string[] tempExclusionList = ExceptionList.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); ;
-            Core.ExceptionList = tempExclusionList.ToList();           
+            CoreStuff.ExceptionList = tempExclusionList.ToList();           
             Properties.Settings.Default.Exceptions.Clear();
-            Properties.Settings.Default.Exceptions.AddRange(Core.ExceptionList.ToArray());
+            Properties.Settings.Default.Exceptions.AddRange(CoreStuff.ExceptionList.ToArray());
             Properties.Settings.Default.Save();
             Close();
         }
