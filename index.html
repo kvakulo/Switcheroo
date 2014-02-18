@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Switcheroo by kvakulo</title>
+    <title>Switcheroo - an alt+tab alternative for Windows</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -12,61 +12,140 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  </head>
-  <body>
+</head>
+<body>
     <div class="wrapper">
-      <header>
-        <h1 class="header">Switcheroo</h1>
-        <p class="header">The humble incremental-search task switcher for Windows</p>
+        <header>
+            <h1 class="header">Switcheroo</h1>
+            <p class="header">The humble incremental-search task switcher for Windows</p>
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/kvakulo/Switcheroo/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/kvakulo/Switcheroo/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/kvakulo/Switcheroo">View On GitHub</a></li>
-        </ul>
+            <ul>
+                <li class="download"><a class="buttons" href="https://github.com/kvakulo/Switcheroo/releases">Download</a></li>
+                <li><a class="buttons github" href="https://github.com/kvakulo/Switcheroo">View On GitHub</a></li>
+            </ul>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/kvakulo">kvakulo</a></p>
+            <p class="header">This project is maintained by <a class="header name" href="https://github.com/kvakulo">Regin Larsen</a></p>
 
 
-      </header>
-      <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        </header>
+        <section>
+            <h3>What is Switcheroo?</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+            <p>
+                Switcheroo is for anyone who spends more time using a keyboard than a mouse.
+                Instead of alt-tabbing through a (long) list of open windows, Switcheroo allows you to quickly switch to any window
+                by typing in just a few characters of its title. It's inspired by Emacs's IDO mode buffer switching and JetBrains'
+                ReSharper.
+            </p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+            <p>
+                <img src="images/Switcheroo-Example.gif" />
+            </p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+            <h3>
+                How to use it?
+            </h3>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+            <p>
+                The default key binding for Switcheroo is <code>Alt + Space</code>. Pressing this key combination will bring up the Switcheroo window,
+                which lists the titles of every open window. Typing filters the list. Press <code>Enter</code> to switch to the selected window.
+                Press <code>Ctrl + Enter</code> to close the selected window.
+            <p />
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+            <p>
+                The key binding can be changed by right-clicking the notification icon in the Windows notification area and choosing "Options".
+            </p>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+            <h3>
+                Who makes it?
+            </h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+            <p>
+                Switcheroo is currently being developed by <a href="https://github.com/kvakulo">Regin Larsen</a> (<a href="http://twitter.com/kvakulo">@kvakulo</a>).
+            </p>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+            <p>
+                Switcheroo was originally developed by <a href="https://github.com/jsulak">James Sulak</a>.
+            </p>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+            <h3>
+                How can I contribute?
+            </h3>
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+            <p>
+                Please <a href="https://github.com/kvakulo/Switcheroo/issues">report any issue</a>.
+            </p>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-      <footer>
-        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
-      </footer>
+            <p>
+                If you know how to fix an issue or improve the code, please don't hesitate to send a pull request on GitHub.
+            </p>
+
+            <p>
+                If you have found the program useful please consider making a donation:
+            </p>
+
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+                <input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            </form>
+
+
+            <h3>
+                What's the license?
+            </h3>
+
+            <p>
+                Switcheroo is Open Source and is licensed under the GNU GPL v. 3.
+            </p>
+
+            <p>
+                <pre>
+                    Copyright 2014 Regin Larsen
+                    Copyright 2009, 2010 James Sulak
+
+                    This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+                    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+                    For a copy of the license, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+                </pre>
+            </p>
+
+            <h3>
+                Credits
+            </h3>
+
+            <p>
+                The program icon was created by Mark James and is a part of the <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icon set 1.3</a>.
+            </p>
+
+            <p>
+                This program uses the <a href="http://mwinapi.sourceforge.net/">Managed Windows API</a>. It's licensed under the GNU LGPL
+            </p>
+
+            <p>
+                Thanks to <a href="http://www.jetbrains.com">JetBrains</a> and <a href="http://codebetter.com/">CodeBetter</a> for providing
+                <a href="http://teamcity.codebetter.com/viewType.html?buildTypeId=bt1196">continuous integration</a> for Switcheroo.
+            </p>
+            <div style="background: #00578e
+url('http://www.jetbrains.com/img/banners/Codebetter300x250.png')
+no-repeat 0 50%;
+margin:0;padding:0;text-decoration:none;text-indent:0;letter-spacing:-0.001em;
+width:300px; height:250px">
+                <a href="http://www.jetbrains.com/youtrack" title="YouTrack by JetBrains"
+                   style="margin: 52px 0 0 58px;padding: 0; float: left;font-size: 14px;
+background-image:none;border:0;color: #acc4f9; font-family: trebuchet
+ms,arial,sans-serif;font-weight:
+normal;text-align:left;">keyboard-centric bug tracker</a> <a href="http://www.jetbrains.com/teamcity" title="TeamCity by JetBrains" style="margin:0 0 0 58px;padding:122px 0 0 0;font-size:14px;
+background-image:none;border:0;display:block; color: #acc4f9;
+font-family: trebuchet ms,arial,sans-serif;font-weight:
+normal;text-align:left;">continuous integration server</a>
+            </div>
+        </section>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
-  </body>
+
+</body>
 </html>
