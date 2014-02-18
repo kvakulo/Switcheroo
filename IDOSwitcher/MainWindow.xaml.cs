@@ -307,27 +307,19 @@ namespace Switcheroo
         {
             var text = tb.Text;
 
-            Task.Factory.StartNew(() =>
+            var appWindows = Core.FilterList(text);
+
+            foreach (var appWindow in appWindows)
             {
-                var appWindows = Core.FilterList(text);
+                appWindow.FormattedTitle = HighlightMatchingLetters(text, appWindow.Title);
+                appWindow.FormattedProcessTitle = HighlightMatchingLetters(text, appWindow.ProcessTitle);
+            }
 
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    if (text != tb.Text) return;
-
-                    foreach (var appWindow in appWindows)
-                    {
-                        appWindow.FormattedTitle = HighlightMatchingLetters(text, appWindow.Title);
-                        appWindow.FormattedProcessTitle = HighlightMatchingLetters(text, appWindow.ProcessTitle);
-                    }
-
-                    lb.DataContext = appWindows;
-                    if (lb.Items.Count > 0)
-                    {
-                        lb.SelectedItem = lb.Items[0];
-                    }
-                }));
-            });
+            lb.DataContext = appWindows;
+            if (lb.Items.Count > 0)
+            {
+                lb.SelectedItem = lb.Items[0];
+            }
         }
 
         private static Regex BuildPattern(string input)
