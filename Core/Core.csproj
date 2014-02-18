@@ -39,8 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Matchers\ContainsMatcher.cs" />
+    <Compile Include="Matchers\IMatcher.cs" />
+    <Compile Include="Matchers\IndividualCharactersMatcher.cs" />
+    <Compile Include="Matchers\MatchResult.cs" />
+    <Compile Include="Matchers\SignificantCharactersMatcher.cs" />
+    <Compile Include="Matchers\StartsWithMatcher.cs" />
+    <Compile Include="Matchers\StringPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
