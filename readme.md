@@ -7,3 +7,7 @@ you to quickly switch to any window by typing in just a few characters of its ti
 It's inspired by Emacs's IDO mode buffer switching and JetBrains' ReSharper.
 
 [Go to Switcheroo's homepage](http://www.switcheroo.io)
+
+TeamCity
+--------
+* `master`: ![Build status](http://teamcity.codebetter.com/guestAuth/app/rest/builds/buildType:(id:bt1196)/statusIcon)
