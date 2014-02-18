@@ -96,51 +96,42 @@ namespace Switcheroo
             };
         }
 
-        private void CheckForUpdates()
+        private static void CheckForUpdates()
         {
             var timer = new DispatcherTimer();
 
-            timer.Tick += (sender, args) =>
+            timer.Tick += async (sender, args) =>
             {
                 timer.Stop();
-                Task.Factory.StartNew(() =>
+                var latestVersion = await GetLatestVersion();
+                var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
+                if (latestVersion != null && latestVersion > currentVersion)
                 {
-                    var latestVersion = GetLatestVersion();
-                    var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
-                    if (latestVersion > currentVersion)
+                    var result = MessageBox.Show(
+                        string.Format("Switcheroo v{0} is available (you have v{1}).\r\n\r\nDo you want to download it?",
+                           latestVersion, currentVersion),
+                        "Update Available", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                    if (result == MessageBoxResult.Yes)
                     {
-                        Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            var result = MessageBox.Show(
-                                string.Format("Switcheroo v{0} is available (you have v{1}).\r\n\r\nDo you want to download it?",
-                                   latestVersion, currentVersion),
-                                "Update Available", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                            if (result == MessageBoxResult.Yes)
-                            {
-                                Process.Start("https://github.com/kvakulo/Switcheroo/releases/latest");
-                            }
-                        }));
+                        Process.Start("https://github.com/kvakulo/Switcheroo/releases/latest");
                     }
-                    else
-                    {
-                        Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            timer.Interval = new TimeSpan(24, 0, 0);
-                            timer.Start();
-                        }));
-                    }
-                });
+                }
+                else
+                {
+                    timer.Interval = new TimeSpan(24, 0, 0);
+                    timer.Start();
+                }
             };
 
             timer.Interval = new TimeSpan(0, 5, 0);
             timer.Start();
         }
 
-        private static Version GetLatestVersion()
+        private static async Task<Version> GetLatestVersion()
         {
             try
             {
-                var versionAsString = new WebClient().DownloadString("https://raw.github.com/kvakulo/Switcheroo/update/version.txt");
+                var versionAsString = await new WebClient().DownloadStringTaskAsync("https://raw.github.com/kvakulo/Switcheroo/update/version.txt");
                 Version newVersion;
                 if (Version.TryParse(versionAsString, out newVersion))
                 {
