@@ -362,6 +362,10 @@ namespace Switcheroo
                 {
                     lb.SelectedIndex--;
                 }
+                else
+                {
+                    lb.SelectedIndex = lb.Items.Count - 1;
+                }
             }
 
             e.Handled = true;
@@ -374,6 +378,10 @@ namespace Switcheroo
                 if (lb.SelectedIndex != lb.Items.Count - 1)
                 {
                     lb.SelectedIndex++;
+                }
+                else
+                {
+                    lb.SelectedIndex = 0;
                 }
             }
             e.Handled = true;
