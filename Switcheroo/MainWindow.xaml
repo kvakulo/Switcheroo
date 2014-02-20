@@ -1,0 +1,74 @@
+﻿<Window x:Class="Switcheroo.MainWindow" WindowStartupLocation="CenterScreen" Topmost="True"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"    
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"          
+    xmlns:local="clr-namespace:Switcheroo"
+    Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="True" 
+    Title="" Height="150" Width="400" Deactivated="MainWindow_OnLostFocus">  
+      
+    <Window.CommandBindings>
+        <CommandBinding Command="local:MainWindow.CloseWindowCommand"                        
+                        Executed="CloseWindow" />
+        <CommandBinding Command="local:MainWindow.SwitchToWindowCommand" 
+                        Executed="OnEnterPressed"/>  
+        <CommandBinding Command="Close" 
+                        Executed="Hide" />
+        <CommandBinding Command="local:MainWindow.ScrollListUpCommand"
+                        Executed="ScrollListUp" />
+        <CommandBinding Command="local:MainWindow.ScrollListDownCommand"
+                        Executed="ScrollListDown" />
+    </Window.CommandBindings>
+        
+    <Window.InputBindings>        
+        <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="Enter" Modifiers="Ctrl" />
+        <KeyBinding Command="local:MainWindow.SwitchToWindowCommand" Key="Enter" />                
+        <KeyBinding Command="Close" Key="Escape" />
+        <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
+        <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
+    </Window.InputBindings>    
+    
+    <Grid>          
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>                     
+        <TextBox Name="tb" Height="30" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15">
+            <TextBox.InputBindings>
+                <!-- For now, leave these here.  Would it be better to route them upward? -->
+                <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
+                <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />                
+            </TextBox.InputBindings>
+        </TextBox>
+        <ListBox Name="lb" SelectionMode="Single" Margin="0,30,0,0" ItemsSource="{Binding}" >                       
+            <ListBox.ItemTemplate>                     
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="22" />
+                                <ColumnDefinition Width="400" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{Binding Path=IconImage}" Height="19" Grid.Row="0" Grid.Column="0" Margin="3" />
+                            <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedTitle}"
+                                       Grid.Row="0" Grid.Column="1" Margin="3" />
+                            <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedProcessTitle}"
+                                       Grid.Row="0" Grid.Column="2" Margin="3" Foreground="Gray" TextAlignment="Right" />
+                        </Grid>
+                    </StackPanel>
+                </DataTemplate>                
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>                   
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <!-- Changes inactive selection color to be same as selected -->
+            <ListBox.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="{x:Static SystemColors.HighlightColor}" Opacity=".4"/>                              
+            </ListBox.Resources>
+        </ListBox>
+    </Grid>
+</Window>
