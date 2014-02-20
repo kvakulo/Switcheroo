@@ -356,18 +356,33 @@ namespace Switcheroo
 
         private void ScrollListUp(object sender, ExecutedRoutedEventArgs e)
         {
-            if (lb.SelectedIndex != 0)
+            if (lb.Items.Count > 0)
             {
-                lb.SelectedIndex--;
+                if (lb.SelectedIndex != 0)
+                {
+                    lb.SelectedIndex--;
+                }
+                else
+                {
+                    lb.SelectedIndex = lb.Items.Count - 1;
+                }
             }
+
             e.Handled = true;
         }
 
         private void ScrollListDown(object sender, ExecutedRoutedEventArgs e)
         {
-            if (lb.SelectedIndex != lb.Items.Count - 1)
+            if (lb.Items.Count > 0)
             {
-                lb.SelectedIndex++;
+                if (lb.SelectedIndex != lb.Items.Count - 1)
+                {
+                    lb.SelectedIndex++;
+                }
+                else
+                {
+                    lb.SelectedIndex = 0;
+                }
             }
             e.Handled = true;
         }
