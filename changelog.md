@@ -1,6 +1,13 @@
 Change log
 ----------
 
+### 2014-03-04: v0.7.2 ###
+- New Switcheroo icon
+- Allow circling in the window list (@ovesen)
+- Align filtering and highlighting algorithms
+- Fix crash when pressing key up or down while the window list is empty (@ovesen)
+- Fix potential crash in update check
+
 ### 2014-01-30: v0.7.1 ###
 - Fix crash if process icon could not be found
 
