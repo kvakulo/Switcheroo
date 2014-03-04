@@ -83,11 +83,11 @@ namespace Switcheroo
 
         private void SetUpNotifyIcon()
         {
-            var bmp = Properties.Resources.arrow_switch;
+            var icon = Properties.Resources.icon;
             _notifyIcon = new System.Windows.Forms.NotifyIcon
             {
                 Text = "Switcheroo",
-                Icon = System.Drawing.Icon.FromHandle(bmp.GetHicon()),
+                Icon = icon,
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new[]
                 {

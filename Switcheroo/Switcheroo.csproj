@@ -15,7 +15,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>arrow_switch.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -199,9 +199,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="arrow_switch.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{b846514d-25be-4274-972a-0e6e74dd0f8b}</Project>
       <Name>Core</Name>
@@ -210,6 +207,9 @@
       <Project>{fbd3ec1e-47e2-4d2d-81c9-d6506125a09a}</Project>
       <Name>ManagedWinapi</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Import Project="$(ProgramFiles)\MSBuild\Microsoft\StyleCop\v4.3\Microsoft.StyleCop.targets" />-->
