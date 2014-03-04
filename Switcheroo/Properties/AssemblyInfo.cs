@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("IDOSwitcher")]
+[assembly: AssemblyTitle("Switcheroo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("IDOSwitcher")]
-[assembly: AssemblyCopyright("Copyright ©  2009, 2010")]
+[assembly: AssemblyProduct("Switcheroo")]
+[assembly: AssemblyCopyright("Copyright ©  2009, 2010, 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
