@@ -18,7 +18,9 @@
  */
 
 using System;
+using System.Configuration;
 using System.Threading;
+using Switcheroo.Properties;
 
 namespace Switcheroo
 {
@@ -44,6 +46,10 @@ namespace Switcheroo
                         // Log the fact the mutex was abandoned in another process, it will still get aquired
                     }
 
+                    #if PORTABLE
+                        MakePortable(Settings.Default);
+                    #endif
+
                     App app = new App();
                     app.MainWindow = new MainWindow();                    
                     app.Run();
@@ -54,6 +60,17 @@ namespace Switcheroo
                         mutex.ReleaseMutex();
                 }
             }                                             
+        }
+
+        private static void MakePortable(ApplicationSettingsBase settings)
+        {
+            var portableSettingsProvider = new PortableSettingsProvider();
+            settings.Providers.Add(portableSettingsProvider);
+            foreach (SettingsProperty prop in settings.Properties)
+            {
+                prop.Provider = portableSettingsProvider;
+            }
+            settings.Reload();
         }
     }
 }
