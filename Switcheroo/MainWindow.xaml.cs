@@ -344,7 +344,7 @@ namespace Switcheroo
         {
             if (lb.Items.Count > 0)
             {                
-                Hide();
+                HideWindow();
                 AppWindow win = (AppWindow)lb.SelectedItem;
                 win.PostClose();
                 win.SwitchTo();               
