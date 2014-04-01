@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<Project DefaultTargets="Main" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <SolutionDir>$(MSBuildProjectDirectory)\..</SolutionDir>
+	<MSBuildCommunityTasksPath>$(SolutionDir)\.build</MSBuildCommunityTasksPath>
+	<BuildTarget>Rebuild</BuildTarget>
+	<Configuration>Release</Configuration>
+	<Constants></Constants>
+  </PropertyGroup>
+  
+  <Import Project="$(SolutionDir)\.build\MSBuild.Community.Tasks.targets" />
+  
+  <ItemGroup>
+	<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.dll" />
+	<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.exe" />
+	<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.exe.config" />
+	<ProgramFiles Include="$(SolutionDir)\LICENSE.txt" />
+  </ItemGroup>
+  
+  <Target Name="Main">
+	<RemoveDir Directories="Output" ContinueOnError="true" />
+	<CallTarget Targets="CreateSetup" />
+	<CallTarget Targets="CreatePortable" />
+	<RemoveDir Directories="ProgramFiles" ContinueOnError="true" />
+  </Target>
+  
+  <Target Name="CreateSetup">
+    <MSBuild Projects="$(SolutionDir)\Switcheroo\Switcheroo.csproj"
+             Targets="$(BuildTarget)"
+             Properties="Configuration=$(Configuration);" />
+	<RemoveDir Directories="ProgramFiles" ContinueOnError="true" />
+	<MakeDir Directories="ProgramFiles" />
+	<Copy SourceFiles="@(ProgramFiles)" DestinationFolder="ProgramFiles" />
+	<Exec Command="InnoSetup\iscc.exe Installer.iss" />
+  </Target>
+  
+  <Target Name="CreatePortable">
+    <MSBuild Projects="$(SolutionDir)\Switcheroo\Switcheroo.csproj"
+             Targets="$(BuildTarget)"
+             Properties="Configuration=$(Configuration);DefineConstants=PORTABLE" />
+	<RemoveDir Directories="ProgramFiles" ContinueOnError="true" />
+	<MakeDir Directories="ProgramFiles" />
+	<Copy SourceFiles="@(ProgramFiles)" DestinationFolder="ProgramFiles" />
+	<CallTarget Targets="ZipPortable" />
+  </Target>
+  
+  <Target Name="ZipPortable">
+  	<CreateItem Include="ProgramFiles\*.*" >
+      <Output ItemName="ZipFiles" TaskParameter="Include"/>
+    </CreateItem>
+    <Zip ZipFileName="Output\switcheroo-portable.zip" Flatten="true" Files="@(ZipFiles)" />
+  </Target>
+  
+</Project>

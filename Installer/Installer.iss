@@ -2,7 +2,7 @@
 #define MyAppPublisher "Regin Larsen"
 #define MyAppURL "http://www.switcheroo.io"
 #define MyAppExeName "switcheroo.exe"
-#define MyAppPath SourcePath + "Source"
+#define MyAppPath SourcePath + "ProgramFiles"
 #define MyAppVer = GetFileVersion(MyAppPath + "\switcheroo.exe")
 
 [Setup]
@@ -16,7 +16,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-OutputBaseFilename=setup
+OutputBaseFilename=switcheroo-setup
 Compression=lzma
 SolidCompression=yes
 
