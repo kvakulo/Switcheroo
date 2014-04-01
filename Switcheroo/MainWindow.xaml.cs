@@ -23,7 +23,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -76,8 +75,11 @@ namespace Switcheroo
             }
             catch (HotkeyAlreadyInUseException)
             {
-                MessageBox.Show("Could not register hotkey (already in use).", "Error", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                var boxText = "The current hotkey for activating Switcheroo is in use by another program." +
+                                     Environment.NewLine +
+                                     Environment.NewLine +
+                                     "You can change the hotkey by right-clicking the Switcheroo icon in the system tray and choosing 'Options'.";
+                MessageBox.Show(boxText, "Hotkey already in use", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
