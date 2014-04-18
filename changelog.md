@@ -1,6 +1,11 @@
 Change log
 ----------
 
+### 2014-04-18: v0.7.3 ###
+- Portable version of Switcheroo (#10)
+- Icons are now shown for admin processes as well (#11)
+- Decrease flickering when closing a window with CTRL+Enter (#12)
+
 ### 2014-03-04: v0.7.2 ###
 - New Switcheroo icon
 - Allow circling in the window list (@ovesen)
