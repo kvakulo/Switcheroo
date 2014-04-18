@@ -19,10 +19,13 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.Caching;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Media.Imaging;
 using ManagedWinapi.Windows;
 
@@ -90,13 +93,16 @@ namespace Switcheroo
             Icon extractAssociatedIcon = null;
             try
             {
-                extractAssociatedIcon = Icon.ExtractAssociatedIcon(Process.MainModule.FileName);
+                extractAssociatedIcon = Icon.ExtractAssociatedIcon(GetExecutablePath(Process));
             }
             catch (Win32Exception)
             {
-                // no access to process
+                // Could not extract icon
             }
-            if (extractAssociatedIcon == null) return null;
+            if (extractAssociatedIcon == null)
+            {
+                return null;
+            }
 
             using (var memory = new MemoryStream())
             {
@@ -110,6 +116,39 @@ namespace Switcheroo
                 bitmapImage.EndInit();
                 return bitmapImage;
             }
+        }
+
+        private static string GetExecutablePath(Process process)
+        {
+            // If Vista or later
+            if (Environment.OSVersion.Version.Major >= 6)
+            {
+                return GetExecutablePathAboveVista(process.Id);
+            }
+
+            return process.MainModule.FileName;
+        }
+
+        private static string GetExecutablePathAboveVista(int processId)
+        {
+            var buffer = new StringBuilder(1024);
+            var hprocess = WinApi.OpenProcess(WinApi.ProcessAccess.QueryLimitedInformation, false, processId);
+            if (hprocess == IntPtr.Zero) throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            try
+            {
+                // ReSharper disable once RedundantAssignment
+                var size = buffer.Capacity;
+                if (WinApi.QueryFullProcessImageName(hprocess, 0, buffer, out size))
+                {
+                    return buffer.ToString();
+                }
+            }
+            finally
+            {
+                WinApi.CloseHandle(hprocess);
+            }
+            throw new Win32Exception(Marshal.GetLastWin32Error());
         }
 
         public AppWindow(IntPtr HWnd) : base(HWnd) { }
