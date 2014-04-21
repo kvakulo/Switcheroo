@@ -206,7 +206,7 @@ namespace Switcheroo
         {
             if (lb.Items.Count > 0)
             {
-                AppWindow win = (AppWindow)lb.SelectedItem ?? (AppWindow)lb.Items[0];
+                var win = (AppWindow) (lb.SelectedItem ?? lb.Items[0]);
                 win.SwitchTo();
             }
             HideWindow();
@@ -363,8 +363,11 @@ namespace Switcheroo
             {                
                 HideWindow();
                 var win = (AppWindow)lb.SelectedItem;
-                win.PostClose();
-                win.SwitchTo();               
+                if (win != null)
+                {
+                    win.PostClose();
+                    win.SwitchTo();               
+                }
             }
             else
             {
