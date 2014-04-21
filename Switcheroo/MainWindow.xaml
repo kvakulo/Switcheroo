@@ -38,7 +38,7 @@
                 <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />                
             </TextBox.InputBindings>
         </TextBox>
-        <ListBox Name="lb" SelectionMode="Single" Margin="0,30,0,0" ItemsSource="{Binding}" >                       
+        <ListBox Name="lb" SelectionMode="Single" Margin="0,30,0,0" ItemsSource="{Binding}" MinWidth="522">                       
             <ListBox.ItemTemplate>                     
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
