@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Switcheroo.Core.Matchers;
 
-namespace Switcheroo
+namespace Switcheroo.Core
 {
     public class FilterResult
     {

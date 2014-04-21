@@ -30,15 +30,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppWindow.cs" />
+    <Compile Include="WindowFilterer.cs" />
+    <Compile Include="WindowFinder.cs" />
     <Compile Include="Matchers\ContainsMatcher.cs" />
     <Compile Include="Matchers\IMatcher.cs" />
     <Compile Include="Matchers\IndividualCharactersMatcher.cs" />
@@ -47,9 +56,16 @@
     <Compile Include="Matchers\StartsWithMatcher.cs" />
     <Compile Include="Matchers\StringPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FilterResult.cs" />
+    <Compile Include="WinApi.cs" />
     <Compile Include="XamlHighlighter.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ManagedWinapi\ManagedWinapi.csproj">
+      <Project>{fbd3ec1e-47e2-4d2d-81c9-d6506125a09a}</Project>
+      <Name>ManagedWinapi</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

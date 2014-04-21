@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Collections.Specialized;
+using Application = System.Windows.Application;
 
 namespace Switcheroo
 {
@@ -21,7 +13,8 @@ namespace Switcheroo
     /// </summary>
     public partial class OptionsWindow : Window
     {
-        private HotKey hotkey;
+        private readonly HotKey _hotkey;
+        private readonly List<string> _exceptions;
 
         public OptionsWindow()
         {
@@ -34,15 +27,17 @@ namespace Switcheroo
             Keys.DataContext = keyList;
             
             // Highlight what's already selected     
-            hotkey = CoreStuff.HotKey;
-            Keys.SelectedItem = hotkey.KeyCode;
-            Alt.IsChecked = hotkey.Alt;
-            Ctrl.IsChecked = hotkey.Ctrl;
-            WindowsKey.IsChecked = hotkey.WindowsKey;
-            Shift.IsChecked = hotkey.Shift;
+            _hotkey = (HotKey) Application.Current.Properties["hotkey"];
+            _hotkey.LoadSettings();
+            Keys.SelectedItem = _hotkey.KeyCode;
+            Alt.IsChecked = _hotkey.Alt;
+            Ctrl.IsChecked = _hotkey.Ctrl;
+            WindowsKey.IsChecked = _hotkey.WindowsKey;
+            Shift.IsChecked = _hotkey.Shift;
 
             // Populate text box
-            ExceptionList.Text = String.Join(Environment.NewLine, CoreStuff.ExceptionList.ToArray());
+            _exceptions = (List<string>) Application.Current.Properties["exceptions"];
+            ExceptionList.Text = String.Join(Environment.NewLine, _exceptions);
 
         }
 
@@ -54,18 +49,19 @@ namespace Switcheroo
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             // Change the active hotkey
-            hotkey.Alt = (bool)Alt.IsChecked;
-            hotkey.Shift = (bool)Shift.IsChecked;
-            hotkey.Ctrl = (bool)Ctrl.IsChecked;
-            hotkey.WindowsKey = (bool)WindowsKey.IsChecked;
-            hotkey.KeyCode = (Keys)Keys.SelectedItem;
-            hotkey.SaveSettings();
+            _hotkey.Alt = (bool)Alt.IsChecked;
+            _hotkey.Shift = (bool)Shift.IsChecked;
+            _hotkey.Ctrl = (bool)Ctrl.IsChecked;
+            _hotkey.WindowsKey = (bool)WindowsKey.IsChecked;
+            _hotkey.KeyCode = (Keys)Keys.SelectedItem;
+            _hotkey.SaveSettings();
 
             // Save edited text list to app config
-            string[] tempExclusionList = ExceptionList.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); ;
-            CoreStuff.ExceptionList = tempExclusionList.ToList();           
+            var tempExclusionList = ExceptionList.Text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            _exceptions.Clear();
+            _exceptions.AddRange(tempExclusionList);
             Properties.Settings.Default.Exceptions.Clear();
-            Properties.Settings.Default.Exceptions.AddRange(CoreStuff.ExceptionList.ToArray());
+            Properties.Settings.Default.Exceptions.AddRange(tempExclusionList);
             Properties.Settings.Default.Save();
             Close();
         }

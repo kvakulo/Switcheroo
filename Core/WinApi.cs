@@ -18,17 +18,16 @@
  */
 
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Switcheroo
+namespace Switcheroo.Core
 {
-    static public class WinApi
+    internal static class WinApi
     {                     
         public delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
-        public static IntPtr statusbar = FindWindow("Shell_TrayWnd", "");
+        public static IntPtr Statusbar = FindWindow("Shell_TrayWnd", "");
                 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);

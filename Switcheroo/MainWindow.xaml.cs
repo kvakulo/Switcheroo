@@ -37,6 +37,7 @@ namespace Switcheroo
     public partial class MainWindow : Window
     {
         private List<AppWindow> _windowList;
+        private List<string> _exceptionList;
         private System.Windows.Forms.NotifyIcon _notifyIcon;                
         private HotKey _hotkey;
 
@@ -55,6 +56,8 @@ namespace Switcheroo
 
             SetUpHotKey();
 
+            LoadExceptionList();
+
             CheckForUpdates();
 
             Opacity = 0;
@@ -65,9 +68,11 @@ namespace Switcheroo
         /// =================================
         private void SetUpHotKey()
         {
-            CoreStuff.Initialize();
-            _hotkey = CoreStuff.HotKey;
-            _windowList = CoreStuff.WindowList;
+            _hotkey = new HotKey();
+            _hotkey.LoadSettings();
+
+            Application.Current.Properties["hotkey"] = _hotkey;
+
             _hotkey.HotkeyPressed += hotkey_HotkeyPressed;
             try
             {
@@ -98,6 +103,12 @@ namespace Switcheroo
                     new System.Windows.Forms.MenuItem("Exit", (s, e) => Quit())
                 })
             };
+        }
+
+        private void LoadExceptionList()
+        {
+            _exceptionList = Properties.Settings.Default.Exceptions.Cast<string>().ToList();
+            Application.Current.Properties["exceptions"] = _exceptionList;
         }
 
         private static void CheckForUpdates()
@@ -153,8 +164,7 @@ namespace Switcheroo
         /// </summary>
         private void LoadData()
         {
-            _windowList.Clear();
-            CoreStuff.GetWindows();
+            _windowList = GetWindows();
 
             foreach (var window in _windowList)
             {
@@ -168,6 +178,13 @@ namespace Switcheroo
             tb.Clear();
             tb.Focus();
             Resize();
+        }
+
+        private List<AppWindow> GetWindows()
+        {
+            var windows = new WindowFinder().GetWindows();
+
+            return windows.Where(w => !_exceptionList.Contains(w.Title)).ToList();
         }
 
         /// <summary>
@@ -302,7 +319,7 @@ namespace Switcheroo
         {
             var text = tb.Text;
 
-            var filterResults = CoreStuff.FilterList(text).ToList();
+            var filterResults = new WindowFilterer().Filter(_windowList, text).ToList();
 
             foreach (var filterResult in filterResults)
             {
@@ -345,7 +362,7 @@ namespace Switcheroo
             if (lb.Items.Count > 0)
             {                
                 HideWindow();
-                AppWindow win = (AppWindow)lb.SelectedItem;
+                var win = (AppWindow)lb.SelectedItem;
                 win.PostClose();
                 win.SwitchTo();               
             }
