@@ -50,8 +50,12 @@ namespace Switcheroo
                         MakePortable(Settings.Default);
                     #endif
 
-                    App app = new App();
-                    app.MainWindow = new MainWindow();                    
+                    MigrateUserSettings();
+
+                    var app = new App
+                    {
+                        MainWindow = new MainWindow()
+                    };
                     app.Run();
                 }
                 finally
@@ -71,6 +75,15 @@ namespace Switcheroo
                 prop.Provider = portableSettingsProvider;
             }
             settings.Reload();
+        }
+
+        private static void MigrateUserSettings()
+        {
+            if (!Settings.Default.FirstRun) return;
+
+            Settings.Default.Upgrade();
+            Settings.Default.FirstRun = false;
+            Settings.Default.Save();
         }
     }
 }
