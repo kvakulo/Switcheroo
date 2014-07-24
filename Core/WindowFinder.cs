@@ -17,50 +17,18 @@
  * along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Switcheroo.Core
 {
     public class WindowFinder
     {
-        private readonly List<AppWindow> _windowList = new List<AppWindow>();
-
         public List<AppWindow> GetWindows()
         {
-            _windowList.Clear();
-            WinApi.EnumWindowsProc callback =  EnumWindows;
-            WinApi.EnumWindows(callback, 0);
-            return _windowList;
-        }
-
-        private bool EnumWindows(IntPtr hWnd, int lParam)
-        {
-            if (!WinApi.IsWindowVisible(hWnd))
-            {
-                return true;
-            }
-
-            if (hWnd == WinApi.Statusbar)
-            {
-                return true;
-            }
-
-            var title = new StringBuilder(256);
-            WinApi.GetWindowText(hWnd, title, 256);
-
-            if (string.IsNullOrEmpty(title.ToString())) {
-                return true;
-            }
-
-            var appWindow = new AppWindow(hWnd);
-            if (appWindow.IsAltTabWindow())
-            {
-                _windowList.Add(appWindow);
-            }
-
-            return true;
+            return AppWindow.AllToplevelWindows
+                .Where(a => a.IsAltTabWindow())
+                .ToList();
         }
     }
 }

@@ -18,11 +18,13 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.Caching;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -145,22 +147,41 @@ namespace Switcheroo.Core
             WinApi.SwitchToThisWindow(HWnd, true);                                    
         }
 
+        public AppWindow Owner
+        {
+            get
+            {
+                var ownerHandle = WinApi.GetWindow(HWnd, WinApi.GetWindowCmd.GW_OWNER);
+                if (ownerHandle == IntPtr.Zero) return null;
+                return new AppWindow(ownerHandle);
+            }
+        }
+
+        public static new IEnumerable<AppWindow> AllToplevelWindows
+        {
+            get
+            {
+                return SystemWindow.AllToplevelWindows
+                    .Select(w => new AppWindow(w.HWnd));
+            }
+        }
+
         public bool IsAltTabWindow()
         {
+            if (!Visible) return false;
+            if (!HasWindowTitle()) return false;
             if (IsAppWindow()) return true;
-            if (IsToolWindow() || IsControlParent()) return false;
+            if (IsToolWindow()) return false;
+            if (IsNoActivate()) return false;
+            if (!IsLastActiveVisiblePopup()) return false;
+            if (!IsOwnerOrOwnerNotVisible()) return false;
 
-            // Start at the root owner
-            var handleWalk = WinApi.GetAncestor(HWnd, WinApi.GetAncestorFlags.GetRootOwner);
+            return true;
+        }
 
-            // See if we are the last active visible popup
-            IntPtr handleTry;
-            while ((handleTry = WinApi.GetLastActivePopup(handleWalk)) != handleTry)
-            {
-                if (WinApi.IsWindowVisible(handleTry)) break;
-                handleWalk = handleTry;
-            }
-            return handleWalk == HWnd;
+        private bool HasWindowTitle()
+        {
+            return Title.Length > 0;
         }
 
         private bool IsToolWindow()
@@ -173,9 +194,33 @@ namespace Switcheroo.Core
             return (ExtendedStyle & WindowExStyleFlags.APPWINDOW) == WindowExStyleFlags.APPWINDOW;
         }
 
-        private bool IsControlParent()
+        private bool IsNoActivate()
         {
-            return (ExtendedStyle & WindowExStyleFlags.CONTROLPARENT) == WindowExStyleFlags.CONTROLPARENT;
+            return (ExtendedStyle & WindowExStyleFlags.NOACTIVATE) == WindowExStyleFlags.NOACTIVATE;
+        }
+
+        private bool IsLastActiveVisiblePopup()
+        {
+            // Which windows appear in the Alt+Tab list? -Raymond Chen
+            // http://blogs.msdn.com/b/oldnewthing/archive/2007/10/08/5351207.aspx
+
+            // Start at the root owner
+            var hwndTry = WinApi.GetAncestor(HWnd, WinApi.GetAncestorFlags.GetRootOwner);
+
+            // See if we are the last active visible popup
+            var hwndWalk = IntPtr.Zero;
+            while (hwndTry != hwndWalk)
+            {
+                hwndWalk = hwndTry;
+                hwndTry = WinApi.GetLastActivePopup(hwndWalk);
+                if (WinApi.IsWindowVisible(hwndTry)) break;
+            }
+            return hwndWalk == HWnd;
+        }
+
+        private bool IsOwnerOrOwnerNotVisible()
+        {
+            return Owner == null || !Owner.Visible;
         }
     }
 }
