@@ -10,13 +10,6 @@
   
   <Import Project="$(SolutionDir)\.build\MSBuild.Community.Tasks.targets" />
   
-  <ItemGroup>
-	<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.dll" />
-	<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.exe" />
-	<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.exe.config" />
-	<ProgramFiles Include="$(SolutionDir)\LICENSE.txt" />
-  </ItemGroup>
-  
   <Target Name="Main">
 	<RemoveDir Directories="Output" ContinueOnError="true" />
 	<CallTarget Targets="CreateSetup" />
@@ -30,6 +23,12 @@
              Properties="Configuration=$(Configuration);" />
 	<RemoveDir Directories="ProgramFiles" ContinueOnError="true" />
 	<MakeDir Directories="ProgramFiles" />
+	<ItemGroup>
+		<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.dll" />
+		<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.exe" />
+		<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.exe.config" />
+		<ProgramFiles Include="$(SolutionDir)\LICENSE.txt" />
+	</ItemGroup>
 	<Copy SourceFiles="@(ProgramFiles)" DestinationFolder="ProgramFiles" />
 	<Exec Command="InnoSetup\iscc.exe Installer.iss" />
   </Target>
@@ -40,6 +39,12 @@
              Properties="Configuration=$(Configuration);DefineConstants=PORTABLE" />
 	<RemoveDir Directories="ProgramFiles" ContinueOnError="true" />
 	<MakeDir Directories="ProgramFiles" />
+	<ItemGroup>
+		<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.dll" />
+		<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.exe" />
+		<ProgramFiles Include="$(SolutionDir)\Switcheroo\bin\Release\*.exe.config" />
+		<ProgramFiles Include="$(SolutionDir)\LICENSE.txt" />
+	</ItemGroup>
 	<Copy SourceFiles="@(ProgramFiles)" DestinationFolder="ProgramFiles" />
 	<CallTarget Targets="ZipPortable" />
   </Target>
