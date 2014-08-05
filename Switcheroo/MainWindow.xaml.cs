@@ -36,6 +36,7 @@ using Switcheroo.Core;
 using Switcheroo.Core.Matchers;
 using Switcheroo.Properties;
 using Application = System.Windows.Application;
+using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Switcheroo
@@ -43,7 +44,7 @@ namespace Switcheroo
     public partial class MainWindow : Window
     {
         private List<AppWindow> _windowList;
-        private System.Windows.Forms.NotifyIcon _notifyIcon;                
+        private NotifyIcon _notifyIcon;                
         private HotKey _hotkey;
 
         public readonly static RoutedUICommand CloseWindowCommand = new RoutedUICommand();
@@ -103,18 +104,41 @@ namespace Switcheroo
         private void SetUpNotifyIcon()
         {
             var icon = Properties.Resources.icon;
-            _notifyIcon = new System.Windows.Forms.NotifyIcon
+
+            var runOnStartupMenuItem = new MenuItem("Run on Startup", (s, e) => RunOnStartup(s as MenuItem))
+            {
+                Checked = new AutoStart().IsEnabled
+            };
+
+            _notifyIcon = new NotifyIcon
             {
                 Text = "Switcheroo",
                 Icon = icon,
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new[]
                 {
-                    new System.Windows.Forms.MenuItem("Options", (s, e) => Options()),
-                    new System.Windows.Forms.MenuItem("About", (s, e) => About()),
-                    new System.Windows.Forms.MenuItem("Exit", (s, e) => Quit())
+                    new MenuItem("Options", (s, e) => Options()),
+                    runOnStartupMenuItem,
+                    new MenuItem("About", (s, e) => About()),
+                    new MenuItem("Exit", (s, e) => Quit())
                 })
             };
+        }
+
+        private static void RunOnStartup(MenuItem menuItem)
+        {
+            try
+            {
+                var autoStart = new AutoStart
+                {
+                    IsEnabled = !menuItem.Checked
+                };
+                menuItem.Checked = autoStart.IsEnabled;
+            }
+            catch (AutoStartException e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private static void CheckForUpdates()
