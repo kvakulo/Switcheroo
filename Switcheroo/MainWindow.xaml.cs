@@ -19,7 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -44,7 +43,6 @@ namespace Switcheroo
     public partial class MainWindow : Window
     {
         private List<AppWindow> _windowList;
-        private List<string> _exceptionList;
         private System.Windows.Forms.NotifyIcon _notifyIcon;                
         private HotKey _hotkey;
 
@@ -65,8 +63,6 @@ namespace Switcheroo
             SetUpHotKey();
 
             SetUpAltTabHook();
-
-            LoadExceptionList();
 
             CheckForUpdates();
 
@@ -119,12 +115,6 @@ namespace Switcheroo
                     new System.Windows.Forms.MenuItem("Exit", (s, e) => Quit())
                 })
             };
-        }
-
-        private void LoadExceptionList()
-        {
-            _exceptionList = Properties.Settings.Default.Exceptions.Cast<string>().ToList();
-            Application.Current.Properties["exceptions"] = _exceptionList;
         }
 
         private static void CheckForUpdates()
@@ -180,7 +170,7 @@ namespace Switcheroo
         /// </summary>
         private void LoadData()
         {
-            _windowList = GetWindows();
+            _windowList = new WindowFinder().GetWindows();
 
             foreach (var window in _windowList)
             {
@@ -194,13 +184,6 @@ namespace Switcheroo
             tb.Clear();
             tb.Focus();
             Resize();
-        }
-
-        private List<AppWindow> GetWindows()
-        {
-            var windows = new WindowFinder().GetWindows();
-
-            return windows.Where(w => !_exceptionList.Contains(w.Title)).ToList();
         }
 
         /// <summary>
