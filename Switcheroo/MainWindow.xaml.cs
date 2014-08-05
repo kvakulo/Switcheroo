@@ -26,11 +26,16 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using ManagedWinapi;
+using ManagedWinapi.Windows;
 using Switcheroo.Core;
 using Switcheroo.Core.Matchers;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Switcheroo
 {
@@ -47,6 +52,7 @@ namespace Switcheroo
         public readonly static RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
+        private AltTabHook _altTabHook;
 
         public MainWindow()
         {           
@@ -55,6 +61,8 @@ namespace Switcheroo
             SetUpNotifyIcon();
 
             SetUpHotKey();
+
+            SetUpAltTabHook();
 
             LoadExceptionList();
 
@@ -86,6 +94,12 @@ namespace Switcheroo
                                      "You can change the hotkey by right-clicking the Switcheroo icon in the system tray and choosing 'Options'.";
                 MessageBox.Show(boxText, "Hotkey already in use", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        private void SetUpAltTabHook()
+        {
+            _altTabHook = new AltTabHook();
+            _altTabHook.Pressed += AltTabPressed;
         }
 
         private void SetUpNotifyIcon()
@@ -299,7 +313,7 @@ namespace Switcheroo
             HideWindow();
         }            
         
-        void hotkey_HotkeyPressed(object sender, EventArgs e)
+        private void hotkey_HotkeyPressed(object sender, EventArgs e)
         {
             if (Visibility != Visibility.Visible)
             {
@@ -312,6 +326,73 @@ namespace Switcheroo
             else
             {
                 HideWindow();
+            }
+        }
+
+        private void AltTabPressed(object sender, AltTabHookEventArgs e)
+        {
+            if (Visibility != Visibility.Visible)
+            {
+                ActivateAndFocusMainWindow();
+
+                Keyboard.Focus(tb);
+                LoadData();
+
+                if (e.ShiftDown)
+                {
+                    lb.SelectedIndex = lb.Items.Count - 1;
+                }
+                else
+                {
+                    lb.SelectedIndex = 1;
+                }
+
+                Opacity = 1;
+
+            }
+            else
+            {
+                if (e.ShiftDown)
+                {
+                    PreviousItem();
+                }
+                else
+                {
+                    NextItem();
+                }
+            }
+        }
+
+        private void ActivateAndFocusMainWindow()
+        {
+            // What happens below looks a bit weird, but for Switcheroo to get focus when using the Alt+Tab hook,
+            // it is needed to simulate an Alt keypress will bring Switcheroo to the foreground. Otherwise Switcheroo
+            // will become the foreground window, but the previous window will retain focus, and receive keep getting
+            // the keyboard input.
+            // http://www.codeproject.com/Tips/76427/How-to-bring-window-to-top-with-SetForegroundWindo
+
+            var thisWindowHandle = new WindowInteropHelper(this).Handle;
+            var thisWindow = new AppWindow(thisWindowHandle);
+
+            var altKey = new KeyboardKey(Keys.Alt);
+            var altKeyPressed = false;
+
+            // Press the Alt key if it is not already being pressed
+            if ((altKey.AsyncState & 0x8000) == 0)
+            {
+                altKey.Press();
+                altKeyPressed = true;
+            }
+
+            // Bring the Switcheroo window to the foreground
+            Show();
+            SystemWindow.ForegroundWindow = thisWindow;
+            Activate();
+
+            // Release the Alt key if it was pressed above
+            if (altKeyPressed)
+            {
+                altKey.Release();
             }
         }
 
@@ -378,6 +459,12 @@ namespace Switcheroo
 
         private void ScrollListUp(object sender, ExecutedRoutedEventArgs e)
         {
+            PreviousItem();
+            e.Handled = true;
+        }
+
+        private void PreviousItem()
+        {
             if (lb.Items.Count > 0)
             {
                 if (lb.SelectedIndex != 0)
@@ -389,11 +476,15 @@ namespace Switcheroo
                     lb.SelectedIndex = lb.Items.Count - 1;
                 }
             }
-
-            e.Handled = true;
         }
 
         private void ScrollListDown(object sender, ExecutedRoutedEventArgs e)
+        {
+            NextItem();
+            e.Handled = true;
+        }
+
+        private void NextItem()
         {
             if (lb.Items.Count > 0)
             {
@@ -406,7 +497,6 @@ namespace Switcheroo
                     lb.SelectedIndex = 0;
                 }
             }
-            e.Handled = true;
         }
 
         private void MainWindow_OnLostFocus(object sender, EventArgs e)
