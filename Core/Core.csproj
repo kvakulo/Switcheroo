@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppWindow.cs" />
+    <Compile Include="KeyboardHelper.cs" />
     <Compile Include="WindowFilterer.cs" />
     <Compile Include="WindowFinder.cs" />
     <Compile Include="Matchers\ContainsMatcher.cs" />

@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -34,6 +35,7 @@ using ManagedWinapi;
 using ManagedWinapi.Windows;
 using Switcheroo.Core;
 using Switcheroo.Core.Matchers;
+using Switcheroo.Properties;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
@@ -331,6 +333,12 @@ namespace Switcheroo
 
         private void AltTabPressed(object sender, AltTabHookEventArgs e)
         {
+            if (!Settings.Default.AltTabHook)
+            {
+                // Ignore Alt+Tab presses if the hook is not activated by the user
+                return;
+            }
+
             if (Visibility != Visibility.Visible)
             {
                 ActivateAndFocusMainWindow();
