@@ -10,4 +10,4 @@ It's inspired by Emacs's IDO mode buffer switching and JetBrains' ReSharper.
 
 TeamCity
 --------
-* `master`: ![Build status](http://teamcity.codebetter.com/guestAuth/app/rest/builds/buildType:(id:bt1196)/statusIcon)
+* `master`: [![Build status](http://teamcity.codebetter.com/guestAuth/app/rest/builds/buildType:(id:bt1196)/statusIcon)](http://teamcity.codebetter.com/project.html?projectId=Switcheroo&tab=projectOverview)
