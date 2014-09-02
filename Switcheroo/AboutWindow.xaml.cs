@@ -21,6 +21,7 @@
 using System.Reflection;
 using System.Windows;
 using System.Diagnostics;
+using System.Windows.Documents;
 
 namespace Switcheroo
 {
@@ -34,10 +35,10 @@ namespace Switcheroo
 
         void HandleRequestNavigate(object sender, RoutedEventArgs e)
         {
-            string navigateUri = hl.NavigateUri.ToString();
-            // if the URI somehow came from an untrusted source, make sure to
-            // validate it before calling Process.Start(), e.g. check to see
-            // the scheme is HTTP, etc.
+            var hyperlink = e.OriginalSource as Hyperlink;
+            if (hyperlink == null) return;
+
+            var navigateUri = hyperlink.NavigateUri.ToString();
             Process.Start(new ProcessStartInfo(navigateUri));
             e.Handled = true;
         }

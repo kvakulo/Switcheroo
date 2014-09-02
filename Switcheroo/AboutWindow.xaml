@@ -3,15 +3,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="About Switcheroo" 
     WindowStartupLocation="CenterScreen"
-    ShowInTaskbar="False" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
-    <StackPanel Margin="10">                
-        <TextBlock >
+    ShowInTaskbar="False"
+    SizeToContent="Height"
+    ResizeMode="NoResize"
+    Width="400">
+    <StackPanel Margin="10">
+        <ScrollViewer Height="250">
+            <TextBlock TextWrapping="Wrap" Margin="0,0,10,0" Padding="0,0,0,30">
             <Bold>Switcheroo</Bold>
             <LineBreak/>
             <Italic>The humble incremental-search task switcher for Windows</Italic>
             <LineBreak/>
+            <Hyperlink RequestNavigate="HandleRequestNavigate" NavigateUri="http://www.switcheroo.io">www.switcheroo.io</Hyperlink>
             <LineBreak/>
-            Version: <Span Name="VersionNumber"></Span>           
+            <LineBreak/>
+            Version: <Span Name="VersionNumber"></Span>
             <LineBreak/>
             <LineBreak/>
             © Copyright 2014 Regin Larsen
@@ -19,8 +25,44 @@
             © Copyright 2009, 2010 James Sulak
             <LineBreak />
             <LineBreak />
-            <Hyperlink RequestNavigate="HandleRequestNavigate" Name="hl" NavigateUri="http://www.switcheroo.io">www.switcheroo.io</Hyperlink>            
-        </TextBlock>
+            Switcheroo is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either version 3 of the License, or
+            (at your option) any later version.
+            <LineBreak />
+            <LineBreak />
+            Switcheroo is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            GNU General Public License for more details.
+            <LineBreak />
+            <LineBreak />
+            You should have received a copy of the GNU General Public License
+            along with Switcheroo.  If not, see
+            <Hyperlink RequestNavigate="HandleRequestNavigate" NavigateUri="http://www.gnu.org/licenses/">www.gnu.org/licenses/</Hyperlink>
+            <LineBreak />
+            <LineBreak />
+            Switcheroo makes use of these great open source projects:
+            <LineBreak />
+            <LineBreak />
+            <Bold>Managed Windows API</Bold>
+            <LineBreak />
+            Copyright © 2006 Michael Schier
+            <LineBreak />
+            GNU Lesser General Public License (LGPL)
+            <Hyperlink RequestNavigate="HandleRequestNavigate" NavigateUri="http://mwinapi.sourceforge.net/">mwinapi.sourceforge.net</Hyperlink>
+            <LineBreak />
+            <LineBreak />
+            <Bold>PortableSettingsProvider</Bold>
+            <LineBreak />
+            Copyright © crdx
+            <LineBreak />
+            The MIT License (MIT)
+            <LineBreak />
+            <Hyperlink RequestNavigate="HandleRequestNavigate" NavigateUri="https://github.com/crdx/PortableSettingsProvider">github.com/crdx/PortableSettingsProvider</Hyperlink>
+            </TextBlock>
+        </ScrollViewer>
+        
         <Grid HorizontalAlignment="Center" Margin="0,10,0,0">
             <Button Name="Ok" Width="60" Click="Ok_Click" IsDefault="True">OK</Button>
         </Grid>
