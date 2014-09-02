@@ -23,6 +23,9 @@ SolidCompression=yes
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
 
+[InstallDelete]
+Type: files; Name: "{commonstartup}\{#MyAppName}.lnk"
+
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: startupfolder; Description: Startup with Windows
@@ -36,8 +39,8 @@ Source: {#MyAppPath}\LICENSE.txt; DestDir: {app}; Flags: ignoreversion
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
-Name: {commondesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
-Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: startupfolder
+Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
+Name: {userstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: startupfolder
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
