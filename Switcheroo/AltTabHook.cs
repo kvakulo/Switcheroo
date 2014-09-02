@@ -11,6 +11,7 @@ namespace Switcheroo
     public class AltTabHookEventArgs : EventArgs
     {
         public bool ShiftDown { get; set; }
+        public bool Handled { get; set; }
     }
 
     public class AltTabHook : IDisposable
@@ -42,12 +43,12 @@ namespace Switcheroo
                 return;
             }
 
-            handled = true;
-
             var shiftKeyDown = (_shiftKey.AsyncState & 32768) != 0; // is held down
             Trace.WriteLine("Shiftkey: " + shiftKeyDown);
 
-            OnPressed(shiftKeyDown);
+            var eventArgs = OnPressed(shiftKeyDown);
+
+            handled = eventArgs.Handled;
         }
 
         private static bool IsAltTabKeyCombination(LowLevelKeyboardMessage keyboardMessage)
@@ -56,13 +57,15 @@ namespace Switcheroo
                    && keyboardMessage.Flags == AltDown;
         }
 
-        private void OnPressed(bool shiftDown)
+        private AltTabHookEventArgs OnPressed(bool shiftDown)
         {
+            var altTabHookEventArgs = new AltTabHookEventArgs { ShiftDown = shiftDown };
             var handler = Pressed;
             if (handler != null)
             {
-                handler(this, new AltTabHookEventArgs { ShiftDown = shiftDown });
+                handler(this, altTabHookEventArgs);
             }
+            return altTabHookEventArgs;
         }
 
         public void Dispose()

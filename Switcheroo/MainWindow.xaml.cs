@@ -346,6 +346,8 @@ namespace Switcheroo
                 return;
             }
 
+            e.Handled = true;
+
             if (Visibility != Visibility.Visible)
             {
                 ActivateAndFocusMainWindow();
