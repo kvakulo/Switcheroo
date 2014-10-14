@@ -18,6 +18,7 @@
  * along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -42,7 +43,14 @@ namespace Switcheroo
 
             // Show what's already selected     
             _hotkey = (HotKey)Application.Current.Properties["hotkey"];
-            _hotkey.LoadSettings();
+
+            try
+            {
+                _hotkey.LoadSettings();
+            }
+            catch (HotkeyAlreadyInUseException)
+            {
+            }
 
             _hotkeyViewModel = new HotkeyViewModel
             {
