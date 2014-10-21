@@ -24,9 +24,14 @@
         <KeyBinding Command="Close" Key="Escape" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
-    </Window.InputBindings>    
-    
-    <Grid>          
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <local:WindowHandleToIconConverter x:Key="WindowHandleToIconConverter" />
+        <local:WindowHandleToCachedIconConverter x:Key="WindowHandleToCachedIconConverter" />
+    </Window.Resources>
+
+        <Grid>          
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
@@ -51,7 +56,14 @@
                                 <ColumnDefinition Width="400" />
                                 <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
-                            <Image Source="{Binding Path=IconImage}" Height="19" Grid.Row="0" Grid.Column="0" Margin="3" />
+                            <Image Height="19" Grid.Row="0" Grid.Column="0" Margin="3">
+                                <Image.Source>
+                                    <PriorityBinding>
+                                        <Binding Path="HWnd" Converter="{StaticResource WindowHandleToIconConverter}" IsAsync="True"/>
+                                        <Binding Path="HWnd" Converter="{StaticResource WindowHandleToCachedIconConverter}" />
+                                    </PriorityBinding>
+                                </Image.Source>
+                                </Image>
                             <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedTitle}"
                                        Grid.Row="0" Grid.Column="1" Margin="3" />
                             <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedProcessTitle}"

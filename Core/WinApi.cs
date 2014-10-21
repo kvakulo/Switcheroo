@@ -246,5 +246,59 @@ namespace Switcheroo.Core
             /// </summary>
             MAPVK_VK_TO_VSC_EX = 0x04
         }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hwnd, int message, int wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr DefWindowProc(IntPtr hWnd, int message, int wParam, IntPtr lParam);
+
+        public enum ClassLongFlags
+        {
+            GCLP_MENUNAME = -8,
+            GCLP_HBRBACKGROUND = -10,
+            GCLP_HCURSOR = -12,
+            GCLP_HICON = -14,
+            GCLP_HMODULE = -16,
+            GCL_CBWNDEXTRA = -18,
+            GCL_CBCLSEXTRA = -20,
+            GCLP_WNDPROC = -24,
+            GCL_STYLE = -26,
+            GCLP_HICONSM = -34,
+            GCW_ATOM = -32
+        }
+
+        public static IntPtr GetClassLongPtr(IntPtr hWnd, ClassLongFlags flags)
+        {
+            return IntPtr.Size > 4 ? GetClassLongPtr64(hWnd, flags) : new IntPtr(GetClassLongPtr32(hWnd, flags));
+        }
+
+        [DllImport("user32.dll", EntryPoint = "GetClassLong")]
+        public static extern uint GetClassLongPtr32(IntPtr hWnd, ClassLongFlags flags);
+
+        [DllImport("user32.dll", EntryPoint = "GetClassLongPtr")]
+        public static extern IntPtr GetClassLongPtr64(IntPtr hWnd, ClassLongFlags flags);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern uint RegisterWindowMessage(string lpString);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessageTimeout(
+            IntPtr hWnd,
+            uint Msg,
+            IntPtr wParam,
+            IntPtr lParam,
+            SendMessageTimeoutFlags fuFlags,
+            uint uTimeout,
+            out IntPtr lpdwResult);
+
+        [Flags]
+        public enum SendMessageTimeoutFlags : uint
+        {
+            SMTO_NORMAL = 0x0,
+            SMTO_BLOCK = 0x1,
+            SMTO_ABORTIFHUNG = 0x2,
+            SMTO_NOTIMEOUTIFNOTHUNG = 0x8
+        }
     }
 }

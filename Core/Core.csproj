@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FilterResult.cs" />
     <Compile Include="WinApi.cs" />
+    <Compile Include="WindowIconFinder.cs" />
     <Compile Include="XamlHighlighter.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -21,24 +21,21 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Media.Imaging;
 using ManagedWinapi.Windows;
+using Microsoft.Win32;
 
 namespace Switcheroo.Core
 {
-
     /// <summary>
     /// This class is a wrapper around the Win32 api window handles
     /// </summary>
-    public class AppWindow : ManagedWinapi.Windows.SystemWindow
+    public class AppWindow : SystemWindow
     {
         public string FormattedTitle { get; set; }
 
@@ -59,82 +56,21 @@ namespace Switcheroo.Core
 
         public string FormattedProcessTitle { get; set; }
 
-        public BitmapImage IconImage
+
+
+        public Icon LargeWindowIcon
         {
-            get
-            {
-                var key = "IconImage-" + HWnd;
-                var iconImage = MemoryCache.Default.Get(key) as BitmapImage;
-                if (iconImage == null)
-                {
-                    iconImage = ExtractIcon() ?? new BitmapImage();
-                    MemoryCache.Default.Add(key, iconImage, DateTimeOffset.Now.AddHours(1));
-                }
-                return iconImage;
-            }
+            get { return new WindowIconFinder().Find(this, WindowIconSize.Large); }
         }
 
-        private BitmapImage ExtractIcon()
+        public Icon SmallWindowIcon
         {
-            Icon extractAssociatedIcon = null;
-            try
-            {
-                extractAssociatedIcon = Icon.ExtractAssociatedIcon(GetExecutablePath(Process));
-            }
-            catch (Win32Exception)
-            {
-                // Could not extract icon
-            }
-            if (extractAssociatedIcon == null)
-            {
-                return null;
-            }
-
-            using (var memory = new MemoryStream())
-            {
-                var bitmap = extractAssociatedIcon.ToBitmap();
-                bitmap.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                return bitmapImage;
-            }
+            get { return new WindowIconFinder().Find(this, WindowIconSize.Small); }
         }
 
-        private static string GetExecutablePath(Process process)
+        public string ExecutablePath
         {
-            // If Vista or later
-            if (Environment.OSVersion.Version.Major >= 6)
-            {
-                return GetExecutablePathAboveVista(process.Id);
-            }
-
-            return process.MainModule.FileName;
-        }
-
-        private static string GetExecutablePathAboveVista(int processId)
-        {
-            var buffer = new StringBuilder(1024);
-            var hprocess = WinApi.OpenProcess(WinApi.ProcessAccess.QueryLimitedInformation, false, processId);
-            if (hprocess == IntPtr.Zero) throw new Win32Exception(Marshal.GetLastWin32Error());
-
-            try
-            {
-                // ReSharper disable once RedundantAssignment
-                var size = buffer.Capacity;
-                if (WinApi.QueryFullProcessImageName(hprocess, 0, buffer, out size))
-                {
-                    return buffer.ToString();
-                }
-            }
-            finally
-            {
-                WinApi.CloseHandle(hprocess);
-            }
-            throw new Win32Exception(Marshal.GetLastWin32Error());
+            get { return GetExecutablePath(Process.Id); }
         }
 
         public AppWindow(IntPtr HWnd) : base(HWnd) { }
@@ -182,7 +118,7 @@ namespace Switcheroo.Core
 
         private bool HasWindowTitle()
         {
-            return Title.Length > 0;
+            return !string.IsNullOrEmpty(Title);
         }
 
         private bool IsToolWindow()
@@ -222,6 +158,29 @@ namespace Switcheroo.Core
         private bool IsOwnerOrOwnerNotVisible()
         {
             return Owner == null || !Owner.Visible;
+        }
+
+        // This method only works on Windows >= Windows Vista
+        private static string GetExecutablePath(int processId)
+        {
+            var buffer = new StringBuilder(1024);
+            var hprocess = WinApi.OpenProcess(WinApi.ProcessAccess.QueryLimitedInformation, false, processId);
+            if (hprocess == IntPtr.Zero) throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            try
+            {
+                // ReSharper disable once RedundantAssignment
+                var size = buffer.Capacity;
+                if (WinApi.QueryFullProcessImageName(hprocess, 0, buffer, out size))
+                {
+                    return buffer.ToString();
+                }
+            }
+            finally
+            {
+                WinApi.CloseHandle(hprocess);
+            }
+            throw new Win32Exception(Marshal.GetLastWin32Error());
         }
     }
 }
