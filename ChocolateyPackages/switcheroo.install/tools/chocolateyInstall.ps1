@@ -1,6 +1,6 @@
 ﻿$packageName = 'switcheroo.install'
 $installerType = 'EXE'
-$url = 'https://github.com/kvakulo/Switcheroo/releases/download/v0.8.1/switcheroo-setup.exe'
+$url = 'https://github.com/kvakulo/Switcheroo/releases/download/v0.8.2/switcheroo-setup.exe'
 $silentArgs = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART'
 $validExitCodes = @(0)
 
