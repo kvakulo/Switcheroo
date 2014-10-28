@@ -1,4 +1,4 @@
-Switcheroo  [![Build Status](http://img.shields.io/teamcity/codebetter/Switcheroo.svg?style=flat)](http://teamcity.codebetter.com/project.html?projectId=Switcheroo)
+<img src="logo.png" alt="Switcheroo" width="48px" height="48px"> Switcheroo  [![Build Status](http://img.shields.io/teamcity/codebetter/Switcheroo.svg?style=flat)](http://teamcity.codebetter.com/project.html?projectId=Switcheroo)
 ==========
 
 Switcheroo is for anyone who spends more time using a keyboard than a mouse.
