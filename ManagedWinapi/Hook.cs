@@ -124,7 +124,9 @@ namespace ManagedWinapi.Hooks
             }
             else if (global)
             {
-                hHook = SetWindowsHookEx(type, delegt, Marshal.GetHINSTANCE(typeof(Hook).Assembly.GetModules()[0]), 0);
+                // http://stackoverflow.com/a/17898148/198065
+                var moduleHandle = LoadLibrary("user32.dll");
+                hHook = SetWindowsHookEx(type, delegt, moduleHandle, 0);
             }
             else
             {
