@@ -1,6 +1,22 @@
 Change log
 ----------
 
+### 2015-01-15: v0.8.3 ###
+- Crashes on launch in Windows 10 or when .NET 4.6 Preview is installed (#20)
+
+### 2014-10-15: v0.8.2 ###
+- Use icons from the taskbar (#19)
+
+### 2014-10-15: v0.8.1 ###
+- Fix crash when opening the Options window while the hotkey is already in use (#18)
+
+### 2014-09-03: v0.8.0 ###
+- Activate Switcheroo instead of the native task switcher with Alt+Tab [You need to enable this feature under Options] (#16)
+- Option whether to start Switcheroo automatically on startup or not (#3)
+- Ensure that the input field has a minimum width (#1)
+- Remember key bindings and other settings when upgrading (#14)
+- The Windows included are closer to those in the native Alt+Tab task switcher (#17)
+
 ### 2014-04-18: v0.7.3 ###
 - Portable version of Switcheroo (#10)
 - Icons are now shown for admin processes as well (#11)
