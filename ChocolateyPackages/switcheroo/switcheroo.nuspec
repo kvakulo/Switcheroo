@@ -3,7 +3,7 @@
   <metadata>
     <id>switcheroo</id>
     <title>Switcheroo</title>
-    <version>0.8.2.56</version>
+    <version>0.8.3.60</version>
     <authors>Regin Larsen, James Sulak</authors>
     <owners>Regin Larsen</owners>
     <summary>An alternative alt-tab task switcher</summary>
@@ -15,7 +15,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <iconUrl>https://cdn.rawgit.com/kvakulo/Switcheroo/8ff2eaaee6092b05e00b21f78745c1d2d834e0ae/logo.png</iconUrl>
     <dependencies>
-      <dependency id="switcheroo.install" version="0.8.2.56" />
+      <dependency id="switcheroo.install" version="0.8.3.60" />
     </dependencies>
     <releaseNotes></releaseNotes>
   </metadata>
