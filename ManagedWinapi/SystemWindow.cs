@@ -595,6 +595,22 @@ namespace ManagedWinapi.Windows
             }
         }
 
+		private bool _isClosed = false;
+		public bool IsClosed
+		{
+			get
+			{
+				_isClosed = _isClosed || GetClassNameFails();
+				return _isClosed;
+			}
+		}
+
+		private bool GetClassNameFails()
+		{
+			StringBuilder builder = new StringBuilder( 2 );
+			return GetClassName( HWnd, builder, builder.Capacity ) == 0;
+		}
+
         /// <summary>
         /// Returns or sets the visibility flag.
         /// </summary>
