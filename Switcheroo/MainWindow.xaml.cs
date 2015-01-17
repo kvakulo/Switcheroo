@@ -45,7 +45,7 @@ namespace Switcheroo
 {
     public partial class MainWindow : Window
     {
-        private ObservableCollection<AppWindow> _windowList;
+        private ObservableCollection<AppWindowViewModel> _windowList;
         private NotifyIcon _notifyIcon;                
         private HotKey _hotkey;
 
@@ -196,12 +196,12 @@ namespace Switcheroo
         /// </summary>
         private void LoadData()
         {
-			_windowList = new ObservableCollection<AppWindow>( new WindowFinder().GetWindows() );
+			_windowList = new ObservableCollection<AppWindowViewModel>( new WindowFinder().GetWindows().Select( window => new AppWindowViewModel( window ) ) );
 
             foreach (var window in _windowList)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.Title) });
-                window.FormattedProcessTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.ProcessTitle) });
+                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.Title) });
+                window.FormattedProcessTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.ProcessTitle) });
             }
 
             lb.DataContext = null;
@@ -419,7 +419,7 @@ namespace Switcheroo
         {
             var text = tb.Text;
 
-            var filterResults = new WindowFilterer().Filter(_windowList, text).ToList();
+			var filterResults = new WindowFilterer().Filter( _windowList.Select( vm => vm.AppWindow ), text ).ToList();
 
             foreach (var filterResult in filterResults)
             {
@@ -427,7 +427,7 @@ namespace Switcheroo
                 filterResult.AppWindow.FormattedProcessTitle = GetFormattedTitleFromBestResult(filterResult.ProcessTitleMatchResults);
             }
 
-            lb.DataContext = filterResults.Select(r => r.AppWindow);
+			lb.DataContext = new ObservableCollection<AppWindowViewModel>( filterResults.Select( r => new AppWindowViewModel( r.AppWindow ) ) );
             if (lb.Items.Count > 0)
             {
                 lb.SelectedItem = lb.Items[0];
@@ -461,10 +461,10 @@ namespace Switcheroo
         {
             if (lb.Items.Count > 0)
             {
-                var win = (AppWindow)lb.SelectedItem;
+                var win = (AppWindowViewModel)lb.SelectedItem;
                 if (win != null)
                 {
-                    win.PostClose();
+                    win.AppWindow.PostClose();
                 }
             }
             else
