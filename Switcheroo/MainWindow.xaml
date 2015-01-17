@@ -47,6 +47,37 @@
             <ListBox.ItemTemplate>                     
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
+						<StackPanel.Resources>
+							<Duration x:Key="FadeOutDuration">00:00:00.150</Duration>
+							<Style TargetType="{x:Type TextBlock}">
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding IsBeingClosed}" Value="True">
+										<DataTrigger.EnterActions>
+											<BeginStoryboard>
+												<Storyboard>
+													<ColorAnimation Duration="{StaticResource FadeOutDuration}"
+																	Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)"
+																	To="Silver"></ColorAnimation>
+												</Storyboard>
+											</BeginStoryboard>
+										</DataTrigger.EnterActions>
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+							<Style TargetType="{x:Type Image}">
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding IsBeingClosed}" Value="True">
+										<DataTrigger.EnterActions>
+											<BeginStoryboard>
+												<Storyboard>
+													<DoubleAnimation Duration="{StaticResource FadeOutDuration}" Storyboard.TargetProperty="Opacity" To="0.5"></DoubleAnimation>
+												</Storyboard>
+											</BeginStoryboard>
+										</DataTrigger.EnterActions>
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</StackPanel.Resources>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -64,10 +95,18 @@
                                     </PriorityBinding>
                                 </Image.Source>
                                 </Image>
-                            <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedTitle}"
-                                       Grid.Row="0" Grid.Column="1" Margin="3" />
-                            <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedProcessTitle}"
-                                       Grid.Row="0" Grid.Column="2" Margin="3" Foreground="Gray" TextAlignment="Right" />
+							<TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedTitle}"
+                                       Grid.Row="0" Grid.Column="1" Margin="3">
+								<TextBlock.Foreground>
+									<SolidColorBrush Color="Black"></SolidColorBrush>
+								</TextBlock.Foreground>
+							</TextBlock>
+							<TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedProcessTitle}"
+                                       Grid.Row="0" Grid.Column="2" Margin="3" TextAlignment="Right">
+								<TextBlock.Foreground>
+									<SolidColorBrush Color="Gray"></SolidColorBrush>
+								</TextBlock.Foreground>
+							</TextBlock>
                         </Grid>
                     </StackPanel>
                 </DataTemplate>                

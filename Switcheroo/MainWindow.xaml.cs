@@ -465,6 +465,7 @@ namespace Switcheroo
                 if (win != null)
                 {
                     win.AppWindow.PostClose();
+					win.IsBeingClosed = true;
                 }
             }
             else

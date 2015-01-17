@@ -36,6 +36,13 @@ namespace Switcheroo
 			set { AppWindow.FormattedProcessTitle = value; NotifyOfPropertyChange( () => FormattedProcessTitle ); }
 		}
 
+		private bool _isBeingClosed = false;
+		public bool IsBeingClosed
+		{
+			get { return _isBeingClosed; }
+			set { _isBeingClosed = value; NotifyOfPropertyChange( () => IsBeingClosed ); }
+		}
+
 		#endregion
 	}
 }
