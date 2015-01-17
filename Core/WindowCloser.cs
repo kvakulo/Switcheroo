@@ -6,21 +6,30 @@ using System.Threading.Tasks;
 
 namespace Switcheroo.Core
 {
-	public class WindowCloser
+	public class WindowCloser: IDisposable
 	{
+		private bool _isDisposed = false;
+
 		private static readonly TimeSpan _checkInterval = TimeSpan.FromMilliseconds( 125 );
-		private static readonly TimeSpan _closeWaitInterval = TimeSpan.FromSeconds( 1 );
 
 		public async Task<bool> TryCloseAsync( AppWindowViewModel window )
 		{
 			window.IsBeingClosed = true;
 			window.AppWindow.PostClose();
 
-			int attempts = (int) ( _closeWaitInterval.TotalMilliseconds / _checkInterval.TotalMilliseconds );
-			for ( int i = 0; i < attempts && !window.AppWindow.IsClosed; i++ )
+			while ( !_isDisposed && !window.AppWindow.IsClosed )
 				await Task.Delay( _checkInterval ).ConfigureAwait( false );
 
 			return window.AppWindow.IsClosed;
 		}
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			_isDisposed = true;
+		}
+
+		#endregion
 	}
 }

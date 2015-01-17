@@ -45,7 +45,7 @@ namespace Switcheroo
 {
     public partial class MainWindow : Window
     {
-		private WindowCloser _windowCloser = new WindowCloser();
+		private WindowCloser _windowCloser;
         private ObservableCollection<AppWindowViewModel> _windowList;
         private NotifyIcon _notifyIcon;                
         private HotKey _hotkey;
@@ -198,6 +198,7 @@ namespace Switcheroo
         private void LoadData()
         {
 			_windowList = new ObservableCollection<AppWindowViewModel>( new WindowFinder().GetWindows().Select( window => new AppWindowViewModel( window ) ) );
+			_windowCloser = new WindowCloser();
 
             foreach (var window in _windowList)
             {
@@ -240,6 +241,7 @@ namespace Switcheroo
 
         private void HideWindow()
         {
+			_windowCloser.Dispose();
             Opacity = 0;
 
             // Avoid flicker by delaying the "Hide" a bit. This makes sure
