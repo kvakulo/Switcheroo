@@ -2,6 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"    
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"          
     xmlns:local="clr-namespace:Switcheroo"
+	xmlns:system="clr-namespace:System;assembly=mscorlib"
     Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="True" 
     Title="" Height="150" Width="400" Deactivated="MainWindow_OnLostFocus">  
       
@@ -49,6 +50,14 @@
                     <StackPanel Orientation="Horizontal">
 						<StackPanel.Resources>
 							<Duration x:Key="FadeOutDuration">00:00:00.150</Duration>
+							
+							<system:Double x:Key="FadeOutOpacity">0.5</system:Double>
+							<local:BoolToDoubleConverter x:Key="ImageOpacityConverter" IfTrue="{StaticResource FadeOutOpacity}" IfFalse="1.0"></local:BoolToDoubleConverter>
+							
+							<Color x:Key="FadeOutColor">Silver</Color>
+							<local:BoolToColorConverter x:Key="TitleColorConverter" IfTrue="{StaticResource FadeOutColor}" IfFalse="Black"></local:BoolToColorConverter>
+							<local:BoolToColorConverter x:Key="ProcessColorConverter" IfTrue="{StaticResource FadeOutColor}" IfFalse="Gray"></local:BoolToColorConverter>
+							
 							<Style TargetType="{x:Type TextBlock}">
 								<Style.Triggers>
 									<DataTrigger Binding="{Binding IsBeingClosed}" Value="True">
@@ -57,7 +66,7 @@
 												<Storyboard>
 													<ColorAnimation Duration="{StaticResource FadeOutDuration}"
 																	Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)"
-																	To="Silver"></ColorAnimation>
+																	To="{StaticResource FadeOutColor}"></ColorAnimation>
 												</Storyboard>
 											</BeginStoryboard>
 										</DataTrigger.EnterActions>
@@ -70,7 +79,8 @@
 										<DataTrigger.EnterActions>
 											<BeginStoryboard>
 												<Storyboard>
-													<DoubleAnimation Duration="{StaticResource FadeOutDuration}" Storyboard.TargetProperty="Opacity" To="0.5"></DoubleAnimation>
+													<DoubleAnimation Duration="{StaticResource FadeOutDuration}" Storyboard.TargetProperty="Opacity"
+																	 To="{StaticResource FadeOutOpacity}"></DoubleAnimation>
 												</Storyboard>
 											</BeginStoryboard>
 										</DataTrigger.EnterActions>
@@ -87,24 +97,24 @@
                                 <ColumnDefinition Width="400" />
                                 <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
-                            <Image Height="19" Grid.Row="0" Grid.Column="0" Margin="3">
+							<Image Height="19" Grid.Row="0" Grid.Column="0" Margin="3" Opacity="{Binding IsBeingClosed, Converter={StaticResource ImageOpacityConverter}, Mode=OneTime}">
                                 <Image.Source>
                                     <PriorityBinding>
                                         <Binding Path="HWnd" Converter="{StaticResource WindowHandleToIconConverter}" IsAsync="True"/>
                                         <Binding Path="HWnd" Converter="{StaticResource WindowHandleToCachedIconConverter}" />
                                     </PriorityBinding>
                                 </Image.Source>
-                                </Image>
+                            </Image>
 							<TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedTitle}"
                                        Grid.Row="0" Grid.Column="1" Margin="3">
 								<TextBlock.Foreground>
-									<SolidColorBrush Color="Black"></SolidColorBrush>
+									<SolidColorBrush Color="{Binding IsBeingClosed, Converter={StaticResource TitleColorConverter}, Mode=OneTime}"></SolidColorBrush>
 								</TextBlock.Foreground>
 							</TextBlock>
 							<TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedProcessTitle}"
                                        Grid.Row="0" Grid.Column="2" Margin="3" TextAlignment="Right">
 								<TextBlock.Foreground>
-									<SolidColorBrush Color="Gray"></SolidColorBrush>
+									<SolidColorBrush Color="{Binding IsBeingClosed, Converter={StaticResource ProcessColorConverter}, Mode=OneTime}"></SolidColorBrush>
 								</TextBlock.Foreground>
 							</TextBlock>
                         </Grid>
