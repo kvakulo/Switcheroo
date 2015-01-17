@@ -459,13 +459,11 @@ namespace Switcheroo
         private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
             if (lb.Items.Count > 0)
-            {                
-                HideWindow();
+            {
                 var win = (AppWindow)lb.SelectedItem;
                 if (win != null)
                 {
                     win.PostClose();
-                    win.SwitchTo();               
                 }
             }
             else
