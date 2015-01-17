@@ -549,10 +549,5 @@ namespace Switcheroo
         }
 
         #endregion
-
-		private void DoubleAnimation_Completed( object sender, EventArgs e )
-		{
-
-		}
     }       
 }
