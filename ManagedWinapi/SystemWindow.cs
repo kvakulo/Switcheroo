@@ -611,6 +611,11 @@ namespace ManagedWinapi.Windows
 			return GetClassName( HWnd, builder, builder.Capacity ) == 0;
 		}
 
+		public bool IsClosedOrHidden
+		{
+			get { return IsClosed || !Visible; }
+		}
+
         /// <summary>
         /// Returns or sets the visibility flag.
         /// </summary>

@@ -17,10 +17,10 @@ namespace Switcheroo.Core
 			window.IsBeingClosed = true;
 			window.AppWindow.PostClose();
 
-			while ( !_isDisposed && !window.AppWindow.IsClosed )
+			while ( !_isDisposed && !window.AppWindow.IsClosedOrHidden )
 				await Task.Delay( _checkInterval ).ConfigureAwait( false );
 
-			return window.AppWindow.IsClosed;
+			return window.AppWindow.IsClosedOrHidden;
 		}
 
 		#region IDisposable Members
