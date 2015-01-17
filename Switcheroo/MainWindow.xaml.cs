@@ -233,8 +233,8 @@ namespace Switcheroo
         {
             if (lb.Items.Count > 0)
             {
-                var win = (AppWindow) (lb.SelectedItem ?? lb.Items[0]);
-                win.SwitchTo();
+                var win = (AppWindowViewModel) (lb.SelectedItem ?? lb.Items[0]);
+                win.AppWindow.SwitchTo();
             }
             HideWindow();
         }
