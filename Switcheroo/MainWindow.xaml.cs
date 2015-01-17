@@ -45,6 +45,7 @@ namespace Switcheroo
 {
     public partial class MainWindow : Window
     {
+		private WindowCloser _windowCloser = new WindowCloser();
         private ObservableCollection<AppWindowViewModel> _windowList;
         private NotifyIcon _notifyIcon;                
         private HotKey _hotkey;
@@ -457,15 +458,16 @@ namespace Switcheroo
             e.Handled = true;
         }
 
-        private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
+        private async void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
             if (lb.Items.Count > 0)
             {
                 var win = (AppWindowViewModel)lb.SelectedItem;
                 if (win != null)
                 {
-                    win.AppWindow.PostClose();
-					win.IsBeingClosed = true;
+					bool isClosed = await _windowCloser.TryCloseAsync( win );
+					if ( isClosed )
+						RemoveWindow( win );
                 }
             }
             else
@@ -474,6 +476,28 @@ namespace Switcheroo
             }
             e.Handled = true;
         }
+
+		private void RemoveWindow( AppWindowViewModel window )
+		{
+			int index = _windowList.IndexOf( window );
+			if ( index < 0 )
+				return;
+
+			if ( lb.SelectedIndex == index )
+			{
+				if ( _windowList.Count > index + 1 )
+					lb.SelectedIndex++;
+				else
+				{
+					if ( index > 0 )
+						lb.SelectedIndex--;
+				}
+			}
+
+			_windowList.Remove( window );
+			SizeToContent = SizeToContent.WidthAndHeight;
+			SizeToContent = SizeToContent.Manual;
+		}
 
         private void ScrollListUp(object sender, ExecutedRoutedEventArgs e)
         {
@@ -523,5 +547,10 @@ namespace Switcheroo
         }
 
         #endregion
+
+		private void DoubleAnimation_Completed( object sender, EventArgs e )
+		{
+
+		}
     }       
 }
