@@ -25,7 +25,7 @@ namespace Switcheroo.Core
 {
     public class FilterResult
     {
-        public AppWindow AppWindow { get; set; }
+        public AppWindowViewModel AppWindow { get; set; }
         public IList<MatchResult> WindowTitleMatchResults { get; set; }
         public IList<MatchResult> ProcessTitleMatchResults { get; set; }
     }
