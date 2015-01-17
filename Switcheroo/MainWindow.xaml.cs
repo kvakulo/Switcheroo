@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -44,7 +45,7 @@ namespace Switcheroo
 {
     public partial class MainWindow : Window
     {
-        private List<AppWindow> _windowList;
+        private ObservableCollection<AppWindow> _windowList;
         private NotifyIcon _notifyIcon;                
         private HotKey _hotkey;
 
@@ -195,7 +196,7 @@ namespace Switcheroo
         /// </summary>
         private void LoadData()
         {
-            _windowList = new WindowFinder().GetWindows();
+			_windowList = new ObservableCollection<AppWindow>( new WindowFinder().GetWindows() );
 
             foreach (var window in _windowList)
             {
