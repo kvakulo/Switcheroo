@@ -39,16 +39,18 @@ namespace Switcheroo
 			get { return AppWindow.HWnd; }
 		}
 
+		private string _formattedTitle;
 		public string FormattedTitle
 		{
-			get { return AppWindow.FormattedTitle; }
-			set { AppWindow.FormattedTitle = value; NotifyOfPropertyChange( () => FormattedTitle ); }
+			get { return _formattedTitle; }
+			set { _formattedTitle = value; NotifyOfPropertyChange( () => FormattedTitle ); }
 		}
 
+		private string _formattedProcessTitle;
 		public string FormattedProcessTitle
 		{
-			get { return AppWindow.FormattedProcessTitle; }
-			set { AppWindow.FormattedProcessTitle = value; NotifyOfPropertyChange( () => FormattedProcessTitle ); }
+			get { return _formattedProcessTitle; }
+			set { _formattedProcessTitle = value; NotifyOfPropertyChange( () => FormattedProcessTitle ); }
 		}
 
 		private bool _isBeingClosed = false;
