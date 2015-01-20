@@ -5,8 +5,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Switcheroo.Core;
 
-namespace Switcheroo.Core
+namespace Switcheroo
 {
 	public class AppWindowViewModel: INotifyPropertyChanged, IWindowText
 	{
