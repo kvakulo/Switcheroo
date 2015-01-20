@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Caliburn.Micro;
 
 namespace Switcheroo.Core
 {
-	public class AppWindowViewModel: PropertyChangedBase
+	public class AppWindowViewModel: INotifyPropertyChanged
 	{
 		public AppWindowViewModel( AppWindow appWindow )
 		{
@@ -40,6 +41,37 @@ namespace Switcheroo.Core
 		{
 			get { return _isBeingClosed; }
 			set { _isBeingClosed = value; NotifyOfPropertyChange( () => IsBeingClosed ); }
+		}
+
+		#endregion
+
+		#region INotifyPropertyChanged Members
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void NotifyOfPropertyChange<T>( Expression<Func<T>> property )
+		{
+			var handler = PropertyChanged;
+			if ( handler != null )
+				handler( this, new PropertyChangedEventArgs( GetPropertyName( property ) ) );
+		}
+
+		private string GetPropertyName<T>( Expression<Func<T>> property )
+		{
+			var lambda = (LambdaExpression) property;
+
+			MemberExpression memberExpression;
+			if ( lambda.Body is UnaryExpression )
+			{
+				var unaryExpression = (UnaryExpression) lambda.Body;
+				memberExpression = (MemberExpression) unaryExpression.Operand;
+			}
+			else
+			{
+				memberExpression = (MemberExpression) lambda.Body;
+			}
+
+			return memberExpression.Member.Name;
 		}
 
 		#endregion
