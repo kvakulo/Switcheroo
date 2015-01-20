@@ -26,13 +26,13 @@ namespace Switcheroo.Core
 {
     public class WindowFilterer
     {
-        public IEnumerable<FilterResult> Filter(IEnumerable<AppWindowViewModel> windows, string filterText)
+        public IEnumerable<FilterResult<T>> Filter<T>(IEnumerable<T> windows, string filterText) where T: IWindowText
         {
             return windows
-                .Select(w => new { Window = w, ResultsTitle = Score(w.AppWindow.Title, filterText), ResultsProcessTitle = Score(w.AppWindow.ProcessTitle, filterText) })
+                .Select(w => new { Window = w, ResultsTitle = Score(w.WindowTitle, filterText), ResultsProcessTitle = Score(w.ProcessTitle, filterText) })
                 .Where(r => r.ResultsTitle.Any(wt => wt.Matched) || r.ResultsProcessTitle.Any(pt => pt.Matched))
                 .OrderByDescending(r => r.ResultsTitle.Sum(wt => wt.Score) + r.ResultsProcessTitle.Sum(pt => pt.Score))
-                .Select(r => new FilterResult { AppWindow = r.Window, WindowTitleMatchResults = r.ResultsTitle, ProcessTitleMatchResults = r.ResultsProcessTitle });
+                .Select(r => new FilterResult<T>() { AppWindow = r.Window, WindowTitleMatchResults = r.ResultsTitle, ProcessTitleMatchResults = r.ResultsProcessTitle });
         }
 
         private static List<MatchResult> Score(string title, string filterText)

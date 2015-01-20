@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Switcheroo.Core
 {
-	public class AppWindowViewModel: INotifyPropertyChanged
+	public class AppWindowViewModel: INotifyPropertyChanged, IWindowText
 	{
 		public AppWindowViewModel( AppWindow appWindow )
 		{
@@ -16,6 +16,20 @@ namespace Switcheroo.Core
 		}
 
 		public AppWindow AppWindow { get; private set; }
+
+		#region IWindowText Members
+
+		public string WindowTitle
+		{
+			get { return AppWindow.Title; }
+		}
+
+		public string ProcessTitle
+		{
+			get { return AppWindow.ProcessTitle; }
+		}
+
+		#endregion
 
 		#region Bindable properties
 
