@@ -46,7 +46,7 @@ namespace Switcheroo
     public partial class MainWindow : Window
     {
 		private WindowCloser _windowCloser;
-        private ObservableCollection<AppWindowViewModel> _windowList;
+        private ObservableCollection<AppWindowViewModel> _unfilteredWindowList;
         private NotifyIcon _notifyIcon;                
         private HotKey _hotkey;
 
@@ -197,17 +197,19 @@ namespace Switcheroo
         /// </summary>
         private void LoadData()
         {
-			_windowList = new ObservableCollection<AppWindowViewModel>( new WindowFinder().GetWindows().Select( window => new AppWindowViewModel( window ) ) );
+			_unfilteredWindowList = new ObservableCollection<AppWindowViewModel>( new WindowFinder().GetWindows().Select( window => new AppWindowViewModel( window ) ) );
+
+
 			_windowCloser = new WindowCloser();
 
-            foreach (var window in _windowList)
+            foreach (var window in _unfilteredWindowList)
             {
                 window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.Title) });
                 window.FormattedProcessTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.ProcessTitle) });
             }
 
             lb.DataContext = null;
-            lb.DataContext = _windowList;
+            lb.DataContext = _unfilteredWindowList;
             lb.SelectedIndex = 0;
             tb.Clear();
             tb.Focus();
@@ -422,7 +424,7 @@ namespace Switcheroo
         {
             var text = tb.Text;
 
-			var filterResults = new WindowFilterer().Filter( _windowList, text ).ToList();
+			var filterResults = new WindowFilterer().Filter( _unfilteredWindowList, text ).ToList();
 
             foreach (var filterResult in filterResults)
             {
@@ -481,13 +483,13 @@ namespace Switcheroo
 
 		private void RemoveWindow( AppWindowViewModel window )
 		{
-			int index = _windowList.IndexOf( window );
+			int index = _unfilteredWindowList.IndexOf( window );
 			if ( index < 0 )
 				return;
 
 			if ( lb.SelectedIndex == index )
 			{
-				if ( _windowList.Count > index + 1 )
+				if ( _unfilteredWindowList.Count > index + 1 )
 					lb.SelectedIndex++;
 				else
 				{
@@ -496,7 +498,7 @@ namespace Switcheroo
 				}
 			}
 
-			_windowList.Remove( window );
+			_unfilteredWindowList.Remove( window );
 			SizeToContent = SizeToContent.WidthAndHeight;
 			SizeToContent = SizeToContent.Manual;
 		}
