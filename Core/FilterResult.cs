@@ -23,9 +23,9 @@ using Switcheroo.Core.Matchers;
 
 namespace Switcheroo.Core
 {
-    public class FilterResult
+	public class FilterResult<T> where T: IWindowText
     {
-        public AppWindow AppWindow { get; set; }
+        public T AppWindow { get; set; }
         public IList<MatchResult> WindowTitleMatchResults { get; set; }
         public IList<MatchResult> ProcessTitleMatchResults { get; set; }
     }

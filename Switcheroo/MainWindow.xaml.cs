@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -44,7 +45,9 @@ namespace Switcheroo
 {
     public partial class MainWindow : Window
     {
-        private List<AppWindow> _windowList;
+		private WindowCloser _windowCloser;
+        private List<AppWindowViewModel> _unfilteredWindowList;
+		private ObservableCollection<AppWindowViewModel> _filteredWindowList;
         private NotifyIcon _notifyIcon;                
         private HotKey _hotkey;
 
@@ -195,16 +198,18 @@ namespace Switcheroo
         /// </summary>
         private void LoadData()
         {
-            _windowList = new WindowFinder().GetWindows();
+			_unfilteredWindowList = new WindowFinder().GetWindows().Select( window => new AppWindowViewModel( window ) ).ToList();
+			_filteredWindowList = new ObservableCollection<AppWindowViewModel>( _unfilteredWindowList );
+			_windowCloser = new WindowCloser();
 
-            foreach (var window in _windowList)
+            foreach (var window in _unfilteredWindowList)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.Title) });
-                window.FormattedProcessTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.ProcessTitle) });
+                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.Title) });
+                window.FormattedProcessTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.ProcessTitle) });
             }
 
             lb.DataContext = null;
-            lb.DataContext = _windowList;
+			lb.DataContext = _filteredWindowList;
             lb.SelectedIndex = 0;
             tb.Clear();
             tb.Focus();
@@ -230,14 +235,15 @@ namespace Switcheroo
         {
             if (lb.Items.Count > 0)
             {
-                var win = (AppWindow) (lb.SelectedItem ?? lb.Items[0]);
-                win.SwitchTo();
+                var win = (AppWindowViewModel) (lb.SelectedItem ?? lb.Items[0]);
+                win.AppWindow.SwitchTo();
             }
             HideWindow();
         }
 
         private void HideWindow()
         {
+			_windowCloser.Dispose();
             Opacity = 0;
 
             // Avoid flicker by delaying the "Hide" a bit. This makes sure
@@ -418,7 +424,7 @@ namespace Switcheroo
         {
             var text = tb.Text;
 
-            var filterResults = new WindowFilterer().Filter(_windowList, text).ToList();
+			var filterResults = new WindowFilterer().Filter( _unfilteredWindowList, text ).ToList();
 
             foreach (var filterResult in filterResults)
             {
@@ -426,7 +432,8 @@ namespace Switcheroo
                 filterResult.AppWindow.FormattedProcessTitle = GetFormattedTitleFromBestResult(filterResult.ProcessTitleMatchResults);
             }
 
-            lb.DataContext = filterResults.Select(r => r.AppWindow);
+			_filteredWindowList = new ObservableCollection<AppWindowViewModel>( filterResults.Select( r => r.AppWindow ) );
+			lb.DataContext = _filteredWindowList;
             if (lb.Items.Count > 0)
             {
                 lb.SelectedItem = lb.Items[0];
@@ -456,16 +463,16 @@ namespace Switcheroo
             e.Handled = true;
         }
 
-        private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
+        private async void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
             if (lb.Items.Count > 0)
-            {                
-                HideWindow();
-                var win = (AppWindow)lb.SelectedItem;
+            {
+                var win = (AppWindowViewModel)lb.SelectedItem;
                 if (win != null)
                 {
-                    win.PostClose();
-                    win.SwitchTo();               
+					bool isClosed = await _windowCloser.TryCloseAsync( win );
+					if ( isClosed )
+						RemoveWindow( win );
                 }
             }
             else
@@ -474,6 +481,29 @@ namespace Switcheroo
             }
             e.Handled = true;
         }
+
+		private void RemoveWindow( AppWindowViewModel window )
+		{
+			int index = _filteredWindowList.IndexOf( window );
+			if ( index < 0 )
+				return;
+
+			if ( lb.SelectedIndex == index )
+			{
+				if ( _filteredWindowList.Count > index + 1 )
+					lb.SelectedIndex++;
+				else
+				{
+					if ( index > 0 )
+						lb.SelectedIndex--;
+				}
+			}
+
+			_filteredWindowList.Remove( window );
+			_unfilteredWindowList.Remove( window );
+			SizeToContent = SizeToContent.WidthAndHeight;
+			SizeToContent = SizeToContent.Manual;
+		}
 
         private void ScrollListUp(object sender, ExecutedRoutedEventArgs e)
         {

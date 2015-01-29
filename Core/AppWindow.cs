@@ -37,8 +37,6 @@ namespace Switcheroo.Core
     /// </summary>
     public class AppWindow : SystemWindow
     {
-        public string FormattedTitle { get; set; }
-
         public string ProcessTitle
         {
             get
@@ -53,10 +51,6 @@ namespace Switcheroo.Core
                 return processTitle;
             }
         }
-
-        public string FormattedProcessTitle { get; set; }
-
-
 
         public Icon LargeWindowIcon
         {
