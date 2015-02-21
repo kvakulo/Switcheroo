@@ -4,7 +4,7 @@
     xmlns:local="clr-namespace:Switcheroo"
 	xmlns:system="clr-namespace:System;assembly=mscorlib"
     Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="True" 
-    Title="" Height="150" Width="400" Deactivated="MainWindow_OnLostFocus">  
+    Title="" Height="150" Width="400" Deactivated="MainWindow_OnLostFocus" Loaded="MainWindow_OnLoaded">
       
     <Window.CommandBindings>
         <CommandBinding Command="local:MainWindow.CloseWindowCommand"                        

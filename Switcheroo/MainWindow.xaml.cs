@@ -552,6 +552,19 @@ namespace Switcheroo
             HideWindow();
         }
 
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            DisableSystemMenu();
+        }
+
+        private void DisableSystemMenu()
+        {
+            var windowHandle = new WindowInteropHelper(this).Handle;
+            var window = new SystemWindow(windowHandle);
+            window.Style = window.Style & ~WindowStyleFlags.SYSMENU;
+        }
+
         #endregion
-    }       
+
+    }
 }
