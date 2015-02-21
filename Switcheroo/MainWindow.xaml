@@ -22,7 +22,8 @@
         
     <Window.InputBindings>        
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="Enter" Modifiers="Ctrl" />
-        <KeyBinding Command="local:MainWindow.SwitchToWindowCommand" Key="Enter" />                
+        <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="W" Modifiers="Ctrl" />
+        <KeyBinding Command="local:MainWindow.SwitchToWindowCommand" Key="Enter" />
         <KeyBinding Command="Close" Key="Escape" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
