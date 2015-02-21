@@ -213,17 +213,19 @@ namespace Switcheroo
             lb.SelectedIndex = 0;
             tb.Clear();
             tb.Focus();
-            Resize();
+            CenterWindow();
         }
 
         /// <summary>
-        /// Resizes window to match width and height of list.
+        /// Place the Switcheroo window in the center of the screen
         /// </summary>
-        private void Resize()
+        private void CenterWindow()
         {
-            // These two lines size upon load, but don't whiplash resize during typing
-            SizeToContent = SizeToContent.WidthAndHeight;
+            // Force a rendering before repositioning the window
             SizeToContent = SizeToContent.Manual;
+            SizeToContent = SizeToContent.WidthAndHeight;
+
+            // Position the window in the center of the screen
             Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
             Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);
         }
@@ -501,8 +503,6 @@ namespace Switcheroo
 
 			_filteredWindowList.Remove( window );
 			_unfilteredWindowList.Remove( window );
-			SizeToContent = SizeToContent.WidthAndHeight;
-			SizeToContent = SizeToContent.Manual;
 		}
 
         private void ScrollListUp(object sender, ExecutedRoutedEventArgs e)

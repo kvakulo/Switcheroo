@@ -3,8 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"          
     xmlns:local="clr-namespace:Switcheroo"
 	xmlns:system="clr-namespace:System;assembly=mscorlib"
-    Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="True" 
-    Title="" Height="150" Width="400" Deactivated="MainWindow_OnLostFocus" Loaded="MainWindow_OnLoaded">
+    Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="False" SizeToContent="WidthAndHeight"
+    Title="" MinWidth="542" Deactivated="MainWindow_OnLostFocus" Loaded="MainWindow_OnLoaded" BorderBrush="DarkGray" BorderThickness="1"
+    Background="White">
       
     <Window.CommandBindings>
         <CommandBinding Command="local:MainWindow.CloseWindowCommand"                        
@@ -32,19 +33,15 @@
         <local:WindowHandleToCachedIconConverter x:Key="WindowHandleToCachedIconConverter" />
     </Window.Resources>
 
-        <Grid>          
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>                     
-        <TextBox Name="tb" Height="30" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15">
+    <StackPanel Margin="3">
+        <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15" VerticalContentAlignment="Center">
             <TextBox.InputBindings>
                 <!-- For now, leave these here.  Would it be better to route them upward? -->
                 <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
                 <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />                
             </TextBox.InputBindings>
         </TextBox>
-        <ListBox Name="lb" SelectionMode="Single" Margin="0,30,0,0" ItemsSource="{Binding}" MinWidth="522">                       
+        <ListBox Name="lb" SelectionMode="Single" ItemsSource="{Binding}" MinWidth="522" BorderThickness="0" Margin="-1,3,-1,0" Padding="0">
             <ListBox.ItemTemplate>                     
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -95,9 +92,9 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="22" />
                                 <ColumnDefinition Width="400" />
-                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="106" />
                             </Grid.ColumnDefinitions>
-							<Image Height="19" Grid.Row="0" Grid.Column="0" Margin="3" Opacity="{Binding IsBeingClosed, Converter={StaticResource ImageOpacityConverter}, Mode=OneTime}">
+							<Image Height="19" Grid.Row="0" Grid.Column="0" Margin="3,0" Opacity="{Binding IsBeingClosed, Converter={StaticResource ImageOpacityConverter}, Mode=OneTime}">
                                 <Image.Source>
                                     <PriorityBinding>
                                         <Binding Path="HWnd" Converter="{StaticResource WindowHandleToIconConverter}" IsAsync="True"/>
@@ -106,13 +103,13 @@
                                 </Image.Source>
                             </Image>
 							<TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedTitle}"
-                                       Grid.Row="0" Grid.Column="1" Margin="3">
+                                       Grid.Row="0" Grid.Column="1" Margin="3,0">
 								<TextBlock.Foreground>
 									<SolidColorBrush Color="{Binding IsBeingClosed, Converter={StaticResource TitleColorConverter}, Mode=OneTime}"></SolidColorBrush>
 								</TextBlock.Foreground>
 							</TextBlock>
 							<TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedProcessTitle}"
-                                       Grid.Row="0" Grid.Column="2" Margin="3" TextAlignment="Right">
+                                       Grid.Row="0" Grid.Column="2" Margin="0" TextAlignment="Right">
 								<TextBlock.Foreground>
 									<SolidColorBrush Color="{Binding IsBeingClosed, Converter={StaticResource ProcessColorConverter}, Mode=OneTime}"></SolidColorBrush>
 								</TextBlock.Foreground>
@@ -123,6 +120,7 @@
             </ListBox.ItemTemplate>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="Padding" Value="0,5"/>
                     <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>                   
                 </Style>
             </ListBox.ItemContainerStyle>
@@ -131,5 +129,5 @@
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="{x:Static SystemColors.HighlightColor}" Opacity=".4"/>                              
             </ListBox.Resources>
         </ListBox>
-    </Grid>
+    </StackPanel>
 </Window>
