@@ -26,7 +26,7 @@ namespace Switcheroo.Core.Matchers
                 var group = match.Groups[groupIndex];
                 if (group.Value.Length > 0)
                 {
-                    matchResult.StringParts.Add(new StringPart(group.Value, groupIndex % 2 == 0));
+                    matchResult.StringParts.Add(new StringPart(group.Value, groupIndex%2 == 0));
                 }
             }
 
@@ -44,7 +44,8 @@ namespace Switcheroo.Core.Matchers
             {
                 if (previousChar != null)
                 {
-                    regexPattern += string.Format("([^{0}]*?)({1})", Regex.Escape(previousChar + ""), Regex.Escape(p + ""));
+                    regexPattern += string.Format("([^{0}]*?)({1})", Regex.Escape(previousChar + ""),
+                        Regex.Escape(p + ""));
                 }
                 else
                 {

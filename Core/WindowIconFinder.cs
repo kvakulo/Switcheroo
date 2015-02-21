@@ -39,13 +39,16 @@ namespace Switcheroo.Core
             {
                 // http://msdn.microsoft.com/en-us/library/windows/desktop/ms632625(v=vs.85).aspx
                 IntPtr response;
-                var outvalue = WinApi.SendMessageTimeout(window.HWnd, 0x007F, size == WindowIconSize.Small ? new IntPtr(2) : new IntPtr(1),
+                var outvalue = WinApi.SendMessageTimeout(window.HWnd, 0x007F,
+                    size == WindowIconSize.Small ? new IntPtr(2) : new IntPtr(1),
                     IntPtr.Zero, WinApi.SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 100, out response);
 
                 if (outvalue == IntPtr.Zero || response == IntPtr.Zero)
                 {
                     response = WinApi.GetClassLongPtr(window.HWnd,
-                        size == WindowIconSize.Small ? WinApi.ClassLongFlags.GCLP_HICONSM : WinApi.ClassLongFlags.GCLP_HICON);
+                        size == WindowIconSize.Small
+                            ? WinApi.ClassLongFlags.GCLP_HICONSM
+                            : WinApi.ClassLongFlags.GCLP_HICON);
                 }
 
                 if (response != IntPtr.Zero)

@@ -26,11 +26,11 @@ using System.Windows.Forms;
 namespace Switcheroo.Core
 {
     internal static class WinApi
-    {                     
+    {
         public delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
         public static IntPtr Statusbar = FindWindow("Shell_TrayWnd", "");
-                
+
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
@@ -45,7 +45,7 @@ namespace Switcheroo.Core
         public static extern bool IsWindowVisible(IntPtr hWnd);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern void SwitchToThisWindow(IntPtr hWnd, bool fAltTab);  
+        public static extern void SwitchToThisWindow(IntPtr hWnd, bool fAltTab);
 
         public enum GetAncestorFlags
         {
@@ -53,10 +53,12 @@ namespace Switcheroo.Core
             /// Retrieves the parent window. This does not include the owner, as it does with the GetParent function.
             /// </summary>
             GetParent = 1,
+
             /// <summary>
             /// Retrieves the root window by walking the chain of parent windows.
             /// </summary>
             GetRoot = 2,
+
             /// <summary>
             /// Retrieves the owned root window by walking the chain of parent and owner windows returned by GetParent. 
             /// </summary>
@@ -183,7 +185,8 @@ namespace Switcheroo.Core
 
 
         [DllImport("kernel32.dll")]
-        public static extern bool QueryFullProcessImageName(IntPtr hprocess, int dwFlags, StringBuilder lpExeName, out int size);
+        public static extern bool QueryFullProcessImageName(IntPtr hprocess, int dwFlags, StringBuilder lpExeName,
+            out int size);
 
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(ProcessAccess dwDesiredAccess, bool bInheritHandle, int dwProcessId);
@@ -192,7 +195,8 @@ namespace Switcheroo.Core
         public static extern bool CloseHandle(IntPtr hHandle);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern int ToUnicodeEx(uint wVirtKey,uint wScanCode, Keys[] lpKeyState, StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
+        public static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, Keys[] lpKeyState, StringBuilder pwszBuff,
+            int cchBuff, uint wFlags, IntPtr dwhkl);
 
         [DllImport("user32.dll", ExactSpelling = true)]
         public static extern IntPtr GetKeyboardLayout(uint threadId);

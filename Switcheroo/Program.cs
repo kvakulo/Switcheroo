@@ -25,22 +25,22 @@ using Switcheroo.Properties;
 
 namespace Switcheroo
 {
-    class Program
+    internal class Program
     {
         private const string mutex_id = "DBDE24E4-91F6-11DF-B495-C536DFD72085-switcheroo";
 
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             using (var mutex = new Mutex(false, mutex_id))
-            {                
+            {
                 var hasHandle = false;
                 try
                 {
                     try
-                    {                       
+                    {
                         hasHandle = mutex.WaitOne(5000, false);
-                        if (hasHandle == false) return;   //another instance exist
+                        if (hasHandle == false) return; //another instance exist
                     }
                     catch (AbandonedMutexException)
                     {
@@ -60,11 +60,11 @@ namespace Switcheroo
                     app.Run();
                 }
                 finally
-                {                    
+                {
                     if (hasHandle)
                         mutex.ReleaseMutex();
                 }
-            }                                             
+            }
         }
 
         private static void MakePortable(ApplicationSettingsBase settings)

@@ -78,7 +78,8 @@ namespace Switcheroo
             }
             catch
             {
-                throw new AutoStartException("It was not possible to delete the shortcut to Switcheroo in the startup folder");
+                throw new AutoStartException(
+                    "It was not possible to delete the shortcut to Switcheroo in the startup folder");
             }
         }
 
@@ -111,7 +112,8 @@ namespace Switcheroo
             }
             catch
             {
-                throw new AutoStartException("It was not possible to create a shortcut to Switcheroo in the startup folder");
+                throw new AutoStartException(
+                    "It was not possible to create a shortcut to Switcheroo in the startup folder");
             }
         }
     }
@@ -121,7 +123,6 @@ namespace Switcheroo
         public AutoStartException(string message)
             : base(message)
         {
-
         }
     }
 }

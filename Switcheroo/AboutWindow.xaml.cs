@@ -33,7 +33,7 @@ namespace Switcheroo
             VersionNumber.Inlines.Add(Assembly.GetEntryAssembly().GetName().Version.ToString());
         }
 
-        void HandleRequestNavigate(object sender, RoutedEventArgs e)
+        private void HandleRequestNavigate(object sender, RoutedEventArgs e)
         {
             var hyperlink = e.OriginalSource as Hyperlink;
             if (hyperlink == null) return;
@@ -44,9 +44,8 @@ namespace Switcheroo
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
-        {         
+        {
             Close();
         }
-
     }
 }

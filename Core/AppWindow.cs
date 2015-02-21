@@ -67,7 +67,9 @@ namespace Switcheroo.Core
             get { return GetExecutablePath(Process.Id); }
         }
 
-        public AppWindow(IntPtr HWnd) : base(HWnd) { }
+        public AppWindow(IntPtr HWnd) : base(HWnd)
+        {
+        }
 
         /// <summary>
         /// Sets the focus to this window and brings it to the foreground.
@@ -75,7 +77,7 @@ namespace Switcheroo.Core
         public void SwitchTo()
         {
             // This function is deprecated, so should probably be replaced.
-            WinApi.SwitchToThisWindow(HWnd, true);                                    
+            WinApi.SwitchToThisWindow(HWnd, true);
         }
 
         public AppWindow Owner
@@ -88,7 +90,7 @@ namespace Switcheroo.Core
             }
         }
 
-        public static new IEnumerable<AppWindow> AllToplevelWindows
+        public new static IEnumerable<AppWindow> AllToplevelWindows
         {
             get
             {

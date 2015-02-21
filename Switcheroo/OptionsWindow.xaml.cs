@@ -42,7 +42,7 @@ namespace Switcheroo
             InitializeComponent();
 
             // Show what's already selected     
-            _hotkey = (HotKey)Application.Current.Properties["hotkey"];
+            _hotkey = (HotKey) Application.Current.Properties["hotkey"];
 
             try
             {
@@ -54,7 +54,7 @@ namespace Switcheroo
 
             _hotkeyViewModel = new HotkeyViewModel
             {
-                KeyCode = KeyInterop.KeyFromVirtualKey((int)_hotkey.KeyCode),
+                KeyCode = KeyInterop.KeyFromVirtualKey((int) _hotkey.KeyCode),
                 Alt = _hotkey.Alt,
                 Ctrl = _hotkey.Ctrl,
                 Windows = _hotkey.WindowsKey,
@@ -82,7 +82,7 @@ namespace Switcheroo
                 _hotkey.Shift = _hotkeyViewModel.Shift;
                 _hotkey.Ctrl = _hotkeyViewModel.Ctrl;
                 _hotkey.WindowsKey = _hotkeyViewModel.Windows;
-                _hotkey.KeyCode = (Keys)KeyInterop.VirtualKeyFromKey(_hotkeyViewModel.KeyCode);
+                _hotkey.KeyCode = (Keys) KeyInterop.VirtualKeyFromKey(_hotkeyViewModel.KeyCode);
                 _hotkey.Enabled = true;
                 _hotkey.SaveSettings();
             }
@@ -135,7 +135,7 @@ namespace Switcheroo
             // Jump to the next element if the user presses only the Tab key
             if (previewText == "Tab")
             {
-                ((UIElement)sender).MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                ((UIElement) sender).MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
                 return;
             }
 
@@ -175,7 +175,8 @@ namespace Switcheroo
                     shortcutText.Append("Win + ");
                 }
 
-                var keyString = KeyboardHelper.CodeToString((uint)KeyInterop.VirtualKeyFromKey(KeyCode)).ToUpper().Trim();
+                var keyString =
+                    KeyboardHelper.CodeToString((uint) KeyInterop.VirtualKeyFromKey(KeyCode)).ToUpper().Trim();
                 if (keyString.Length == 0)
                 {
                     keyString = new KeysConverter().ConvertToString(KeyCode);

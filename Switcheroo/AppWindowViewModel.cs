@@ -9,88 +9,103 @@ using Switcheroo.Core;
 
 namespace Switcheroo
 {
-	public class AppWindowViewModel: INotifyPropertyChanged, IWindowText
-	{
-		public AppWindowViewModel( AppWindow appWindow )
-		{
-			AppWindow = appWindow;
-		}
+    public class AppWindowViewModel : INotifyPropertyChanged, IWindowText
+    {
+        public AppWindowViewModel(AppWindow appWindow)
+        {
+            AppWindow = appWindow;
+        }
 
-		public AppWindow AppWindow { get; private set; }
+        public AppWindow AppWindow { get; private set; }
 
-		#region IWindowText Members
+        #region IWindowText Members
 
-		public string WindowTitle
-		{
-			get { return AppWindow.Title; }
-		}
+        public string WindowTitle
+        {
+            get { return AppWindow.Title; }
+        }
 
-		public string ProcessTitle
-		{
-			get { return AppWindow.ProcessTitle; }
-		}
+        public string ProcessTitle
+        {
+            get { return AppWindow.ProcessTitle; }
+        }
 
-		#endregion
+        #endregion
 
-		#region Bindable properties
+        #region Bindable properties
 
-		public IntPtr HWnd
-		{
-			get { return AppWindow.HWnd; }
-		}
+        public IntPtr HWnd
+        {
+            get { return AppWindow.HWnd; }
+        }
 
-		private string _formattedTitle;
-		public string FormattedTitle
-		{
-			get { return _formattedTitle; }
-			set { _formattedTitle = value; NotifyOfPropertyChange( () => FormattedTitle ); }
-		}
+        private string _formattedTitle;
 
-		private string _formattedProcessTitle;
-		public string FormattedProcessTitle
-		{
-			get { return _formattedProcessTitle; }
-			set { _formattedProcessTitle = value; NotifyOfPropertyChange( () => FormattedProcessTitle ); }
-		}
+        public string FormattedTitle
+        {
+            get { return _formattedTitle; }
+            set
+            {
+                _formattedTitle = value;
+                NotifyOfPropertyChange(() => FormattedTitle);
+            }
+        }
 
-		private bool _isBeingClosed = false;
-		public bool IsBeingClosed
-		{
-			get { return _isBeingClosed; }
-			set { _isBeingClosed = value; NotifyOfPropertyChange( () => IsBeingClosed ); }
-		}
+        private string _formattedProcessTitle;
 
-		#endregion
+        public string FormattedProcessTitle
+        {
+            get { return _formattedProcessTitle; }
+            set
+            {
+                _formattedProcessTitle = value;
+                NotifyOfPropertyChange(() => FormattedProcessTitle);
+            }
+        }
 
-		#region INotifyPropertyChanged Members
+        private bool _isBeingClosed = false;
 
-		public event PropertyChangedEventHandler PropertyChanged;
+        public bool IsBeingClosed
+        {
+            get { return _isBeingClosed; }
+            set
+            {
+                _isBeingClosed = value;
+                NotifyOfPropertyChange(() => IsBeingClosed);
+            }
+        }
 
-		private void NotifyOfPropertyChange<T>( Expression<Func<T>> property )
-		{
-			var handler = PropertyChanged;
-			if ( handler != null )
-				handler( this, new PropertyChangedEventArgs( GetPropertyName( property ) ) );
-		}
+        #endregion
 
-		private string GetPropertyName<T>( Expression<Func<T>> property )
-		{
-			var lambda = (LambdaExpression) property;
+        #region INotifyPropertyChanged Members
 
-			MemberExpression memberExpression;
-			if ( lambda.Body is UnaryExpression )
-			{
-				var unaryExpression = (UnaryExpression) lambda.Body;
-				memberExpression = (MemberExpression) unaryExpression.Operand;
-			}
-			else
-			{
-				memberExpression = (MemberExpression) lambda.Body;
-			}
+        public event PropertyChangedEventHandler PropertyChanged;
 
-			return memberExpression.Member.Name;
-		}
+        private void NotifyOfPropertyChange<T>(Expression<Func<T>> property)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(GetPropertyName(property)));
+        }
 
-		#endregion
-	}
+        private string GetPropertyName<T>(Expression<Func<T>> property)
+        {
+            var lambda = (LambdaExpression) property;
+
+            MemberExpression memberExpression;
+            if (lambda.Body is UnaryExpression)
+            {
+                var unaryExpression = (UnaryExpression) lambda.Body;
+                memberExpression = (MemberExpression) unaryExpression.Operand;
+            }
+            else
+            {
+                memberExpression = (MemberExpression) lambda.Body;
+            }
+
+            return memberExpression.Member.Name;
+        }
+
+        #endregion
+    }
 }

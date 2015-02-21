@@ -43,7 +43,7 @@ namespace Switcheroo
             get
             {
                 return Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),
-                   string.Format("{0}.settings", ApplicationName));
+                    string.Format("{0}.settings", ApplicationName));
             }
         }
 
@@ -87,7 +87,6 @@ namespace Switcheroo
                     }
                     catch (Exception)
                     {
-
                     }
 
                     if (_xmlDocument.SelectSingleNode(_rootNodeName) != null)
@@ -136,7 +135,8 @@ namespace Switcheroo
             }
         }
 
-        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection collection)
+        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context,
+            SettingsPropertyCollection collection)
         {
             SettingsPropertyValueCollection values = new SettingsPropertyValueCollection();
 
@@ -154,8 +154,8 @@ namespace Switcheroo
         private void SetValue(SettingsPropertyValue propertyValue)
         {
             XmlNode targetNode = IsGlobal(propertyValue.Property)
-               ? _globalSettingsNode
-               : _localSettingsNode;
+                ? _globalSettingsNode
+                : _localSettingsNode;
 
             XmlNode settingNode = targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", propertyValue.Name));
 
@@ -190,7 +190,7 @@ namespace Switcheroo
         {
             foreach (DictionaryEntry attribute in property.Attributes)
             {
-                if ((Attribute)attribute.Value is SettingsManageabilityAttribute)
+                if ((Attribute) attribute.Value is SettingsManageabilityAttribute)
                     return true;
             }
 

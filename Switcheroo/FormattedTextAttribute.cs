@@ -29,8 +29,8 @@ namespace Switcheroo
     {
         public static readonly DependencyProperty FormattedTextProperty = DependencyProperty.RegisterAttached(
             "FormattedText",
-            typeof(string),
-            typeof(FormattedTextAttribute),
+            typeof (string),
+            typeof (FormattedTextAttribute),
             new UIPropertyMetadata("", FormattedTextChanged));
 
         public static void SetFormattedText(DependencyObject textBlock, string value)
@@ -40,7 +40,7 @@ namespace Switcheroo
 
         public static string GetFormattedText(DependencyObject textBlock)
         {
-            return (string)textBlock.GetValue(FormattedTextProperty);
+            return (string) textBlock.GetValue(FormattedTextProperty);
         }
 
         private static void FormattedTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -51,14 +51,14 @@ namespace Switcheroo
                 return;
             }
 
-            var formattedText = (string)e.NewValue ?? string.Empty;
+            var formattedText = (string) e.NewValue ?? string.Empty;
             formattedText =
                 @"<Span xml:space=""preserve"" xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">" +
-                    formattedText +
+                formattedText +
                 "</Span>";
 
             textBlock.Inlines.Clear();
-            var result = (Span)XamlReader.Parse(formattedText);
+            var result = (Span) XamlReader.Parse(formattedText);
             textBlock.Inlines.Add(result);
         }
     }

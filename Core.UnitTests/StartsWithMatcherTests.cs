@@ -5,7 +5,7 @@ using Switcheroo.Core.Matchers;
 namespace Switcheroo.Core.UnitTests
 {
     [TestFixture]
-    class StartsWithMatcherTests
+    public class StartsWithMatcherTests
     {
         [Test]
         public void Evaluate_InputStartsWithPattern_ResultIsMatched()

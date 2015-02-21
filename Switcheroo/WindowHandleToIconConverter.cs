@@ -39,7 +39,7 @@ namespace Switcheroo
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var handle = (IntPtr)value;
+            var handle = (IntPtr) value;
             var key = "IconImage-" + handle;
             var shortCacheKey = key + "-shortCache";
             var longCacheKey = key + "-longCache";
@@ -65,7 +65,9 @@ namespace Switcheroo
                 return cachedSetting.Value;
             }
 
-            using (var registryKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"))
+            using (
+                var registryKey =
+                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"))
             {
                 if (registryKey == null)
                 {

@@ -73,7 +73,7 @@ namespace Switcheroo
 
         private static bool IsAltTabKeyCombination(LowLevelKeyboardMessage keyboardMessage)
         {
-            return keyboardMessage.VirtualKeyCode == (int)Keys.Tab
+            return keyboardMessage.VirtualKeyCode == (int) Keys.Tab
                    && keyboardMessage.Flags == AltDown;
         }
 
@@ -96,6 +96,4 @@ namespace Switcheroo
             }
         }
     }
-
-
 }
