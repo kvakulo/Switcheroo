@@ -31,6 +31,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using ManagedWinapi;
 using ManagedWinapi.Windows;
@@ -564,6 +565,12 @@ namespace Switcheroo
             window.Style = window.Style & ~WindowStyleFlags.SYSMENU;
         }
 
+        private void ShowHelpTextBlock_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var duration = new Duration(TimeSpan.FromSeconds(0.150));
+            var newHeight = HelpPanel.Height > 0 ? 0 : +17;
+            HelpPanel.BeginAnimation(HeightProperty, new DoubleAnimation(HelpPanel.Height, newHeight, duration));
+        }
         #endregion
 
     }

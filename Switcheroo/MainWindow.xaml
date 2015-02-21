@@ -35,15 +35,73 @@
     </Window.Resources>
 
     <StackPanel Margin="3">
-        <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15" VerticalContentAlignment="Center">
-            <TextBox.InputBindings>
-                <!-- For now, leave these here.  Would it be better to route them upward? -->
-                <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
-                <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
-                <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Tab" Modifiers="Shift" />
-                <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Tab" />
-            </TextBox.InputBindings>
-        </TextBox>
+        <DockPanel Margin="4,0,4,0" Name="HelpPanel" Background="Transparent" Height="0">
+            <TextBlock FontSize="10" DockPanel.Dock="Left">
+                type to search
+            </TextBlock>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                <TextBlock FontSize="10" Margin="0,0,8,0">
+                    <TextBlock.ToolTip>
+                        <TextBlock>Press <Bold>tab</Bold> or <Bold>↑↓</Bold> to navigate in the list</TextBlock>
+                    </TextBlock.ToolTip>
+                    <Bold>tab</Bold> or <Bold>↑↓</Bold> to navigate
+                </TextBlock>
+                <TextBlock FontSize="10" Margin="0,0,8,0">
+                    <TextBlock.ToolTip>
+                        <TextBlock>Press <Bold>enter</Bold> to open the highlighted window</TextBlock>
+                    </TextBlock.ToolTip>
+                    <Bold>enter</Bold> to open a window
+                </TextBlock>
+                <TextBlock FontSize="10" Margin="0,0,8,0">
+                    <TextBlock.ToolTip>
+                        <TextBlock>Press <Bold>ctrl+w</Bold> to close the highlighted window</TextBlock>
+                    </TextBlock.ToolTip>
+                    <Bold>ctrl+w</Bold> to close a window
+                </TextBlock>
+                <TextBlock FontSize="10">
+                    <TextBlock.ToolTip>
+                        <TextBlock>Press <Bold>esc</Bold> to dismiss the Switcheroo overlay</TextBlock>
+                    </TextBlock.ToolTip>
+                    <Bold>esc</Bold> to dismiss switcheroo
+                </TextBlock>
+            </StackPanel>
+        </DockPanel>
+        <Grid>
+            <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15" VerticalContentAlignment="Center">
+                <TextBox.InputBindings>
+                    <!-- For now, leave these here.  Would it be better to route them upward? -->
+                    <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
+                    <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
+                    <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Tab" Modifiers="Shift" />
+                    <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Tab" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <TextBlock Margin="0,0,10,0"  Width="15" HorizontalAlignment="Right" TextAlignment="Center" VerticalAlignment="Center"
+                       FontSize="18" FontWeight="Bold" Opacity="0.4" PreviewMouseDown="ShowHelpTextBlock_OnPreviewMouseDown"
+                       Name="ShowHelpTextBlock" Cursor="Hand" Foreground="DarkGray">
+                <TextBlock.Text>?</TextBlock.Text>
+                <TextBlock.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.150" Storyboard.TargetProperty="Opacity" To="1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.150" Storyboard.TargetProperty="Opacity" To="0.4" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </TextBlock.Triggers>
+            </TextBlock>
+        </Grid>
         <ListBox Name="lb" SelectionMode="Single" ItemsSource="{Binding}" MinWidth="522" BorderThickness="0" Margin="-1,3,-1,0" Padding="0">
             <ListBox.ItemTemplate>                     
                 <DataTemplate>
