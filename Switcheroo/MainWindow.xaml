@@ -36,7 +36,7 @@
         <local:WindowHandleToCachedIconConverter x:Key="WindowHandleToCachedIconConverter" />
     </Window.Resources>
 
-    <Border Padding="3" Background="White">
+    <Border Padding="3" Background="White" TextOptions.TextFormattingMode="Display">
         <StackPanel>
             <DockPanel Margin="4,0,4,0" Name="HelpPanel" Background="Transparent" Height="0">
                 <TextBlock FontSize="10" DockPanel.Dock="Left">
