@@ -3,9 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"          
     xmlns:local="clr-namespace:Switcheroo"
 	xmlns:system="clr-namespace:System;assembly=mscorlib"
-    Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="False" SizeToContent="WidthAndHeight"
+    Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="True" SizeToContent="WidthAndHeight"
     Title="" MinWidth="542" Deactivated="MainWindow_OnLostFocus" Loaded="MainWindow_OnLoaded" BorderBrush="DarkGray" BorderThickness="1"
-    Background="White">
+    Background="Transparent">
       
     <Window.CommandBindings>
         <CommandBinding Command="local:MainWindow.CloseWindowCommand"                        
@@ -34,8 +34,9 @@
         <local:WindowHandleToCachedIconConverter x:Key="WindowHandleToCachedIconConverter" />
     </Window.Resources>
 
-    <StackPanel Margin="3">
-        <DockPanel Margin="4,0,4,0" Name="HelpPanel" Background="Transparent" Height="0">
+    <Border Padding="3" Background="White">
+        <StackPanel>
+            <DockPanel Margin="4,0,4,0" Name="HelpPanel" Background="Transparent" Height="0">
             <TextBlock FontSize="10" DockPanel.Dock="Left">
                 type to search
             </TextBlock>
@@ -191,4 +192,5 @@
             </ListBox.Resources>
         </ListBox>
     </StackPanel>
+    </Border>
 </Window>
