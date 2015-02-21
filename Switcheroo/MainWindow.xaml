@@ -38,7 +38,9 @@
             <TextBox.InputBindings>
                 <!-- For now, leave these here.  Would it be better to route them upward? -->
                 <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
-                <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />                
+                <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
+                <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Tab" Modifiers="Shift" />
+                <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Tab" />
             </TextBox.InputBindings>
         </TextBox>
         <ListBox Name="lb" SelectionMode="Single" ItemsSource="{Binding}" MinWidth="522" BorderThickness="0" Margin="-1,3,-1,0" Padding="0">
