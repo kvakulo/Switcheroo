@@ -14,8 +14,6 @@
                         Executed="CloseWindow" />
         <CommandBinding Command="local:MainWindow.SwitchToWindowCommand"
                         Executed="OnEnterPressed" />
-        <CommandBinding Command="Close"
-                        Executed="Hide" />
         <CommandBinding Command="local:MainWindow.ScrollListUpCommand"
                         Executed="ScrollListUp" />
         <CommandBinding Command="local:MainWindow.ScrollListDownCommand"
@@ -25,8 +23,6 @@
     <Window.InputBindings>
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="Enter" Modifiers="Ctrl" />
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="W" Modifiers="Ctrl" />
-        <KeyBinding Command="local:MainWindow.SwitchToWindowCommand" Key="Enter" />
-        <KeyBinding Command="Close" Key="Escape" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
     </Window.InputBindings>

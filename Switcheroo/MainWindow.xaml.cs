@@ -64,6 +64,8 @@ namespace Switcheroo
         {
             InitializeComponent();
 
+            SetUpKeyBindings();
+
             SetUpNotifyIcon();
 
             SetUpHotKey();
@@ -80,6 +82,40 @@ namespace Switcheroo
         #region Private Methods
 
         /// =================================
+
+        private void SetUpKeyBindings()
+        {
+            // Enter and Esc bindings are not executed before the keys have been released.
+            // This is done to prevent that the window being focused after the key presses
+            // to get 'KeyUp' messages.
+
+            KeyDown += (sender, args) =>
+            {
+                // Opacity is set to 0 right away so it appears that action has been taken right away...
+                if (args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                {
+                    Opacity = 0;
+                }
+                else if (args.Key == Key.Escape)
+                {
+                    Opacity = 0;
+                }
+            };
+
+            KeyUp += (sender, args) =>
+            {
+                // ... But only when the keys are release, the action is actually executed
+                if (args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                {
+                    Switch();
+                }
+                else if (args.Key == Key.Escape)
+                {
+                    HideWindow();
+                }
+            };
+        }
+
         private void SetUpHotKey()
         {
             _hotkey = new HotKey();
@@ -455,11 +491,6 @@ namespace Switcheroo
         {
             var bestResult = matchResults.FirstOrDefault(r => r.Matched) ?? matchResults.First();
             return new XamlHighlighter().Highlight(bestResult.StringParts);
-        }
-
-        private void Hide(object sender, ExecutedRoutedEventArgs e)
-        {
-            HideWindow();
         }
 
         private void OnEnterPressed(object sender, ExecutedRoutedEventArgs e)
