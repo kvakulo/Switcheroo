@@ -698,6 +698,18 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// The window's owner
+        /// </summary>
+        public SystemWindow Owner
+        {
+            get
+            {
+                var owner = GetWindow(HWnd, (uint)GetWindow_Cmd.GW_OWNER);
+                return new SystemWindow(owner);
+            }
+        }
+
+        /// <summary>
         /// The window's position inside its parent or on the screen.
         /// </summary>
         public RECT Position

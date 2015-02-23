@@ -59,6 +59,7 @@ namespace Switcheroo
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
+        private SystemWindow _foregroundWindow;
 
         public MainWindow()
         {
@@ -244,10 +245,22 @@ namespace Switcheroo
         /// <summary>
         /// Populates the window list with the current running windows.
         /// </summary>
-        private void LoadData()
+        private void LoadData(InitialFocus focus)
         {
-            _unfilteredWindowList =
-                new WindowFinder().GetWindows().Select(window => new AppWindowViewModel(window)).ToList();
+            _unfilteredWindowList = new WindowFinder().GetWindows().Select(window => new AppWindowViewModel(window)).ToList();
+
+            var firstWindow = _unfilteredWindowList.FirstOrDefault();
+
+            var foregroundWindowMovedToBottom = false;
+            
+            // Move first window to the bottom of the list if it's related to the foreground window
+            if (firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow))
+            {
+                _unfilteredWindowList.RemoveAt(0);
+                _unfilteredWindowList.Add(firstWindow);
+                foregroundWindowMovedToBottom = true;
+            }
+
             _filteredWindowList = new ObservableCollection<AppWindowViewModel>(_unfilteredWindowList);
             _windowCloser = new WindowCloser();
 
@@ -260,10 +273,35 @@ namespace Switcheroo
 
             lb.DataContext = null;
             lb.DataContext = _filteredWindowList;
-            lb.SelectedIndex = 0;
+
+            FocusItemInList(focus, foregroundWindowMovedToBottom);
+
             tb.Clear();
             tb.Focus();
             CenterWindow();
+        }
+
+        private static bool AreWindowsRelated(SystemWindow window1, SystemWindow window2)
+        {
+            return window1.HWnd == window2.HWnd || window1.Process.Id == window2.Process.Id;
+        }
+
+        private void FocusItemInList(InitialFocus focus, bool foregroundWindowMovedToBottom)
+        {
+            if (focus == InitialFocus.PreviousItem)
+            {
+                var previousItemIndex = lb.Items.Count - 1;
+                if (foregroundWindowMovedToBottom)
+                {
+                    previousItemIndex--;
+                }
+
+                lb.SelectedIndex = previousItemIndex > 0 ? previousItemIndex : 0;
+            }
+            else
+            {
+                lb.SelectedIndex = 0;
+            }
         }
 
         /// <summary>
@@ -384,10 +422,11 @@ namespace Switcheroo
         {
             if (Visibility != Visibility.Visible)
             {
+                _foregroundWindow = SystemWindow.ForegroundWindow;
                 Show();
                 Activate();
                 Keyboard.Focus(tb);
-                LoadData();
+                LoadData(InitialFocus.NextItem);
                 Opacity = 1;
             }
             else
@@ -408,18 +447,18 @@ namespace Switcheroo
 
             if (Visibility != Visibility.Visible)
             {
+                _foregroundWindow = SystemWindow.ForegroundWindow;
+
                 ActivateAndFocusMainWindow();
 
                 Keyboard.Focus(tb);
-                LoadData();
-
                 if (e.ShiftDown)
                 {
-                    lb.SelectedIndex = lb.Items.Count - 1;
+                    LoadData(InitialFocus.PreviousItem);
                 }
                 else
                 {
-                    lb.SelectedIndex = 1;
+                    LoadData(InitialFocus.NextItem);
                 }
 
                 Opacity = 1;
@@ -617,5 +656,11 @@ namespace Switcheroo
         }
 
         #endregion
+
+        private enum InitialFocus
+        {
+            NextItem,
+            PreviousItem
+        }
     }
 }
