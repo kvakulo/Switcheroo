@@ -512,9 +512,15 @@ namespace Switcheroo
 
         private void TextChanged(object sender, TextChangedEventArgs args)
         {
-            var text = tb.Text;
+            var query = tb.Text;
 
-            var filterResults = new WindowFilterer().Filter(_unfilteredWindowList, text).ToList();
+            var context = new WindowFilterContext<AppWindowViewModel>
+            {
+                Windows = _unfilteredWindowList,
+                ForegroundWindowProcessTitle = new AppWindow(_foregroundWindow.HWnd).ProcessTitle
+            };
+
+            var filterResults = new WindowFilterer().Filter(context, query).ToList();
 
             foreach (var filterResult in filterResults)
             {
