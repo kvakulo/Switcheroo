@@ -32,9 +32,9 @@
         <local:WindowHandleToCachedIconConverter x:Key="WindowHandleToCachedIconConverter" />
     </Window.Resources>
 
-    <Border Padding="3" Background="White" BorderBrush="DarkGray" BorderThickness="1">
-        <StackPanel>
-            <DockPanel Margin="4,0,4,0" Name="HelpPanel" Background="Transparent" Height="0">
+    <Border Padding="3" Background="White" BorderBrush="DarkGray" BorderThickness="1" MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}}">
+        <DockPanel LastChildFill="True">
+            <DockPanel Margin="4,0,4,0" Name="HelpPanel" Background="Transparent" Height="0" DockPanel.Dock="Top">
                 <TextBlock FontSize="10" DockPanel.Dock="Left">
                     type to search
                 </TextBlock>
@@ -65,7 +65,7 @@
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
-            <Grid>
+            <Grid DockPanel.Dock="Top">
                 <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15"
                          VerticalContentAlignment="Center">
                     <TextBox.InputBindings>
@@ -107,7 +107,7 @@
                 </TextBlock>
             </Grid>
             <ListBox Name="lb" SelectionMode="Single" ItemsSource="{Binding}" MinWidth="522" BorderThickness="0"
-                     Margin="-1,3,-1,0" Padding="0">
+                     Margin="-1,3,-1,0" Padding="0" DockPanel.Dock="Bottom">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -207,6 +207,6 @@
                                      Color="{x:Static SystemColors.HighlightColor}" Opacity=".4" />
                 </ListBox.Resources>
             </ListBox>
-        </StackPanel>
+        </DockPanel>
     </Border>
 </Window>
