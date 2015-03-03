@@ -186,13 +186,18 @@ namespace Switcheroo
 
         private static void CheckForUpdates()
         {
+            var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
+            if (currentVersion == new Version(0, 0, 0, 0))
+            {
+                return;
+            }
+
             var timer = new DispatcherTimer();
 
             timer.Tick += async (sender, args) =>
             {
                 timer.Stop();
                 var latestVersion = await GetLatestVersion();
-                var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
                 if (latestVersion != null && latestVersion > currentVersion)
                 {
                     var result = MessageBox.Show(
@@ -212,7 +217,7 @@ namespace Switcheroo
                 }
             };
 
-            timer.Interval = new TimeSpan(0, 5, 0);
+            timer.Interval = new TimeSpan(0, 0, 0);
             timer.Start();
         }
 
