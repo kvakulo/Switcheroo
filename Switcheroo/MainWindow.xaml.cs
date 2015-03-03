@@ -264,6 +264,7 @@ namespace Switcheroo
             tb.Clear();
             tb.Focus();
             CenterWindow();
+            ScrollSelectedItemIntoView();
         }
 
         /// <summary>
@@ -568,6 +569,8 @@ namespace Switcheroo
                 {
                     lb.SelectedIndex = lb.Items.Count - 1;
                 }
+
+                ScrollSelectedItemIntoView();
             }
         }
 
@@ -589,6 +592,17 @@ namespace Switcheroo
                 {
                     lb.SelectedIndex = 0;
                 }
+
+                ScrollSelectedItemIntoView();
+            }
+        }
+
+        private void ScrollSelectedItemIntoView()
+        {
+            var selectedItem = lb.SelectedItem;
+            if (selectedItem != null)
+            {
+                lb.ScrollIntoView(selectedItem);
             }
         }
 
