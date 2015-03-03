@@ -138,15 +138,15 @@ namespace Switcheroo.Core
             // http://blogs.msdn.com/b/oldnewthing/archive/2007/10/08/5351207.aspx
 
             // Start at the root owner
-            var hwndTry = WinApi.GetAncestor(HWnd, WinApi.GetAncestorFlags.GetRootOwner);
+            var hwndWalk = WinApi.GetAncestor(HWnd, WinApi.GetAncestorFlags.GetRootOwner);
 
             // See if we are the last active visible popup
-            var hwndWalk = IntPtr.Zero;
-            while (hwndTry != hwndWalk)
+            var hwndTry = IntPtr.Zero;
+            while (hwndWalk != hwndTry)
             {
-                hwndWalk = hwndTry;
-                hwndTry = WinApi.GetLastActivePopup(hwndWalk);
-                if (WinApi.IsWindowVisible(hwndTry)) break;
+                hwndTry = hwndWalk;
+                hwndWalk = WinApi.GetLastActivePopup(hwndTry);
+                if (WinApi.IsWindowVisible(hwndWalk)) break;
             }
             return hwndWalk == HWnd;
         }
