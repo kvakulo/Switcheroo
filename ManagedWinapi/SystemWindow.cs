@@ -1062,6 +1062,17 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// Closes the window by sending the "WM_SYSCOMMAND" with the "SC_CLOSE" parameter.
+        /// This equals that the user open the Window menu and click "Close". This method
+        /// seem to work in more scenaries than "SendClose()" and "PostClose()".
+        /// Also see: https://msdn.microsoft.com/en-us/library/windows/desktop/ms646360(v=vs.85).aspx
+        /// </summary>
+        public void Close()
+        {
+            PostMessage(HWnd, WM_SYSCOMMAND, SC_CLOSE, IntPtr.Zero);
+        }
+
+        /// <summary>
         /// Highlights the window with a red border.
         /// </summary>
         public void Highlight()
@@ -1357,7 +1368,9 @@ namespace ManagedWinapi.Windows
         [DllImport("user32.dll")]
         static extern IntPtr GetDC(IntPtr hWnd);
 
-        private const int WM_CLOSE = 16, WM_GETTEXT = 13, WM_GETTEXTLENGTH = 14;
+        private const int WM_CLOSE = 16, WM_GETTEXT = 13, WM_GETTEXTLENGTH = 14, WM_SYSCOMMAND = 274;
+
+        private IntPtr SC_CLOSE = new IntPtr(61536);
 
         private enum GetWindow_Cmd
         {
