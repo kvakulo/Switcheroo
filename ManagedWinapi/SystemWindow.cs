@@ -24,7 +24,6 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using ManagedWinapi.Windows.Contents;
 
 namespace ManagedWinapi.Windows
@@ -34,7 +33,7 @@ namespace ManagedWinapi.Windows
     /// </summary>
     /// <seealso cref="SystemWindow.Style"/>
     [Flags]
-    public enum WindowStyleFlags
+    public enum WindowStyleFlags : long
     {
         /// <summary>
         /// WS_OVERLAPPED
@@ -170,6 +169,12 @@ namespace ManagedWinapi.Windows
         /// WS_CHILDWINDOW
         /// </summary>
         CHILDWINDOW = CHILD,
+
+        /// <summary>
+        /// Usually WindowExStyleFlags.TOOLWINDOW should be used, but it seems like the style
+        /// is sometimes placed in the Style instead of ExtentedStyle
+        /// </summary>
+        TOOLWINDOW = 0x00000080
     }
 
     /// <summary>
@@ -646,7 +651,7 @@ namespace ManagedWinapi.Windows
         {
             get
             {
-                return (WindowStyleFlags)GetWindowLongPtr(_hwnd, (int)(GWL.GWL_STYLE));
+                return (WindowStyleFlags)(long)GetWindowLongPtr(_hwnd, (int)(GWL.GWL_STYLE));
             }
             set
             {

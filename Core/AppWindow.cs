@@ -26,9 +26,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Media.Imaging;
 using ManagedWinapi.Windows;
-using Microsoft.Win32;
 
 namespace Switcheroo.Core
 {
@@ -80,6 +78,12 @@ namespace Switcheroo.Core
             WinApi.SwitchToThisWindow(HWnd, true);
         }
 
+        public void SwitchToLastVisibleActivePopup()
+        {
+            var lastActiveVisiblePopup = GetLastActiveVisiblePopup();
+            WinApi.SwitchToThisWindow(lastActiveVisiblePopup, true);
+        }
+
         public AppWindow Owner
         {
             get
@@ -119,7 +123,8 @@ namespace Switcheroo.Core
 
         private bool IsToolWindow()
         {
-            return (ExtendedStyle & WindowExStyleFlags.TOOLWINDOW) == WindowExStyleFlags.TOOLWINDOW;
+            return (ExtendedStyle & WindowExStyleFlags.TOOLWINDOW) == WindowExStyleFlags.TOOLWINDOW
+                    || (Style & WindowStyleFlags.TOOLWINDOW) == WindowStyleFlags.TOOLWINDOW;
         }
 
         private bool IsAppWindow()
@@ -134,6 +139,12 @@ namespace Switcheroo.Core
 
         private bool IsLastActiveVisiblePopup()
         {
+            var lastActiveVisiblePopup = GetLastActiveVisiblePopup();
+            return  new AppWindow(lastActiveVisiblePopup).IsToolWindow() || lastActiveVisiblePopup == HWnd;
+        }
+
+        private IntPtr GetLastActiveVisiblePopup()
+        {
             // Which windows appear in the Alt+Tab list? -Raymond Chen
             // http://blogs.msdn.com/b/oldnewthing/archive/2007/10/08/5351207.aspx
 
@@ -146,9 +157,12 @@ namespace Switcheroo.Core
             {
                 hwndTry = hwndWalk;
                 hwndWalk = WinApi.GetLastActivePopup(hwndTry);
-                if (WinApi.IsWindowVisible(hwndWalk)) break;
+                if (WinApi.IsWindowVisible(hwndWalk))
+                {
+                    return hwndWalk;
+                }
             }
-            return hwndWalk == HWnd;
+            return hwndWalk;
         }
 
         private bool IsOwnerOrOwnerNotVisible()

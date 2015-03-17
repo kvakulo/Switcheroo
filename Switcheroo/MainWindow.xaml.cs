@@ -289,7 +289,7 @@ namespace Switcheroo
             if (lb.Items.Count > 0)
             {
                 var win = (AppWindowViewModel) (lb.SelectedItem ?? lb.Items[0]);
-                win.AppWindow.SwitchTo();
+                win.AppWindow.SwitchToLastVisibleActivePopup();
             }
             HideWindow();
         }
