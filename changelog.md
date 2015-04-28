@@ -1,5 +1,18 @@
 Change log
 ----------
+### 2015-04-28: v0.9.0 ###
+- Much improved window closing: Switcheroo now stays open, so you can close several windows faster. Thanks to @HellBrick for proposing this idea and sending a pull request! :+1: (#25)
+- The focused window is now at the bottom of the list. This makes it faster to switch to the next window as you just need to press Alt+Enter, Enter. No more need to press Arrow Down. This makes Alt+Enter and Alt+Tab work in the same way (#24)
+- Add help information to Switcheroo. Features should be more easily discoverable. Just click the question mark in the overlay (#32)
+- Add Ctrl+W as a shortcut to close a window. This shortcut fells more intuitive than Ctrl+Enter (#22)
+- Allow using Tab and Shift+Tab to navigate the window list (#31)
+- Small look and feel adjustments. More prettiness! (#30)
+- Deactivate the System Menu for Switcheroo. Because it often gets accidentally activated when using the default Alt+Tab shortcut (#29)
+- Key presses in Switcheroo can be sent to other windows. Key presses are now contained within Switcheroo (#34)
+- Fix Switcheroo window turning black on activate/dismiss (#30)
+- More work around missing Alt+Tab windows. No windows should be forgotten (#36)
+- Fix missing scrollbar if list is taller than screen (#37)
+- More compatible way of closing windows (#42)
 
 ### 2015-01-15: v0.8.3 ###
 - Crashes on launch in Windows 10 or when .NET 4.6 Preview is installed (#20)
