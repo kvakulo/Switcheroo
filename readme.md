@@ -75,7 +75,7 @@ along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
 Credits
 -------
 
-[HellBrick](https://github.com/HellBrick) and [ovesen](https://github.com/ovesen) have contributed Switcheroo.
+[HellBrick](https://github.com/HellBrick) and [ovesen](https://github.com/ovesen) have contributed to Switcheroo.
 
 Switcheroo makes use of these great open source projects:
 
