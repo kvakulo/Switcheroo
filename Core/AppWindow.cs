@@ -110,7 +110,6 @@ namespace Switcheroo.Core
             if (IsAppWindow()) return true;
             if (IsToolWindow()) return false;
             if (IsNoActivate()) return false;
-            if (!IsLastActiveVisiblePopup()) return false;
             if (!IsOwnerOrOwnerNotVisible()) return false;
 
             return true;
@@ -135,12 +134,6 @@ namespace Switcheroo.Core
         private bool IsNoActivate()
         {
             return (ExtendedStyle & WindowExStyleFlags.NOACTIVATE) == WindowExStyleFlags.NOACTIVATE;
-        }
-
-        private bool IsLastActiveVisiblePopup()
-        {
-            var lastActiveVisiblePopup = GetLastActiveVisiblePopup();
-            return  new AppWindow(lastActiveVisiblePopup).IsToolWindow() || lastActiveVisiblePopup == HWnd;
         }
 
         private IntPtr GetLastActiveVisiblePopup()
