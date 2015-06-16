@@ -334,7 +334,12 @@ namespace Switcheroo
 
         private void HideWindow()
         {
-            _windowCloser.Dispose();
+            if (_windowCloser != null)
+            {
+                _windowCloser.Dispose();
+                _windowCloser = null;
+            }
+
             Opacity = 0;
 
             // Avoid flicker by delaying the "Hide" a bit. This makes sure
