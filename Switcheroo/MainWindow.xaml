@@ -12,6 +12,8 @@
     <Window.CommandBindings>
         <CommandBinding Command="local:MainWindow.CloseWindowCommand"
                         Executed="CloseWindow" />
+        <CommandBinding Command="local:MainWindow.CloseProcessesCommand"
+                        Executed="CloseProcesses" />
         <CommandBinding Command="local:MainWindow.SwitchToWindowCommand"
                         Executed="OnEnterPressed" />
         <CommandBinding Command="local:MainWindow.ScrollListUpCommand"
@@ -23,6 +25,7 @@
     <Window.InputBindings>
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="Enter" Modifiers="Ctrl" />
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="W" Modifiers="Ctrl" />
+        <KeyBinding Command="local:MainWindow.CloseProcessesCommand" Key="Q" Modifiers="Ctrl" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
     </Window.InputBindings>

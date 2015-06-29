@@ -56,6 +56,7 @@ namespace Switcheroo
         public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand CloseProcessesCommand = new RoutedUICommand();
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
@@ -526,7 +527,7 @@ namespace Switcheroo
             };
 
             var filterResults = new WindowFilterer().Filter(context, query).ToList();
-
+            
             foreach (var filterResult in filterResults)
             {
                 filterResult.AppWindow.FormattedTitle =
@@ -570,7 +571,7 @@ namespace Switcheroo
                 {
                     bool isClosed = await _windowCloser.TryCloseAsync(win);
                     if (isClosed)
-                        RemoveWindow(win);
+                    	RemoveWindow(win);
                 }
             }
             else
@@ -580,6 +581,28 @@ namespace Switcheroo
             e.Handled = true;
         }
 
+        private async void CloseProcesses(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (lb.Items.Count > 0)
+            {
+                foreach (AppWindowViewModel win in _filteredWindowList)
+                {
+                    if (win != null)
+                    {
+                    bool isClosed = await _windowCloser.TryCloseAsync(win);
+                    if(isClosed)
+                        RemoveWindow(win);
+                    }
+                }
+            }
+            else
+            {
+                HideWindow();
+            }
+
+            e.Handled = true;
+       }
+        
         private void RemoveWindow(AppWindowViewModel window)
         {
             int index = _filteredWindowList.IndexOf(window);
@@ -689,3 +712,4 @@ namespace Switcheroo
         }
     }
 }
+ 
