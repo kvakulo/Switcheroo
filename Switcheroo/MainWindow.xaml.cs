@@ -590,8 +590,8 @@ namespace Switcheroo
                     if (win != null)
                     {
                     bool isClosed = await _windowCloser.TryCloseAsync(win);
-                    if(isClosed)
-                        RemoveWindow(win);
+                    //if(isClosed)
+                    //    RemoveWindow(win);
                     }
                 }
             }
