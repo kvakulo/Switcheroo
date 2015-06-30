@@ -567,12 +567,7 @@ namespace Switcheroo
             if (lb.Items.Count > 0)
             {
                 var win = (AppWindowViewModel) lb.SelectedItem;
-                if (win != null)
-                {
-                    bool isClosed = await _windowCloser.TryCloseAsync(win);
-                    if (isClosed)
-                    	RemoveWindow(win);
-                }
+                await TryCloseAndRemoveWindowAsync( win );
             }
             else
             {
@@ -581,18 +576,31 @@ namespace Switcheroo
             e.Handled = true;
         }
 
+		  private async Task<bool> TryCloseAndRemoveWindowAsync( AppWindowViewModel win )
+		  {
+			  if ( win != null )
+			  {
+				  bool isClosed = await _windowCloser.TryCloseAsync( win );
+				  if ( isClosed )
+					  RemoveWindow( win );
+
+				  return isClosed;
+			  }
+			  else
+			  {
+				  //	I'm not sure when exactly it happens so I return 'all is good' just in case.
+				  //	At least this doesn't mean that the window prevents closing itself.
+				  return true;
+			  }
+		  }
+
         private async void CloseProcesses(object sender, ExecutedRoutedEventArgs e)
         {
             if (lb.Items.Count > 0)
             {
                 foreach (AppWindowViewModel win in _filteredWindowList)
                 {
-                    if (win != null)
-                    {
-                    bool isClosed = await _windowCloser.TryCloseAsync(win);
-                    //if(isClosed)
-                    //    RemoveWindow(win);
-                    }
+						 await TryCloseAndRemoveWindowAsync( win );
                 }
             }
             else
