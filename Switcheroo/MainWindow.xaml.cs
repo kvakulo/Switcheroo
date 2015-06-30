@@ -594,22 +594,27 @@ namespace Switcheroo
 			  }
 		  }
 
-        private async void CloseProcesses(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (lb.Items.Count > 0)
-            {
-                foreach (AppWindowViewModel win in _filteredWindowList)
-                {
-						 await TryCloseAndRemoveWindowAsync( win );
-                }
-            }
-            else
-            {
-                HideWindow();
-            }
+		  private async void CloseProcesses( object sender, ExecutedRoutedEventArgs e )
+		  {
+			  if ( lb.Items.Count > 0 )
+			  {
+				  var closingTasks = _filteredWindowList
+					  .Select( window => TryCloseAndRemoveWindowAsync( window ) )
+					  .ToArray();
 
-            e.Handled = true;
-       }
+				  var results = await Task.WhenAll( closingTasks );
+				  if ( results.All( closedSuccessfully => closedSuccessfully ) )
+				  {
+					  //	TODO: something. Maybe reset the filter text since we've closed all the windows that fit the filter anyway?
+				  }
+			  }
+			  else
+			  {
+				  HideWindow();
+			  }
+
+			  e.Handled = true;
+		  }
         
         private void RemoveWindow(AppWindowViewModel window)
         {
