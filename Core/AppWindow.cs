@@ -111,6 +111,7 @@ namespace Switcheroo.Core
             if (IsToolWindow()) return false;
             if (IsNoActivate()) return false;
             if (!IsOwnerOrOwnerNotVisible()) return false;
+            if (HasITaskListDeletedProperty()) return false;
 
             return true;
         }
@@ -161,6 +162,11 @@ namespace Switcheroo.Core
         private bool IsOwnerOrOwnerNotVisible()
         {
             return Owner == null || !Owner.Visible;
+        }
+
+        private bool HasITaskListDeletedProperty()
+        {
+            return WinApi.GetProp(HWnd, "ITaskList_Deleted") != IntPtr.Zero;
         }
 
         // This method only works on Windows >= Windows Vista
