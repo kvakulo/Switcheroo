@@ -599,6 +599,7 @@ namespace Switcheroo
 			  if ( lb.Items.Count > 0 )
 			  {
 				  var closingTasks = _filteredWindowList
+					  .ToArray()
 					  .Select( window => TryCloseAndRemoveWindowAsync( window ) )
 					  .ToArray();
 
