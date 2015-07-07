@@ -550,6 +550,12 @@ namespace Switcheroo
             return new XamlHighlighter().Highlight(bestResult.StringParts);
         }
 
+        private void OnSpaceBarPressed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Switch();
+            e.Handled = true;
+        }
+
         private void OnEnterPressed(object sender, ExecutedRoutedEventArgs e)
         {
             Switch();
@@ -581,9 +587,10 @@ namespace Switcheroo
 			  if ( win != null )
 			  {
 				  bool isClosed = await _windowCloser.TryCloseAsync( win );
-				  if ( isClosed )
+				  /*if ( isClosed )
 					  RemoveWindow( win );
-
+                   */
+                
 				  return isClosed;
 			  }
 			  else
