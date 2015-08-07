@@ -340,17 +340,7 @@ namespace Switcheroo
                 _windowCloser = null;
             }
 
-            Opacity = 0;
-
-            // Avoid flicker by delaying the "Hide" a bit. This makes sure
-            // that "Opacity = 0" is taking effect before the window is hidden.
-            var timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(50)};
-            timer.Tick += (sender, args) =>
-            {
-                Hide();
-                timer.Stop();
-            };
-            timer.Start();
+            Hide();           
         }
 
         #endregion
