@@ -112,6 +112,7 @@ namespace Switcheroo.Core
             if (IsNoActivate()) return false;
             if (!IsOwnerOrOwnerNotVisible()) return false;
             if (HasITaskListDeletedProperty()) return false;
+            if (IsCoreWindow()) return false;
 
             return true;
         }
@@ -167,6 +168,12 @@ namespace Switcheroo.Core
         private bool HasITaskListDeletedProperty()
         {
             return WinApi.GetProp(HWnd, "ITaskList_Deleted") != IntPtr.Zero;
+        }
+
+        private bool IsCoreWindow()
+        {
+            // Avoids double entries for Windows Store Apps on Windows 10
+            return ClassName == "Windows.UI.Core.CoreWindow";
         }
 
         // This method only works on Windows >= Windows Vista
