@@ -1,4 +1,4 @@
-<img src="logo.png" alt="Switcheroo" width="48px" height="48px"> Switcheroo  [![Build Status](http://img.shields.io/teamcity/codebetter/Switcheroo.svg?style=flat)](http://teamcity.codebetter.com/project.html?projectId=Switcheroo) ![GPL License](https://img.shields.io/badge/license-GPL-brightgreen.svg)
+<img src="logo.png" alt="Switcheroo" width="48px" height="48px"> Switcheroo  [![Build Status](https://img.shields.io/appveyor/ci/kvakulo/switcheroo.svg)](https://ci.appveyor.com/project/kvakulo/switcheroo) ![GPL License](https://img.shields.io/badge/license-GPL-brightgreen.svg)
 ==========
 
 Switcheroo is for anyone who spends more time using a keyboard than a mouse.
@@ -81,8 +81,3 @@ Switcheroo makes use of these great open source projects:
 
 * [Managed Windows API](http://mwinapi.sourceforge.net), Copyright © 2006 Michael Schier, GNU Lesser General Public License (LGPL)
 * [PortableSettingsProvider](https://github.com/crdx/PortableSettingsProvider), Copyright © crdx, The MIT License (MIT)
-
-Thanks to [JetBrains](http://www.jetbrains.com/) and [CodeBetter](http://codebetter.com/) for providing [continuous integration](http://teamcity.codebetter.com/project.html?projectId=Switcheroo) for Switcheroo.
-
-
-<a href="http://www.jetbrains.com/teamcity" title="TeamCity by JetBrains"><img src="http://www.jetbrains.com/img/banners/Codebetter300x250.png" width="300" height="250"></a>
