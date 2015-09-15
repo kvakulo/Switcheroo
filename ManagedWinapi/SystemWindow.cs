@@ -168,13 +168,7 @@ namespace ManagedWinapi.Windows
         /// <summary>
         /// WS_CHILDWINDOW
         /// </summary>
-        CHILDWINDOW = CHILD,
-
-        /// <summary>
-        /// Usually WindowExStyleFlags.TOOLWINDOW should be used, but it seems like the style
-        /// is sometimes placed in the Style instead of ExtentedStyle
-        /// </summary>
-        TOOLWINDOW = 0x00000080
+        CHILDWINDOW = CHILD
     }
 
     /// <summary>

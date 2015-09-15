@@ -124,8 +124,7 @@ namespace Switcheroo.Core
 
         private bool IsToolWindow()
         {
-            return (ExtendedStyle & WindowExStyleFlags.TOOLWINDOW) == WindowExStyleFlags.TOOLWINDOW
-                    || (Style & WindowStyleFlags.TOOLWINDOW) == WindowStyleFlags.TOOLWINDOW;
+            return (ExtendedStyle & WindowExStyleFlags.TOOLWINDOW) == WindowExStyleFlags.TOOLWINDOW;
         }
 
         private bool IsAppWindow()
