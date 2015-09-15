@@ -310,6 +310,9 @@ namespace Switcheroo
         /// </summary>
         private void CenterWindow()
         {
+            // Reset height every time to ensure that resolution changes take effect
+            Border.MaxHeight = SystemParameters.PrimaryScreenHeight;
+
             // Force a rendering before repositioning the window
             SizeToContent = SizeToContent.Manual;
             SizeToContent = SizeToContent.WidthAndHeight;
