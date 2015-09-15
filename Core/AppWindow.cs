@@ -113,6 +113,7 @@ namespace Switcheroo.Core
             if (!IsOwnerOrOwnerNotVisible()) return false;
             if (HasITaskListDeletedProperty()) return false;
             if (IsCoreWindow()) return false;
+            if (IsApplicationFrameWindow() && !HasAppropriateApplicationViewCloakType()) return false;
 
             return true;
         }
@@ -174,6 +175,39 @@ namespace Switcheroo.Core
         {
             // Avoids double entries for Windows Store Apps on Windows 10
             return ClassName == "Windows.UI.Core.CoreWindow";
+        }
+
+        private bool IsApplicationFrameWindow()
+        {
+            return ClassName == "ApplicationFrameWindow";
+        }
+
+        private bool HasAppropriateApplicationViewCloakType()
+        {
+            // The ApplicationFrameWindows that host Windows Store Apps like to
+            // hang around in Windows 10 even after the underlying program has been
+            // closed. A way to figure out if the ApplicationFrameWindow is
+            // currently hosting an application is to check if it has a property called
+            // "ApplicationViewCloakType", and that the value != 1.
+            //
+            // I've stumbled upon these values of "ApplicationViewCloakType":
+            //    0 = Program is running on current virtual desktop
+            //    1 = Program is not running
+            //    2 = Program is running on a different virtual desktop
+
+            var hasAppropriateApplicationViewCloakType = false;
+            WinApi.EnumPropsEx(HWnd, (hwnd, lpszString, data, dwData) =>  
+            {
+                var propName = Marshal.PtrToStringAnsi(lpszString);
+                if (propName == "ApplicationViewCloakType")
+                {
+                    hasAppropriateApplicationViewCloakType = data != 1;
+                    return 0;
+                }
+                return 1;
+            }, IntPtr.Zero);
+
+            return hasAppropriateApplicationViewCloakType;
         }
 
         // This method only works on Windows >= Windows Vista
