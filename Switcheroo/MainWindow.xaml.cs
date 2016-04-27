@@ -320,8 +320,10 @@ namespace Switcheroo
             SizeToContent = SizeToContent.Manual;
             SizeToContent = SizeToContent.WidthAndHeight;
 
+	        var screen = Screen.FromHandle(_foregroundWindow.HWnd);
+
 	        var windowPosition =
-		        WindowPositionCalculator.CalculateWindowPosition(Screen.PrimaryScreen, ActualWidth, ActualHeight);
+		        WindowPositionCalculator.CalculateWindowPosition(screen, ActualWidth, ActualHeight);
 
             // Position the window in the center of the screen
 	        Left = windowPosition.Left;
