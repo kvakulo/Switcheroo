@@ -320,15 +320,35 @@ namespace Switcheroo
             SizeToContent = SizeToContent.Manual;
             SizeToContent = SizeToContent.WidthAndHeight;
 
-	        var screen = Screen.FromHandle(_foregroundWindow.HWnd);
-
 	        var windowPosition =
-		        WindowPositionCalculator.CalculateWindowPosition(screen, ActualWidth, ActualHeight);
+		        WindowPositionCalculator.CalculateWindowPosition(PickScreen(), ActualWidth, ActualHeight);
 
             // Position the window in the center of the screen
 	        Left = windowPosition.Left;
 	        Top = windowPosition.Top;
         }
+
+		/// <summary>
+		/// Decides which screen to pop Switcheroo up
+		/// </summary>
+		/// <returns></returns>
+	    private Screen PickScreen()
+		{
+			Screen screen;
+			switch (Settings.Default.MultiMonitor)
+			{
+				case 0:
+					screen = Screen.PrimaryScreen;
+					break;
+				case 1:
+					screen = Screen.FromHandle(_foregroundWindow.HWnd);
+					break;
+				default:
+					screen = Screen.PrimaryScreen;
+					break;
+			}
+			return screen;
+		}
 
         /// <summary>
         /// Switches the window associated with the selected item.

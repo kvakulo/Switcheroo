@@ -63,6 +63,7 @@ namespace Switcheroo
 
             HotkeyPreview.Text = _hotkeyViewModel.ToString();
             AltTabCheckBox.IsChecked = Settings.Default.AltTabHook;
+	        MultiMonSelector.SelectedIndex = Settings.Default.MultiMonitor;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -95,6 +96,7 @@ namespace Switcheroo
             }
 
             Settings.Default.AltTabHook = AltTabCheckBox.IsChecked.GetValueOrDefault();
+	        Settings.Default.MultiMonitor = MultiMonSelector.SelectedIndex;
             Settings.Default.Save();
 
             if (closeOptionsWindow)
