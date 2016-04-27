@@ -19,8 +19,9 @@
             <CheckBox Name="AltTabCheckBox" Margin="5">Activate Switcheroo with Alt+Tab</CheckBox>
             <Label>Multi-Monitor Support</Label>
             <ComboBox Name="MultiMonSelector">
-                <ComboBoxItem IsSelected="True">Default</ComboBoxItem>
+                <ComboBoxItem IsSelected="True">Default Monitor</ComboBoxItem>
                 <ComboBoxItem>Active Monitor</ComboBoxItem>
+                <ComboBoxItem>Mouse Location</ComboBoxItem>
             </ComboBox>
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>

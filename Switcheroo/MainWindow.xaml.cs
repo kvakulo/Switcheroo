@@ -42,6 +42,7 @@ using Switcheroo.Properties;
 using Application = System.Windows.Application;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
+using MouseCursor = System.Windows.Forms.Cursor;
 
 namespace Switcheroo
 {
@@ -342,6 +343,9 @@ namespace Switcheroo
 					break;
 				case 1:
 					screen = Screen.FromHandle(_foregroundWindow.HWnd);
+					break;
+				case 2:
+					screen = Screen.AllScreens.First(s => s.Bounds.Contains(MouseCursor.Position.X, MouseCursor.Position.Y));
 					break;
 				default:
 					screen = Screen.PrimaryScreen;

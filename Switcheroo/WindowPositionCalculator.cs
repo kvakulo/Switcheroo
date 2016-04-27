@@ -6,10 +6,6 @@ namespace Switcheroo
 {
 	class WindowPositionCalculator : ICalculateWindowPosition
 	{
-		public WindowPositionCalculator()
-		{
-			
-		}
 		public WindowPosition CalculateWindowPosition(Screen screen, double windowWidth, double windowHeight)
 		{
 			return new WindowPosition
