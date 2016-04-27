@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -56,6 +57,8 @@ namespace Switcheroo
         public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+		
+		private static readonly ICalculateWindowPosition WindowPositionCalculator = new WindowPositionCalculator();
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
@@ -317,9 +320,12 @@ namespace Switcheroo
             SizeToContent = SizeToContent.Manual;
             SizeToContent = SizeToContent.WidthAndHeight;
 
+	        var windowPosition =
+		        WindowPositionCalculator.CalculateWindowPosition(Screen.PrimaryScreen, ActualWidth, ActualHeight);
+
             // Position the window in the center of the screen
-            Left = (SystemParameters.PrimaryScreenWidth/2) - (ActualWidth/2);
-            Top = (SystemParameters.PrimaryScreenHeight/2) - (ActualHeight/2);
+	        Left = windowPosition.Left;
+	        Top = windowPosition.Top;
         }
 
         /// <summary>
