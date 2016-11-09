@@ -60,7 +60,8 @@ namespace Switcheroo
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
         private SystemWindow _foregroundWindow;
-        private bool _firstAltTab;
+        private bool _enableAltTabSwitch;
+        private bool _enableAltSwitch;
 
         public MainWindow()
         {
@@ -98,6 +99,10 @@ namespace Switcheroo
                 {
                     Opacity = 0;
                 }
+                else if (args.Key == Key.System && args.SystemKey == Key.LeftAlt)
+                {
+                    _enableAltSwitch = Visibility == Visibility.Visible;
+                }
                 else if (args.Key == Key.Escape)
                 {
                     Opacity = 0;
@@ -115,14 +120,12 @@ namespace Switcheroo
                 {
                     HideWindow();
                 }
-                else if (args.Key == Key.System && args.SystemKey == Key.LeftAlt)
+                else if (args.Key == Key.System && args.SystemKey == Key.LeftAlt && _enableAltSwitch)
                 {
-                    Opacity = 0;
                     Switch();
                 }
-                else if (args.Key == Key.LeftAlt && args.SystemKey == Key.None && !_firstAltTab)
+                else if (args.Key == Key.LeftAlt && args.SystemKey == Key.None && _enableAltTabSwitch)
                 {
-                    Opacity = 0;
                     Switch();
                 }
             };
@@ -436,7 +439,7 @@ namespace Switcheroo
 
             if (Visibility != Visibility.Visible)
             {
-                _firstAltTab = true;
+                _enableAltTabSwitch = false;
 
                 _foregroundWindow = SystemWindow.ForegroundWindow;
 
@@ -456,7 +459,7 @@ namespace Switcheroo
             }
             else
             {
-                _firstAltTab = false;
+                _enableAltTabSwitch = true;
 
                 if (e.ShiftDown)
                 {
