@@ -336,6 +336,9 @@ namespace Switcheroo
                 _windowCloser = null;
             }
 
+            _enableAltTabSwitch = false;
+            _enableAltSwitch = false;
+
             Hide();           
         }
 
@@ -439,8 +442,6 @@ namespace Switcheroo
 
             if (Visibility != Visibility.Visible)
             {
-                _enableAltTabSwitch = false;
-
                 _foregroundWindow = SystemWindow.ForegroundWindow;
 
                 ActivateAndFocusMainWindow();
