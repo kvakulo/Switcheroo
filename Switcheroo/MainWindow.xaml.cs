@@ -683,6 +683,8 @@ namespace Switcheroo
             var appWindow = lb.SelectedItem as AppWindowViewModel;
 
             appWindow.PinToBottom(_pinnedToBottom);
+
+			ReorderList();
 	    }
 
 	    private void UnpinCommand(object sender, ExecutedRoutedEventArgs e)
@@ -690,6 +692,16 @@ namespace Switcheroo
             var appWindow = lb.SelectedItem as AppWindowViewModel;
 
             appWindow.UnpinFromBottom(_pinnedToBottom);
+
+			ReorderList();
+	    }
+
+	    private void ReorderList()
+	    {
+		    var windows = lb.Items.Cast<AppWindowViewModel>().Sort(_foregroundWindow, _pinnedToBottom);
+
+		    lb.DataContext = windows;
+		    lb.SelectedIndex = 0;
 	    }
 
         #endregion
