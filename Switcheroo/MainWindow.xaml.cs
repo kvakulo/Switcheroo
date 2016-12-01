@@ -56,6 +56,8 @@ namespace Switcheroo
         public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand PinToBottomCommand = new RoutedUICommand("Pin To Bottom", "PinToBottom", typeof(AppWindowViewModel), new InputGestureCollection {new KeyGesture(Key.L, ModifierKeys.Control)});
+        public static readonly RoutedUICommand UnpinFromBottomCommand = new RoutedUICommand("Unpin From Bottom", "UnpinFromBottom", typeof(MainWindow), new InputGestureCollection {new KeyGesture(Key.H, ModifierKeys.Control)});
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
@@ -672,6 +674,21 @@ namespace Switcheroo
             var newHeight = HelpPanel.Height > 0 ? 0 : +17;
             HelpPanel.BeginAnimation(HeightProperty, new DoubleAnimation(HelpPanel.Height, newHeight, duration));
         }
+
+	    private void ListBoxItem_MouseRightClick(object sender, MouseButtonEventArgs e)
+	    {
+		    throw new NotImplementedException();
+	    }
+
+	    private void PinCommand(object sender, ExecutedRoutedEventArgs e)
+	    {
+		    throw new NotImplementedException();
+	    }
+
+	    private void UnpinCommand(object sender, ExecutedRoutedEventArgs e)
+	    {
+		    throw new NotImplementedException();
+	    }
 
         #endregion
 
