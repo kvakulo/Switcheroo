@@ -94,6 +94,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppWindowViewModel.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="IconToBitmapConverter.cs" />
     <Compile Include="BoolToWhateverConverter.cs" />
     <Compile Include="WindowCloser.cs" />

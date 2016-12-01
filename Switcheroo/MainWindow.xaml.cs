@@ -39,6 +39,7 @@ using Switcheroo.Core;
 using Switcheroo.Core.Matchers;
 using Switcheroo.Properties;
 using Application = System.Windows.Application;
+using ContextMenu = System.Windows.Controls.ContextMenu;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 
@@ -62,6 +63,7 @@ namespace Switcheroo
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
         private SystemWindow _foregroundWindow;
+	    private List<IntPtr> _pinnedToBottom = new List<IntPtr>();
 
         public MainWindow()
         {
@@ -677,17 +679,33 @@ namespace Switcheroo
 
 	    private void ListBoxItem_MouseRightClick(object sender, MouseButtonEventArgs e)
 	    {
-		    throw new NotImplementedException();
+		    var appWindow = (sender as ListBoxItem).Content as AppWindowViewModel;
+
+	        if (appWindow.IsPinnedToBottom(_pinnedToBottom))
+	        {
+	            var cmUnpinFromBottom = this.FindResource("CmUnpinFromBottom") as ContextMenu;
+	            cmUnpinFromBottom.PlacementTarget = sender as ListBoxItem;
+	            cmUnpinFromBottom.IsOpen = true;
+	            return;
+	        }
+
+	        var cmPinToBottom = this.FindResource("CmPinToBottom") as ContextMenu;
+	        cmPinToBottom.PlacementTarget = sender as ListBoxItem;
+	        cmPinToBottom.IsOpen = true;
 	    }
 
 	    private void PinCommand(object sender, ExecutedRoutedEventArgs e)
 	    {
-		    throw new NotImplementedException();
+            var appWindow = lb.SelectedItem as AppWindowViewModel;
+
+            appWindow.PinToBottom(_pinnedToBottom);
 	    }
 
 	    private void UnpinCommand(object sender, ExecutedRoutedEventArgs e)
 	    {
-		    throw new NotImplementedException();
+            var appWindow = lb.SelectedItem as AppWindowViewModel;
+
+            appWindow.UnpinFromBottom(_pinnedToBottom);
 	    }
 
         #endregion
