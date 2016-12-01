@@ -251,19 +251,7 @@ namespace Switcheroo
         /// </summary>
         private void LoadData(InitialFocus focus)
         {
-            _unfilteredWindowList = new WindowFinder().GetWindows().Select(window => new AppWindowViewModel(window)).ToList();
-
-            var firstWindow = _unfilteredWindowList.FirstOrDefault();
-
-            var foregroundWindowMovedToBottom = false;
-            
-            // Move first window to the bottom of the list if it's related to the foreground window
-            if (firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow))
-            {
-                _unfilteredWindowList.RemoveAt(0);
-                _unfilteredWindowList.Add(firstWindow);
-                foregroundWindowMovedToBottom = true;
-            }
+            _unfilteredWindowList = new WindowFinder().GetWindows().Select(window => new AppWindowViewModel(window)).Sort(_foregroundWindow, _pinnedToBottom);
 
             _filteredWindowList = new ObservableCollection<AppWindowViewModel>(_unfilteredWindowList);
             _windowCloser = new WindowCloser();
@@ -278,7 +266,7 @@ namespace Switcheroo
             lb.DataContext = null;
             lb.DataContext = _filteredWindowList;
 
-            FocusItemInList(focus, foregroundWindowMovedToBottom);
+            FocusItemInList(focus, _foregroundWindow);
 
             tb.Clear();
             tb.Focus();
@@ -286,17 +274,13 @@ namespace Switcheroo
             ScrollSelectedItemIntoView();
         }
 
-        private static bool AreWindowsRelated(SystemWindow window1, SystemWindow window2)
-        {
-            return window1.HWnd == window2.HWnd || window1.Process.Id == window2.Process.Id;
-        }
-
-        private void FocusItemInList(InitialFocus focus, bool foregroundWindowMovedToBottom)
+        private void FocusItemInList(InitialFocus focus, SystemWindow foregroundWindow)
         {
             if (focus == InitialFocus.PreviousItem)
             {
                 var previousItemIndex = lb.Items.Count - 1;
-                if (foregroundWindowMovedToBottom)
+	            lb.SelectedIndex = previousItemIndex;
+                if ((lb.SelectedItem as AppWindowViewModel).AppWindow.HasTheSameHandleAs(foregroundWindow))
                 {
                     previousItemIndex--;
                 }
