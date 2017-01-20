@@ -93,11 +93,11 @@ namespace Switcheroo
             KeyDown += (sender, args) =>
             {
                 // Opacity is set to 0 right away so it appears that action has been taken right away...
-                if (args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                if(args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                 {
                     Opacity = 0;
                 }
-                else if (args.Key == Key.Escape)
+                else if(args.Key == Key.Escape)
                 {
                     Opacity = 0;
                 }
@@ -106,11 +106,11 @@ namespace Switcheroo
             KeyUp += (sender, args) =>
             {
                 // ... But only when the keys are release, the action is actually executed
-                if (args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                if(args.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                 {
                     Switch();
                 }
-                else if (args.Key == Key.Escape)
+                else if(args.Key == Key.Escape)
                 {
                     HideWindow();
                 }
@@ -129,7 +129,7 @@ namespace Switcheroo
             {
                 _hotkey.Enabled = true;
             }
-            catch (HotkeyAlreadyInUseException)
+            catch(HotkeyAlreadyInUseException)
             {
                 var boxText = "The current hotkey for activating Switcheroo is in use by another program." +
                               Environment.NewLine +
@@ -179,7 +179,7 @@ namespace Switcheroo
                 };
                 menuItem.Checked = autoStart.IsEnabled;
             }
-            catch (AutoStartException e)
+            catch(AutoStartException e)
             {
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -188,7 +188,7 @@ namespace Switcheroo
         private static void CheckForUpdates()
         {
             var currentVersion = Assembly.GetEntryAssembly().GetName().Version;
-            if (currentVersion == new Version(0, 0, 0, 0))
+            if(currentVersion == new Version(0, 0, 0, 0))
             {
                 return;
             }
@@ -199,14 +199,14 @@ namespace Switcheroo
             {
                 timer.Stop();
                 var latestVersion = await GetLatestVersion();
-                if (latestVersion != null && latestVersion > currentVersion)
+                if(latestVersion != null && latestVersion > currentVersion)
                 {
                     var result = MessageBox.Show(
                         string.Format(
                             "Switcheroo v{0} is available (you have v{1}).\r\n\r\nDo you want to download it?",
                             latestVersion, currentVersion),
                         "Update Available", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                    if (result == MessageBoxResult.Yes)
+                    if(result == MessageBoxResult.Yes)
                     {
                         Process.Start("https://github.com/kvakulo/Switcheroo/releases/latest");
                     }
@@ -231,12 +231,12 @@ namespace Switcheroo
                         new WebClient().DownloadStringTaskAsync(
                             "https://raw.github.com/kvakulo/Switcheroo/update/version.txt");
                 Version newVersion;
-                if (Version.TryParse(versionAsString, out newVersion))
+                if(Version.TryParse(versionAsString, out newVersion))
                 {
                     return newVersion;
                 }
             }
-            catch (WebException)
+            catch(WebException)
             {
             }
             return null;
@@ -252,9 +252,9 @@ namespace Switcheroo
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
 
             var foregroundWindowMovedToBottom = false;
-            
+
             // Move first window to the bottom of the list if it's related to the foreground window
-            if (firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow))
+            if(firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow))
             {
                 _unfilteredWindowList.RemoveAt(0);
                 _unfilteredWindowList.Add(firstWindow);
@@ -264,11 +264,11 @@ namespace Switcheroo
             _filteredWindowList = new ObservableCollection<AppWindowViewModel>(_unfilteredWindowList);
             _windowCloser = new WindowCloser();
 
-            foreach (var window in _unfilteredWindowList)
+            foreach(var window in _unfilteredWindowList)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
+                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.Title) });
                 window.FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.ProcessTitle)});
+                    new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.ProcessTitle) });
             }
 
             lb.DataContext = null;
@@ -289,10 +289,10 @@ namespace Switcheroo
 
         private void FocusItemInList(InitialFocus focus, bool foregroundWindowMovedToBottom)
         {
-            if (focus == InitialFocus.PreviousItem)
+            if(focus == InitialFocus.PreviousItem)
             {
                 var previousItemIndex = lb.Items.Count - 1;
-                if (foregroundWindowMovedToBottom)
+                if(foregroundWindowMovedToBottom)
                 {
                     previousItemIndex--;
                 }
@@ -318,8 +318,8 @@ namespace Switcheroo
             SizeToContent = SizeToContent.WidthAndHeight;
 
             // Position the window in the center of the screen
-            Left = (SystemParameters.PrimaryScreenWidth/2) - (ActualWidth/2);
-            Top = (SystemParameters.PrimaryScreenHeight/2) - (ActualHeight/2);
+            Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
+            Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);
         }
 
         /// <summary>
@@ -327,9 +327,9 @@ namespace Switcheroo
         /// </summary>
         private void Switch()
         {
-            if (lb.Items.Count > 0)
+            foreach(var item in lb.SelectedItems)
             {
-                var win = (AppWindowViewModel) (lb.SelectedItem ?? lb.Items[0]);
+                var win = (AppWindowViewModel)item;
                 win.AppWindow.SwitchToLastVisibleActivePopup();
             }
             HideWindow();
@@ -337,13 +337,13 @@ namespace Switcheroo
 
         private void HideWindow()
         {
-            if (_windowCloser != null)
+            if(_windowCloser != null)
             {
                 _windowCloser.Dispose();
                 _windowCloser = null;
             }
 
-            Hide();           
+            Hide();
         }
 
         #endregion
@@ -358,7 +358,7 @@ namespace Switcheroo
         /// </summary>
         private void Options()
         {
-            if (_optionsWindow == null)
+            if(_optionsWindow == null)
             {
                 _optionsWindow = new OptionsWindow
                 {
@@ -378,7 +378,7 @@ namespace Switcheroo
         /// </summary>
         private void About()
         {
-            if (_aboutWindow == null)
+            if(_aboutWindow == null)
             {
                 _aboutWindow = new AboutWindow
                 {
@@ -419,7 +419,7 @@ namespace Switcheroo
 
         private void hotkey_HotkeyPressed(object sender, EventArgs e)
         {
-            if (Visibility != Visibility.Visible)
+            if(Visibility != Visibility.Visible)
             {
                 _foregroundWindow = SystemWindow.ForegroundWindow;
                 Show();
@@ -436,7 +436,7 @@ namespace Switcheroo
 
         private void AltTabPressed(object sender, AltTabHookEventArgs e)
         {
-            if (!Settings.Default.AltTabHook)
+            if(!Settings.Default.AltTabHook)
             {
                 // Ignore Alt+Tab presses if the hook is not activated by the user
                 return;
@@ -444,14 +444,14 @@ namespace Switcheroo
 
             e.Handled = true;
 
-            if (Visibility != Visibility.Visible)
+            if(Visibility != Visibility.Visible)
             {
                 _foregroundWindow = SystemWindow.ForegroundWindow;
 
                 ActivateAndFocusMainWindow();
 
                 Keyboard.Focus(tb);
-                if (e.ShiftDown)
+                if(e.ShiftDown)
                 {
                     LoadData(InitialFocus.PreviousItem);
                 }
@@ -464,7 +464,7 @@ namespace Switcheroo
             }
             else
             {
-                if (e.ShiftDown)
+                if(e.ShiftDown)
                 {
                     PreviousItem();
                 }
@@ -490,7 +490,7 @@ namespace Switcheroo
             var altKeyPressed = false;
 
             // Press the Alt key if it is not already being pressed
-            if ((altKey.AsyncState & 0x8000) == 0)
+            if((altKey.AsyncState & 0x8000) == 0)
             {
                 altKey.Press();
                 altKeyPressed = true;
@@ -502,7 +502,7 @@ namespace Switcheroo
             Activate();
 
             // Release the Alt key if it was pressed above
-            if (altKeyPressed)
+            if(altKeyPressed)
             {
                 altKey.Release();
             }
@@ -520,7 +520,7 @@ namespace Switcheroo
 
             var filterResults = new WindowFilterer().Filter(context, query).ToList();
 
-            foreach (var filterResult in filterResults)
+            foreach(var filterResult in filterResults)
             {
                 filterResult.AppWindow.FormattedTitle =
                     GetFormattedTitleFromBestResult(filterResult.WindowTitleMatchResults);
@@ -530,7 +530,7 @@ namespace Switcheroo
 
             _filteredWindowList = new ObservableCollection<AppWindowViewModel>(filterResults.Select(r => r.AppWindow));
             lb.DataContext = _filteredWindowList;
-            if (lb.Items.Count > 0)
+            if(lb.Items.Count > 0)
             {
                 lb.SelectedItem = lb.Items[0];
             }
@@ -556,36 +556,35 @@ namespace Switcheroo
 
         private async void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            if (lb.Items.Count > 0)
-            {
-                var win = (AppWindowViewModel) lb.SelectedItem;
-                if (win != null)
-                {
-                    bool isClosed = await _windowCloser.TryCloseAsync(win);
-                    if (isClosed)
-                        RemoveWindow(win);
-                }
-            }
-            else
+            if(lb.Items.Count == 0)
             {
                 HideWindow();
             }
+
+            var windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
+            foreach(var win in windows)
+            {
+                bool isClosed = await _windowCloser.TryCloseAsync(win);
+                if(isClosed)
+                    RemoveWindow(win);
+            }
+
             e.Handled = true;
         }
 
         private void RemoveWindow(AppWindowViewModel window)
         {
             int index = _filteredWindowList.IndexOf(window);
-            if (index < 0)
+            if(index < 0)
                 return;
 
-            if (lb.SelectedIndex == index)
+            if(lb.SelectedIndex == index)
             {
-                if (_filteredWindowList.Count > index + 1)
+                if(_filteredWindowList.Count > index + 1)
                     lb.SelectedIndex++;
                 else
                 {
-                    if (index > 0)
+                    if(index > 0)
                         lb.SelectedIndex--;
                 }
             }
@@ -602,9 +601,9 @@ namespace Switcheroo
 
         private void PreviousItem()
         {
-            if (lb.Items.Count > 0)
+            if(lb.Items.Count > 0)
             {
-                if (lb.SelectedIndex != 0)
+                if(lb.SelectedIndex != 0)
                 {
                     lb.SelectedIndex--;
                 }
@@ -625,9 +624,9 @@ namespace Switcheroo
 
         private void NextItem()
         {
-            if (lb.Items.Count > 0)
+            if(lb.Items.Count > 0)
             {
-                if (lb.SelectedIndex != lb.Items.Count - 1)
+                if(lb.SelectedIndex != lb.Items.Count - 1)
                 {
                     lb.SelectedIndex++;
                 }
@@ -643,7 +642,7 @@ namespace Switcheroo
         private void ScrollSelectedItemIntoView()
         {
             var selectedItem = lb.SelectedItem;
-            if (selectedItem != null)
+            if(selectedItem != null)
             {
                 lb.ScrollIntoView(selectedItem);
             }
