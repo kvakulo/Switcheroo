@@ -327,9 +327,9 @@ namespace Switcheroo
         /// </summary>
         private void Switch()
         {
-            if (lb.Items.Count > 0)
+            foreach (var item in lb.SelectedItems)
             {
-                var win = (AppWindowViewModel) (lb.SelectedItem ?? lb.Items[0]);
+                var win = (AppWindowViewModel)item;
                 win.AppWindow.SwitchToLastVisibleActivePopup();
             }
             HideWindow();
@@ -556,20 +556,17 @@ namespace Switcheroo
 
         private async void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            if (lb.Items.Count > 0)
+            var windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
+            foreach (var win in windows)
             {
-                var win = (AppWindowViewModel) lb.SelectedItem;
-                if (win != null)
-                {
-                    bool isClosed = await _windowCloser.TryCloseAsync(win);
-                    if (isClosed)
-                        RemoveWindow(win);
-                }
+                bool isClosed = await _windowCloser.TryCloseAsync(win);
+                if(isClosed)
+                    RemoveWindow(win);
             }
-            else
-            {
+
+            if (lb.Items.Count == 0)
                 HideWindow();
-            }
+
             e.Handled = true;
         }
 
