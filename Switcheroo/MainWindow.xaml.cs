@@ -127,7 +127,8 @@ namespace Switcheroo
             _hotkey.HotkeyPressed += hotkey_HotkeyPressed;
             try
             {
-                _hotkey.Enabled = true;
+                // Use either custom shortcut or AltTab.
+                _hotkey.Enabled = !Settings.Default.AltTabHook;
             }
             catch (HotkeyAlreadyInUseException)
             {
