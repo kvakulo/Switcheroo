@@ -420,6 +420,11 @@ namespace Switcheroo
 
         private void hotkey_HotkeyPressed(object sender, EventArgs e)
         {
+            if (Settings.Default.AltTabHook)
+            {
+                return;
+            }
+
             if (Visibility != Visibility.Visible)
             {
                 _foregroundWindow = SystemWindow.ForegroundWindow;
