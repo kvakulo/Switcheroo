@@ -210,5 +210,15 @@ namespace Switcheroo
                 // It is alright if the hotkey can't be reactivated
             }
         }
+
+        private void AltTabCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            HotkeyPreview.IsEnabled = false;
+        }
+
+        private void AltTabCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            HotkeyPreview.IsEnabled = true;
+        }
     }
 }

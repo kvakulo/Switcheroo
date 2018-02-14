@@ -127,7 +127,8 @@ namespace Switcheroo
             _hotkey.HotkeyPressed += hotkey_HotkeyPressed;
             try
             {
-                _hotkey.Enabled = true;
+                // Use either custom shortcut or AltTab.
+                _hotkey.Enabled = !Settings.Default.AltTabHook;
             }
             catch (HotkeyAlreadyInUseException)
             {
@@ -419,6 +420,11 @@ namespace Switcheroo
 
         private void hotkey_HotkeyPressed(object sender, EventArgs e)
         {
+            if (Settings.Default.AltTabHook)
+            {
+                return;
+            }
+
             if (Visibility != Visibility.Visible)
             {
                 _foregroundWindow = SystemWindow.ForegroundWindow;
