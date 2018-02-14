@@ -5,14 +5,6 @@ Switcheroo is for anyone who spends more time using a keyboard than a mouse.
 Instead of alt-tabbing through a (long) list of open windows, Switcheroo allows
 you to quickly switch to any window by typing in just a few characters of its title.
 
-## Note:
-
-The actual repository does not seem to be maintained anymore. And, I (Tarik Guney) will work on this project in my forked repository. If you are interested, please join me. I will add the new features I have added under the *New Features* title.
-
-## New Features
-
-1. Now disabling the custom hotkey when ALT+TAB is selected on the Options tab.
-
 ## Screenshot
 
 <img src="screenshot.png" alt="Screenshot of Switcheroo in action" width="540px" height="372px">
@@ -85,7 +77,7 @@ along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
 Credits
 -------
 
-[HellBrick](https://github.com/HellBrick), [ovesen](https://github.com/ovesen) and [philippotto](https://github.com/philippotto) have contributed to Switcheroo.
+[HellBrick](https://github.com/HellBrick), [ovesen](https://github.com/ovesen), [philippotto](https://github.com/philippotto) and [tarikguney](https://github.com/tarikguney) have contributed to Switcheroo.
 
 Switcheroo makes use of these great open source projects:
 
