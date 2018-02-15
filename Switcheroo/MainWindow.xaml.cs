@@ -114,6 +114,10 @@ namespace Switcheroo
                 {
                     HideWindow();
                 }
+                else if (args.SystemKey == Key.LeftAlt)
+                {
+                    Switch();
+                }
             };
         }
 
