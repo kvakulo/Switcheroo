@@ -19,6 +19,7 @@
  */
 
 using System;
+using System.Configuration;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -63,6 +64,7 @@ namespace Switcheroo
 
             HotkeyPreview.Text = _hotkeyViewModel.ToString();
             AltTabCheckBox.IsChecked = Settings.Default.AltTabHook;
+            RunAsAdministrator.IsChecked = Settings.Default.RunAsAdmin;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -95,6 +97,7 @@ namespace Switcheroo
             }
 
             Settings.Default.AltTabHook = AltTabCheckBox.IsChecked.GetValueOrDefault();
+            Settings.Default.RunAsAdmin = RunAsAdministrator.IsChecked.GetValueOrDefault(false);
             Settings.Default.Save();
 
             if (closeOptionsWindow)
@@ -219,16 +222,6 @@ namespace Switcheroo
         private void AltTabCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
             HotkeyPreview.IsEnabled = true;
-        }
-
-        private void RunAsAdministrator_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void RunAsAdministrator_Unchecked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
