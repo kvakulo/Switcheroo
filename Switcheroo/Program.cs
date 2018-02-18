@@ -20,6 +20,9 @@
 
 using System;
 using System.Configuration;
+using System.Diagnostics;
+using System.Reflection;
+using System.Security.Principal;
 using System.Threading;
 using Switcheroo.Properties;
 
@@ -32,6 +35,10 @@ namespace Switcheroo
         [STAThread]
         private static void Main()
         {
+            CloseAllRunningInstances();
+
+            RunAsAdministratorIfConfigured();
+
             using (var mutex = new Mutex(false, mutex_id))
             {
                 var hasHandle = false;
@@ -47,9 +54,9 @@ namespace Switcheroo
                         // Log the fact the mutex was abandoned in another process, it will still get aquired
                     }
 
-                    #if PORTABLE
+#if PORTABLE
                         MakePortable(Settings.Default);
-                    #endif
+#endif
 
                     MigrateUserSettings();
 
@@ -63,6 +70,41 @@ namespace Switcheroo
                 {
                     if (hasHandle)
                         mutex.ReleaseMutex();
+                }
+            }
+        }
+
+        private static void RunAsAdministratorIfConfigured()
+        {
+            if (RunAsAdminRequested() && !IsRunAsAdmin())
+            {
+                ProcessStartInfo proc = new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    WorkingDirectory = Environment.CurrentDirectory,
+                    FileName = Assembly.GetEntryAssembly().CodeBase,
+                    Verb = "runas"
+                };
+
+                Process.Start(proc);
+                Environment.Exit(0);
+            }
+        }
+
+        private static bool RunAsAdminRequested()
+        {
+            return true;
+        }
+
+        private static void CloseAllRunningInstances()
+        {
+            Process[] runningInstances = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location));
+
+            if (runningInstances.Length > 0)
+            {
+                foreach (var instance in runningInstances)
+                {
+                    instance.Kill();
                 }
             }
         }
@@ -85,6 +127,14 @@ namespace Switcheroo
             Settings.Default.Upgrade();
             Settings.Default.FirstRun = false;
             Settings.Default.Save();
+        }
+
+        private static bool IsRunAsAdmin()
+        {
+            WindowsIdentity id = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(id);
+
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }
