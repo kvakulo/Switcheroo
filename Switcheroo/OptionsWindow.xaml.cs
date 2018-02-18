@@ -220,5 +220,15 @@ namespace Switcheroo
         {
             HotkeyPreview.IsEnabled = true;
         }
+
+        private void RunAsAdministrator_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RunAsAdministrator_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
