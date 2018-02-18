@@ -35,8 +35,6 @@ namespace Switcheroo
         [STAThread]
         private static void Main()
         {
-            CloseAllRunningInstances();
-
             RunAsAdministratorIfConfigured();
 
             using (var mutex = new Mutex(false, mutex_id))
@@ -93,20 +91,7 @@ namespace Switcheroo
 
         private static bool RunAsAdminRequested()
         {
-            return true;
-        }
-
-        private static void CloseAllRunningInstances()
-        {
-            Process[] runningInstances = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location));
-
-            if (runningInstances.Length > 0)
-            {
-                foreach (var instance in runningInstances)
-                {
-                    instance.Kill();
-                }
-            }
+            return Settings.Default.RunAsAdmin;
         }
 
         private static void MakePortable(ApplicationSettingsBase settings)
