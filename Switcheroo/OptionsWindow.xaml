@@ -17,6 +17,9 @@
                      GotFocus="HotkeyPreview_OnGotFocus"
                      LostFocus="HotkeyPreview_OnLostFocus" />
             <CheckBox Name="AltTabCheckBox" Checked="AltTabCheckBox_OnChecked" Unchecked="AltTabCheckBox_OnUnchecked" Margin="5">Activate Switcheroo with Alt+Tab</CheckBox>
+
+            <CheckBox Name="RunAsAdministrator" Margin="5">Run as Adminstrator on Startup</CheckBox>
+
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
