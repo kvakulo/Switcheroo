@@ -60,6 +60,7 @@ namespace Switcheroo
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
         private SystemWindow _foregroundWindow;
+        private bool _altTabAutoSwitch;
 
         public MainWindow()
         {
@@ -117,6 +118,15 @@ namespace Switcheroo
                 else if (args.SystemKey == Key.LeftAlt)
                 {
                     Switch();
+                }
+                else if (args.Key == Key.LeftAlt && _altTabAutoSwitch)
+                {
+                    Switch();
+                }
+
+                if (args.SystemKey != Key.Tab)
+                {
+                    _altTabAutoSwitch = false;
                 }
             };
         }
@@ -337,6 +347,7 @@ namespace Switcheroo
                 var win = (AppWindowViewModel) (lb.SelectedItem ?? lb.Items[0]);
                 win.AppWindow.SwitchToLastVisibleActivePopup();
             }
+
             HideWindow();
         }
 
@@ -348,7 +359,8 @@ namespace Switcheroo
                 _windowCloser = null;
             }
 
-            Hide();           
+            Opacity = 0;
+            Dispatcher.BeginInvoke(new Action(Hide), DispatcherPriority.Input);
         }
 
         #endregion
@@ -469,6 +481,8 @@ namespace Switcheroo
                 {
                     LoadData(InitialFocus.NextItem);
                 }
+
+                _altTabAutoSwitch = true;
 
                 Opacity = 1;
             }
