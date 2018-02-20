@@ -45,7 +45,7 @@ How to contribute
 
 Please report any bug you encounter by [submitting an issue](https://github.com/kvakulo/Switcheroo/issues/new).
 
-If you have an idea how to improve Switcheroo, then don't by shy to submit it as well.
+If you have an idea how to improve Switcheroo, then don't be shy to submit it as well.
 
 Pull requests are greatly appreciated. If you plan a larger feature, then please get in contact, so we can coordinate the efforts.
 
