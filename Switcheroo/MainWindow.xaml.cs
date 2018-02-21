@@ -102,6 +102,13 @@ namespace Switcheroo
                 {
                     Opacity = 0;
                 }
+                else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    _altTabAutoSwitch = false;
+                    tb.Text = "";
+                    tb.IsEnabled = true;
+                    tb.Focus();
+                }
             };
 
             KeyUp += (sender, args) =>
@@ -122,11 +129,6 @@ namespace Switcheroo
                 else if (args.Key == Key.LeftAlt && _altTabAutoSwitch)
                 {
                     Switch();
-                }
-
-                if (args.SystemKey != Key.Tab)
-                {
-                    _altTabAutoSwitch = false;
                 }
             };
         }
@@ -359,6 +361,7 @@ namespace Switcheroo
                 _windowCloser = null;
             }
 
+            _altTabAutoSwitch = false;
             Opacity = 0;
             Dispatcher.BeginInvoke(new Action(Hide), DispatcherPriority.Input);
         }
@@ -482,7 +485,12 @@ namespace Switcheroo
                     LoadData(InitialFocus.NextItem);
                 }
 
-                _altTabAutoSwitch = true;
+                if (Settings.Default.AutoSwitch)
+                {
+                    _altTabAutoSwitch = true;
+                    tb.IsEnabled = false;
+                    tb.Text = "Press Alt + S to search";
+                }
 
                 Opacity = 1;
             }
@@ -534,6 +542,11 @@ namespace Switcheroo
 
         private void TextChanged(object sender, TextChangedEventArgs args)
         {
+            if (!tb.IsEnabled)
+            {
+                return;
+            }
+
             var query = tb.Text;
 
             var context = new WindowFilterContext<AppWindowViewModel>
