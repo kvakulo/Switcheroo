@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component Id="cmp32A85726D982E3C57F5BC37E8114CB7B" Guid="*">
+                <File Id="filA92D89868B1D33C1A931C0BD3AF8E56B" KeyPath="yes" Source="$(var.HarvestPath)\ManagedWinapi.dll" />
+            </Component>
+            <Component Id="cmpC5D74BC569C39EDCE63A055BEA48211C" Guid="*">
+                <File Id="fil94B9D556F27882C24E0A223A36F35BE6" KeyPath="yes" Source="$(var.HarvestPath)\ManagedWinapi.pdb" />
+            </Component>
+            <Component Id="cmp937096A84F884442324EDEF705AE7ECD" Guid="*">
+                <File Id="filE944F460448199E2DE19191DEA40D816" KeyPath="yes" Source="$(var.HarvestPath)\ManagedWinapi.xml" />
+            </Component>
+            <Component Id="cmp818608D4E246E2750FDF467FD333F47C" Guid="*">
+                <File Id="fil325402BB9F2948BF9258B0CE7EAD6D4E" KeyPath="yes" Source="$(var.HarvestPath)\ManagedWinapiNativeHelper.dll" />
+            </Component>
+            <Component Id="cmpD810C6BB53FF07494A3FDBDAEB51FEB7" Guid="*">
+                <File Id="fil630FB4F6B8C57127C6A6791E6D501F23" KeyPath="yes" Source="$(var.HarvestPath)\Switcheroo.Core.dll" />
+            </Component>
+            <Component Id="cmpD310B601D5029025E0F4FAEF12307C50" Guid="*">
+                <File Id="filBDF27A3FB922FF3D116B5E36A02FABB3" KeyPath="yes" Source="$(var.HarvestPath)\Switcheroo.Core.pdb" />
+            </Component>
+            <Component Id="cmp900D01386FBC2D0B69D17A562C677704" Guid="*">
+                <File Id="filEC0D256C4266811C9739ABE25F3C0D37" KeyPath="yes" Source="$(var.HarvestPath)\switcheroo.exe" />
+            </Component>
+            <Component Id="cmp2FA25A72FBF95B41EF97C9ADF1A82FB5" Guid="*">
+                <File Id="fil6D4694DB26E653B01AAFB41282374273" KeyPath="yes" Source="$(var.HarvestPath)\switcheroo.exe.config" />
+            </Component>
+            <Component Id="cmp098EFF6D12FA1756187893786F403028" Guid="*">
+                <File Id="fil1279E9A7BD70EA63751C9E3281EF47F4" KeyPath="yes" Source="$(var.HarvestPath)\switcheroo.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="HeatGenerated">
+            <ComponentRef Id="cmp32A85726D982E3C57F5BC37E8114CB7B" />
+            <ComponentRef Id="cmpC5D74BC569C39EDCE63A055BEA48211C" />
+            <ComponentRef Id="cmp937096A84F884442324EDEF705AE7ECD" />
+            <ComponentRef Id="cmp818608D4E246E2750FDF467FD333F47C" />
+            <ComponentRef Id="cmpD810C6BB53FF07494A3FDBDAEB51FEB7" />
+            <ComponentRef Id="cmpD310B601D5029025E0F4FAEF12307C50" />
+            <ComponentRef Id="cmp900D01386FBC2D0B69D17A562C677704" />
+            <ComponentRef Id="cmp2FA25A72FBF95B41EF97C9ADF1A82FB5" />
+            <ComponentRef Id="cmp098EFF6D12FA1756187893786F403028" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>
