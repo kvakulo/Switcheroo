@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Switcheroo Options" ResizeMode="NoResize" SizeToContent="WidthAndHeight"
-        ShowInTaskbar="False" WindowStyle="ToolWindow" Background="{x:Static SystemColors.WindowBrush}" Height="200"
-        Width="250">
+        ShowInTaskbar="False" WindowStyle="ToolWindow" Background="{x:Static SystemColors.WindowBrush}" Height="201.6"
+        Width="344.4">
     <Window.Resources>
     </Window.Resources>
     <Grid>
@@ -16,8 +16,10 @@
                      PreviewKeyDown="HotkeyPreview_OnPreviewKeyDown"
                      GotFocus="HotkeyPreview_OnGotFocus"
                      LostFocus="HotkeyPreview_OnLostFocus" />
+            <Separator/>
             <CheckBox Name="AltTabCheckBox" Checked="AltTabCheckBox_OnChecked" Unchecked="AltTabCheckBox_OnUnchecked" Margin="5">Activate Switcheroo with Alt+Tab</CheckBox>
-
+            <CheckBox Name="AutoSwitch" Margin="5"> Switch window when releasing Alt + Tab</CheckBox>
+            <Separator/>
             <CheckBox Name="RunAsAdministrator" Margin="5">Run as Administrator on Startup</CheckBox>
 
             <Grid Margin="5">
