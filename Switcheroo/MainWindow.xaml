@@ -12,8 +12,12 @@
     <Window.CommandBindings>
         <CommandBinding Command="local:MainWindow.CloseWindowCommand"
                         Executed="CloseWindow" />
+        <CommandBinding Command="local:MainWindow.CloseProcessesCommand"
+                        Executed="CloseProcesses" />
         <CommandBinding Command="local:MainWindow.SwitchToWindowCommand"
                         Executed="OnEnterPressed" />
+        <!--CommandBinding Command="local:MainWindow.SwitchAllWindowsCommand"
+                        Executed="SwitchAllWindows" /-->
         <CommandBinding Command="local:MainWindow.ScrollListUpCommand"
                         Executed="ScrollListUp" />
         <CommandBinding Command="local:MainWindow.ScrollListDownCommand"
@@ -23,6 +27,7 @@
     <Window.InputBindings>
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="Enter" Modifiers="Ctrl" />
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="W" Modifiers="Ctrl" />
+        <KeyBinding Command="local:MainWindow.CloseProcessesCommand"  Gesture="Ctrl+Shift+W"/>
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
     </Window.InputBindings>
@@ -57,7 +62,14 @@
                         </TextBlock.ToolTip>
                         <Bold>ctrl+w</Bold> to close a window
                     </TextBlock>
-                    <TextBlock FontSize="10">
+                    <!--TextBlock FontSize="10" Margin="0,0,8,0">
+                        <TextBlock.ToolTip>
+                            <TextBlock>Press <Bold>ctrl+shift+w</Bold> to close all windows</TextBlock>
+                        </TextBlock.ToolTip>
+                        <Bold>ctrl+shift+w</Bold> to close all windows
+                    </-->
+
+                   <TextBlock FontSize="10">
                         <TextBlock.ToolTip>
                             <TextBlock>Press <Bold>esc</Bold> to dismiss the Switcheroo overlay</TextBlock>
                         </TextBlock.ToolTip>
@@ -106,7 +118,7 @@
                     </TextBlock.Triggers>
                 </TextBlock>
             </Grid>
-            <ListBox Name="lb" SelectionMode="Single" ItemsSource="{Binding}" MinWidth="522" BorderThickness="0"
+            <ListBox Name="lb" SelectionMode="Single" ItemsSource="{Binding}" MinWidth="22" BorderThickness="0"
                      Margin="-1,3,-1,0" Padding="0" DockPanel.Dock="Bottom">
                 <ListBox.ItemTemplate>
                     <DataTemplate>

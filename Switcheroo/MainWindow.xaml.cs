@@ -56,6 +56,7 @@ namespace Switcheroo
         public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand CloseProcessesCommand = new RoutedUICommand();
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
@@ -529,7 +530,7 @@ namespace Switcheroo
             };
 
             var filterResults = new WindowFilterer().Filter(context, query).ToList();
-
+            
             foreach (var filterResult in filterResults)
             {
                 filterResult.AppWindow.FormattedTitle =
@@ -552,6 +553,12 @@ namespace Switcheroo
             return new XamlHighlighter().Highlight(bestResult.StringParts);
         }
 
+        private void OnSpaceBarPressed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Switch();
+            e.Handled = true;
+        }
+
         private void OnEnterPressed(object sender, ExecutedRoutedEventArgs e)
         {
             Switch();
@@ -569,12 +576,7 @@ namespace Switcheroo
             if (lb.Items.Count > 0)
             {
                 var win = (AppWindowViewModel) lb.SelectedItem;
-                if (win != null)
-                {
-                    bool isClosed = await _windowCloser.TryCloseAsync(win);
-                    if (isClosed)
-                        RemoveWindow(win);
-                }
+                await TryCloseAndRemoveWindowAsync( win );
             }
             else
             {
@@ -583,6 +585,48 @@ namespace Switcheroo
             e.Handled = true;
         }
 
+		  private async Task<bool> TryCloseAndRemoveWindowAsync( AppWindowViewModel win )
+		  {
+			  if ( win != null )
+			  {
+				  bool isClosed = await _windowCloser.TryCloseAsync( win );
+				  /*if ( isClosed )
+					  RemoveWindow( win );
+                   */
+                
+				  return isClosed;
+			  }
+			  else
+			  {
+				  //	I'm not sure when exactly it happens so I return 'all is good' just in case.
+				  //	At least this doesn't mean that the window prevents closing itself.
+				  return true;
+			  }
+		  }
+
+		  private async void CloseProcesses( object sender, ExecutedRoutedEventArgs e )
+		  {
+			  if ( lb.Items.Count > 0 )
+			  {
+				  var closingTasks = _filteredWindowList
+					  .ToArray()
+					  .Select( window => TryCloseAndRemoveWindowAsync( window ) )
+					  .ToArray();
+
+				  var results = await Task.WhenAll( closingTasks );
+				  if ( results.All( closedSuccessfully => closedSuccessfully ) )
+				  {
+					  //	TODO: something. Maybe reset the filter text since we've closed all the windows that fit the filter anyway?
+				  }
+			  }
+			  else
+			  {
+				  HideWindow();
+			  }
+
+			  e.Handled = true;
+		  }
+        
         private void RemoveWindow(AppWindowViewModel window)
         {
             int index = _filteredWindowList.IndexOf(window);
@@ -692,3 +736,4 @@ namespace Switcheroo
         }
     }
 }
+ 
