@@ -11,27 +11,27 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel Margin="5,5,5,5">
-            <CheckBox Margin="5,5,5,0">Activate Switcheroo with this shortcut:</CheckBox>
+            <CheckBox Name="HotKeyCheckBox" Margin="5,5,5,1" Checked="HotKeyCheckBox_Checked" Unchecked="HotKeyCheckBox_OnUnchecked">Activate Switcheroo with this shortcut:</CheckBox>
             <TextBox Name="HotkeyPreview" Margin="25,5,0,10"
                      PreviewKeyDown="HotkeyPreview_OnPreviewKeyDown"
                      GotFocus="HotkeyPreview_OnGotFocus"
                      LostFocus="HotkeyPreview_OnLostFocus"
                      Width="150"
                      HorizontalAlignment="Left"/>
-            <CheckBox Name="AltTabCheckBox" Checked="AltTabCheckBox_OnChecked" Unchecked="AltTabCheckBox_OnUnchecked" Margin="5">Activate Switcheroo with Alt+Tab</CheckBox>
-            <TextBlock Margin="25,0,0,10" FontSize="10" Foreground="DimGray" TextWrapping="Wrap">
+            <CheckBox Name="AltTabCheckBox" Checked="AltTabCheckBox_OnChecked" Unchecked="AltTabCheckBox_OnUnchecked" Margin="5,5,5,1">Activate Switcheroo with Alt+Tab</CheckBox>
+            <TextBlock Margin="25,0,5,10" FontSize="10" Foreground="DimGray" TextWrapping="Wrap">
                 Use Switcheroo instead of the integrated task switcher in Windows.
             </TextBlock>
-            <CheckBox Name="AutoSwitch" Margin="5">Automatically switch window when releasing Alt + Tab</CheckBox>
-            <TextBlock Margin="25,0,0,10" FontSize="10" Foreground="DimGray" TextWrapping="Wrap">
-                Faster and more native-like swiching between Windows.<LineBreak />
+            <CheckBox Name="AutoSwitch" Margin="5,5,5,1">Automatically switch window when releasing Alt + Tab</CheckBox>
+            <TextBlock Margin="25,0,5,10" FontSize="10" Foreground="DimGray" TextWrapping="Wrap">
+                Faster and more native-like swiching between windows.<LineBreak />
                 <LineBreak />
-                Use <Span FontFamily="Consolas">Ctrl + Alt + Tab</Span> for displaying Switcheroo with search activated, or
-                press <Span FontFamily="Consolas">Alt + S</Span> when the overlay appears.
+                Use <Span FontFamily="Consolas" FontWeight="Bold">Ctrl + Alt + Tab</Span> for displaying Switcheroo with search activated, or
+                press <Span FontFamily="Consolas" FontWeight="Bold">Alt + S</Span> when the Switcheroo overlay appears.
             </TextBlock>
-            <CheckBox x:Name="RunAsAdministrator" Margin="5" Content="Run as Administrator *"/>
-            <TextBlock Margin="25,0,0,10" FontSize="10" Foreground="DimGray" TextWrapping="Wrap">
-                This is needed if you want <Span FontFamily="Consolas">Alt + Tab</Span> to work when programs
+            <CheckBox x:Name="RunAsAdministrator" Margin="5,5,5,1" Content="Run as Administrator *"/>
+            <TextBlock Margin="25,0,5,10" FontSize="10" Foreground="DimGray" TextWrapping="Wrap">
+                This is needed if you want <Span FontFamily="Consolas" FontWeight="Bold">Alt + Tab</Span> to work when programs
                 running with higher privileges than your user account are in focus.<LineBreak />
                 <LineBreak />
                 <Italic>* Requires a restart of Switcheroo</Italic>

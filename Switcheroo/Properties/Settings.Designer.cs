@@ -130,5 +130,17 @@ namespace Switcheroo.Properties {
                 this["AutoSwitch"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnableHotKey {
+            get {
+                return ((bool)(this["EnableHotKey"]));
+            }
+            set {
+                this["EnableHotKey"] = value;
+            }
+        }
     }
 }
