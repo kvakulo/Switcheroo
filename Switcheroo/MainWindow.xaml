@@ -18,6 +18,10 @@
                         Executed="ScrollListUp" />
         <CommandBinding Command="local:MainWindow.ScrollListDownCommand"
                         Executed="ScrollListDown" />
+        <CommandBinding Command="local:MainWindow.PinToBottomCommand" 
+                        Executed="PinCommand" />
+        <CommandBinding Command="local:MainWindow.UnpinFromBottomCommand"
+                        Executed="UnpinCommand"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -30,6 +34,16 @@
     <Window.Resources>
         <local:WindowHandleToIconConverter x:Key="WindowHandleToIconConverter" />
         <local:WindowHandleToCachedIconConverter x:Key="WindowHandleToCachedIconConverter" />
+        <ContextMenu x:Key="CmPinToBottom">
+            <MenuItem Command="local:MainWindow.PinToBottomCommand">
+                <MenuItem.Icon>
+                    <Image Source="Resources/pin.png"></Image>
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+        <ContextMenu x:Key="CmUnpinFromBottom">
+            <MenuItem Command="local:MainWindow.UnpinFromBottomCommand"/>
+        </ContextMenu>
     </Window.Resources>
 
     <Border Padding="3" Background="White" BorderBrush="DarkGray" BorderThickness="1" Name="Border">
@@ -199,6 +213,7 @@
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                         <Setter Property="Padding" Value="0,5" />
                         <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
+                        <EventSetter Event="MouseRightButtonUp" Handler="ListBoxItem_MouseRightClick" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <!-- Changes inactive selection color to be same as selected -->
