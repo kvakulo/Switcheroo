@@ -30,6 +30,7 @@ namespace Switcheroo
 
     public class AltTabHookEventArgs : EventArgs
     {
+        public bool CtrlDown { get; set; }
         public bool ShiftDown { get; set; }
         public bool Handled { get; set; }
     }
@@ -37,8 +38,13 @@ namespace Switcheroo
     public class AltTabHook : IDisposable
     {
         public event AltTabHookEventHandler Pressed;
-        private const int AltDown = 32;
+        private const int AltKey = 32;
+        private const int CtrlKey = 11;
         private readonly KeyboardKey _shiftKey = new KeyboardKey(Keys.LShiftKey);
+        private readonly KeyboardKey _ctrlKey = new KeyboardKey(Keys.LControlKey);
+        private readonly KeyboardKey _altKey = new KeyboardKey(Keys.LMenu);
+        private readonly int WM_KEYDOWN = 0x0100;
+        private readonly int WM_SYSKEYDOWN = 0x0104;
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly LowLevelKeyboardHook _lowLevelKeyboardHook;
@@ -58,28 +64,38 @@ namespace Switcheroo
                 return;
             }
 
-            if (!IsAltTabKeyCombination(keyboardMessage))
+            if (!IsTabKeyDown(keyboardMessage))
             {
                 return;
             }
 
-            var shiftKeyDown = (_shiftKey.AsyncState & 32768) != 0; // is held down
-            Trace.WriteLine("Shiftkey: " + shiftKeyDown);
+            if (!IsKeyDown(_altKey))
+            {
+                return;
+            }
 
-            var eventArgs = OnPressed(shiftKeyDown);
+            var shiftKeyDown = IsKeyDown(_shiftKey);
+            var ctrlKeyDown = IsKeyDown(_ctrlKey);
+
+            var eventArgs = OnPressed(shiftKeyDown, ctrlKeyDown);
 
             handled = eventArgs.Handled;
         }
 
-        private static bool IsAltTabKeyCombination(LowLevelKeyboardMessage keyboardMessage)
+        private static bool IsKeyDown(KeyboardKey keyboardKey)
         {
-            return keyboardMessage.VirtualKeyCode == (int) Keys.Tab
-                   && keyboardMessage.Flags == AltDown;
+            return (keyboardKey.AsyncState & 32768) != 0;
         }
 
-        private AltTabHookEventArgs OnPressed(bool shiftDown)
+        private bool IsTabKeyDown(LowLevelKeyboardMessage keyboardMessage)
         {
-            var altTabHookEventArgs = new AltTabHookEventArgs { ShiftDown = shiftDown };
+            return keyboardMessage.VirtualKeyCode == (int) Keys.Tab &&
+                   (keyboardMessage.Message == WM_KEYDOWN || keyboardMessage.Message == WM_SYSKEYDOWN);
+        }
+
+        private AltTabHookEventArgs OnPressed(bool shiftDown, bool ctrlDown)
+        {
+            var altTabHookEventArgs = new AltTabHookEventArgs { ShiftDown = shiftDown, CtrlDown = ctrlDown };
             var handler = Pressed;
             if (handler != null)
             {

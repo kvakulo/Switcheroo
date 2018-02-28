@@ -60,6 +60,7 @@ namespace Switcheroo
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
         private SystemWindow _foregroundWindow;
+        private bool _altTabAutoSwitch;
 
         public MainWindow()
         {
@@ -101,6 +102,13 @@ namespace Switcheroo
                 {
                     Opacity = 0;
                 }
+                else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    _altTabAutoSwitch = false;
+                    tb.Text = "";
+                    tb.IsEnabled = true;
+                    tb.Focus();
+                }
             };
 
             KeyUp += (sender, args) =>
@@ -114,7 +122,11 @@ namespace Switcheroo
                 {
                     HideWindow();
                 }
-                else if (args.SystemKey == Key.LeftAlt)
+                else if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                {
+                    Switch();
+                }
+                else if (args.Key == Key.LeftAlt && _altTabAutoSwitch)
                 {
                     Switch();
                 }
@@ -131,8 +143,7 @@ namespace Switcheroo
             _hotkey.HotkeyPressed += hotkey_HotkeyPressed;
             try
             {
-                // Use either custom shortcut or AltTab.
-                _hotkey.Enabled = !Settings.Default.AltTabHook;
+                _hotkey.Enabled = Settings.Default.EnableHotKey;
             }
             catch (HotkeyAlreadyInUseException)
             {
@@ -337,6 +348,7 @@ namespace Switcheroo
                 var win = (AppWindowViewModel) (lb.SelectedItem ?? lb.Items[0]);
                 win.AppWindow.SwitchToLastVisibleActivePopup();
             }
+
             HideWindow();
         }
 
@@ -348,7 +360,9 @@ namespace Switcheroo
                 _windowCloser = null;
             }
 
-            Hide();           
+            _altTabAutoSwitch = false;
+            Opacity = 0;
+            Dispatcher.BeginInvoke(new Action(Hide), DispatcherPriority.Input);
         }
 
         #endregion
@@ -424,13 +438,15 @@ namespace Switcheroo
 
         private void hotkey_HotkeyPressed(object sender, EventArgs e)
         {
-            if (Settings.Default.AltTabHook)
+            if (!Settings.Default.EnableHotKey)
             {
                 return;
             }
 
             if (Visibility != Visibility.Visible)
             {
+                tb.IsEnabled = true;
+
                 _foregroundWindow = SystemWindow.ForegroundWindow;
                 Show();
                 Activate();
@@ -456,6 +472,8 @@ namespace Switcheroo
 
             if (Visibility != Visibility.Visible)
             {
+                tb.IsEnabled = true;
+
                 _foregroundWindow = SystemWindow.ForegroundWindow;
 
                 ActivateAndFocusMainWindow();
@@ -468,6 +486,13 @@ namespace Switcheroo
                 else
                 {
                     LoadData(InitialFocus.NextItem);
+                }
+
+                if (Settings.Default.AutoSwitch && !e.CtrlDown)
+                {
+                    _altTabAutoSwitch = true;
+                    tb.IsEnabled = false;
+                    tb.Text = "Press Alt + S to search";
                 }
 
                 Opacity = 1;
@@ -520,6 +545,11 @@ namespace Switcheroo
 
         private void TextChanged(object sender, TextChangedEventArgs args)
         {
+            if (!tb.IsEnabled)
+            {
+                return;
+            }
+
             var query = tb.Text;
 
             var context = new WindowFilterContext<AppWindowViewModel>
