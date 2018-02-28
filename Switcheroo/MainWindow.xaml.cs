@@ -122,7 +122,7 @@ namespace Switcheroo
                 {
                     HideWindow();
                 }
-                else if (args.SystemKey == Key.LeftAlt)
+                else if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                 {
                     Switch();
                 }
@@ -445,6 +445,8 @@ namespace Switcheroo
 
             if (Visibility != Visibility.Visible)
             {
+                tb.IsEnabled = true;
+
                 _foregroundWindow = SystemWindow.ForegroundWindow;
                 Show();
                 Activate();
@@ -470,6 +472,8 @@ namespace Switcheroo
 
             if (Visibility != Visibility.Visible)
             {
+                tb.IsEnabled = true;
+
                 _foregroundWindow = SystemWindow.ForegroundWindow;
 
                 ActivateAndFocusMainWindow();
@@ -484,7 +488,7 @@ namespace Switcheroo
                     LoadData(InitialFocus.NextItem);
                 }
 
-                if (Settings.Default.AutoSwitch)
+                if (Settings.Default.AutoSwitch && !e.CtrlDown)
                 {
                     _altTabAutoSwitch = true;
                     tb.IsEnabled = false;
