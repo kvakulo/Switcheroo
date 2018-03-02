@@ -43,7 +43,23 @@ namespace Switcheroo.Core
                 var processTitle = MemoryCache.Default.Get(key) as string;
                 if (processTitle == null)
                 {
-                    processTitle = Process.ProcessName;
+                    if (IsApplicationFrameWindow())
+                    {
+                        processTitle = "UWP";
+
+                        var underlyingProcess = AllChildWindows.Where(w => w.Process.Id != Process.Id)
+                            .Select(w => w.Process)
+                            .FirstOrDefault();
+
+                        if (underlyingProcess != null && underlyingProcess.ProcessName != "")
+                        {
+                            processTitle = underlyingProcess.ProcessName;
+                        }
+                    }
+                    else
+                    {
+                        processTitle = Process.ProcessName;
+                    }
                     MemoryCache.Default.Add(key, processTitle, DateTimeOffset.Now.AddHours(1));
                 }
                 return processTitle;
@@ -179,6 +195,7 @@ namespace Switcheroo.Core
 
         private bool IsApplicationFrameWindow()
         {
+            // Is a UWP application
             return ClassName == "ApplicationFrameWindow";
         }
 
