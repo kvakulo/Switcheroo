@@ -48,6 +48,7 @@
     <Compile Include="AppWindow.cs" />
     <Compile Include="IWindowText.cs" />
     <Compile Include="KeyboardHelper.cs" />
+    <Compile Include="UwpWindowIconFinder.cs" />
     <Compile Include="WindowFilterer.cs" />
     <Compile Include="WindowFinder.cs" />
     <Compile Include="Matchers\ContainsMatcher.cs" />

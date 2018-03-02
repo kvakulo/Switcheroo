@@ -47,13 +47,11 @@ namespace Switcheroo.Core
                     {
                         processTitle = "UWP";
 
-                        var underlyingProcess = AllChildWindows.Where(w => w.Process.Id != Process.Id)
-                            .Select(w => w.Process)
-                            .FirstOrDefault();
+                        var underlyingUwpWindow = GetUnderlyingUwpWindow();
 
-                        if (underlyingProcess != null && underlyingProcess.ProcessName != "")
+                        if (underlyingUwpWindow != null && underlyingUwpWindow.Process.ProcessName != "")
                         {
-                            processTitle = underlyingProcess.ProcessName;
+                            processTitle = underlyingUwpWindow.Process.ProcessName;
                         }
                     }
                     else
@@ -68,17 +66,38 @@ namespace Switcheroo.Core
 
         public Icon LargeWindowIcon
         {
-            get { return new WindowIconFinder().Find(this, WindowIconSize.Large); }
+            get
+            {
+                if (IsApplicationFrameWindow())
+                {
+                    var underlyingUwpWindow = GetUnderlyingUwpWindow();
+                    return underlyingUwpWindow == null ? null : new UwpWindowIconFinder().Find(underlyingUwpWindow);
+                }
+                return new WindowIconFinder().Find(this, WindowIconSize.Large);
+            }
         }
 
         public Icon SmallWindowIcon
         {
-            get { return new WindowIconFinder().Find(this, WindowIconSize.Small); }
+            get
+            {
+                if (IsApplicationFrameWindow())
+                {
+                    var underlyingUwpWindow = GetUnderlyingUwpWindow();
+                    return underlyingUwpWindow == null ? null : new UwpWindowIconFinder().Find(underlyingUwpWindow);
+                }
+                return new WindowIconFinder().Find(this, WindowIconSize.Small);
+            }
         }
 
         public string ExecutablePath
         {
             get { return GetExecutablePath(Process.Id); }
+        }
+
+        public bool IsUwpApp
+        {
+            get { return IsApplicationFrameWindow(); }
         }
 
         public AppWindow(IntPtr HWnd) : base(HWnd)
@@ -225,6 +244,12 @@ namespace Switcheroo.Core
             }, IntPtr.Zero);
 
             return hasAppropriateApplicationViewCloakType;
+        }
+
+        private AppWindow GetUnderlyingUwpWindow()
+        {
+            var window = AllChildWindows.FirstOrDefault(w => w.Process.Id != Process.Id);
+            return window != null ? new AppWindow(window.HWnd) : null;
         }
 
         // This method only works on Windows >= Windows Vista
