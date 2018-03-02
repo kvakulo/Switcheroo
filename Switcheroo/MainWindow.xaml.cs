@@ -468,13 +468,19 @@ namespace Switcheroo
                 return;
             }
 
+            _foregroundWindow = SystemWindow.ForegroundWindow;
+
+            if (_foregroundWindow.ClassName == "MultitaskingViewFrame")
+            {
+                // If Windows' task switcher is on the screen then don't do anything
+                return;
+            }
+
             e.Handled = true;
 
             if (Visibility != Visibility.Visible)
             {
                 tb.IsEnabled = true;
-
-                _foregroundWindow = SystemWindow.ForegroundWindow;
 
                 ActivateAndFocusMainWindow();
 
