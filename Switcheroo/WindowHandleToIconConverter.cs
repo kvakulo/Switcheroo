@@ -48,9 +48,26 @@ namespace Switcheroo
             {
                 var window = new AppWindow(handle);
                 var icon = ShouldUseSmallTaskbarIcons() ? window.SmallWindowIcon : window.LargeWindowIcon;
-                iconImage = _iconToBitmapConverter.Convert(icon) ?? new BitmapImage();
-                MemoryCache.Default.Set(shortCacheKey, iconImage, DateTimeOffset.Now.AddSeconds(5));
-                MemoryCache.Default.Set(longCacheKey, iconImage, DateTimeOffset.Now.AddMinutes(120));
+                iconImage = _iconToBitmapConverter.Convert(icon);
+
+                var hasIcon = true;
+                if (iconImage == null)
+                {
+                    iconImage = new BitmapImage();
+                    hasIcon = false;
+                }
+
+                if (window.IsUwpApp && hasIcon)
+                {
+                    MemoryCache.Default.Set(shortCacheKey, iconImage, DateTimeOffset.Now.AddHours(24));
+                    MemoryCache.Default.Set(longCacheKey, iconImage, DateTimeOffset.Now.AddHours(24));
+                }
+                else
+                {
+                    MemoryCache.Default.Set(shortCacheKey, iconImage, DateTimeOffset.Now.AddSeconds(5));
+                    MemoryCache.Default.Set(longCacheKey, iconImage, DateTimeOffset.Now.AddMinutes(120));
+                }
+
             }
             return iconImage;
         }

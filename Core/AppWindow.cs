@@ -39,13 +39,13 @@ namespace Switcheroo.Core
         {
             get
             {
-                var key = "ProcessTitle-" + HWnd;
+                var key = "ProcessTitle-" + HWnd + "-" + Process.Id;
                 var processTitle = MemoryCache.Default.Get(key) as string;
                 if (processTitle == null)
                 {
                     if (IsApplicationFrameWindow())
                     {
-                        processTitle = "UWP";
+                        processTitle = "Windows App";
 
                         var underlyingUwpWindow = GetUnderlyingUwpWindow();
 
@@ -58,7 +58,11 @@ namespace Switcheroo.Core
                     {
                         processTitle = Process.ProcessName;
                     }
-                    MemoryCache.Default.Add(key, processTitle, DateTimeOffset.Now.AddHours(1));
+
+                    if (processTitle != "Windows App")
+                    {
+                        MemoryCache.Default.Add(key, processTitle, DateTimeOffset.Now.AddHours(24));
+                    }
                 }
                 return processTitle;
             }
