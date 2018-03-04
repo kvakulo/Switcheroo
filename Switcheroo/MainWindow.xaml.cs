@@ -420,6 +420,7 @@ namespace Switcheroo
             _notifyIcon.Dispose();
             _notifyIcon = null;
             _hotkey.Dispose();
+            _altTabHook.Dispose();
             Application.Current.Shutdown();
         }
 
