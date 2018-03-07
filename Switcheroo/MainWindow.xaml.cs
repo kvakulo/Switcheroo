@@ -56,6 +56,12 @@ namespace Switcheroo
         public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+        /* <elig0n> */
+        public static readonly RoutedUICommand ScrollListPageDownCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand ScrollListPageUpCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand ScrollListHomeCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand ScrollListEndCommand = new RoutedUICommand();
+        /* </elig0n> */
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
@@ -681,6 +687,49 @@ namespace Switcheroo
 
                 ScrollSelectedItemIntoView();
             }
+        }
+
+        private void ScrollListPageUp(object sender, ExecutedRoutedEventArgs e)
+        {
+            var n = Math.Round(lb.ActualHeight / grd0.ActualHeight);
+            
+            if (lb.SelectedIndex - n >= 0)
+                lb.SelectedIndex = Convert.ToInt32(lb.SelectedIndex - n);
+            else
+                lb.SelectedIndex = 0;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
+        
+        private void ScrollListPageDown(object sender, ExecutedRoutedEventArgs e)
+        {
+            var n = Math.Round(lb.ActualHeight / grd0.ActualHeight);
+
+            if (n + lb.SelectedIndex <= lb.Items.Count - 1)
+                lb.SelectedIndex = Convert.ToInt32(n);
+            else
+                lb.SelectedIndex = lb.Items.Count - 1;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
+
+
+        private void ScrollListHome(object sender, ExecutedRoutedEventArgs e)
+        {
+            lb.SelectedIndex = 0;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
+
+        private void ScrollListEnd(object sender, ExecutedRoutedEventArgs e)
+        {
+            lb.SelectedIndex = lb.Items.Count-1;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
         }
 
         private void ScrollSelectedItemIntoView()

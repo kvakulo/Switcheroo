@@ -18,6 +18,16 @@
                         Executed="ScrollListUp" />
         <CommandBinding Command="local:MainWindow.ScrollListDownCommand"
                         Executed="ScrollListDown" />
+        <!-- elig0n -->
+        <CommandBinding Command="local:MainWindow.ScrollListPageUpCommand" 
+                        Executed="ScrollListPageUp" />
+        <CommandBinding Command="local:MainWindow.ScrollListPageDownCommand" 
+                        Executed="ScrollListPageDown" />
+        <CommandBinding Command="local:MainWindow.ScrollListHomeCommand" 
+                        Executed="ScrollListHome" />
+        <CommandBinding Command="local:MainWindow.ScrollListEndCommand" 
+                        Executed="ScrollListEnd" />
+        <!-- </elig0n> -->
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -25,6 +35,12 @@
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="W" Modifiers="Ctrl" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
+        <!-- elig0n -->
+        <KeyBinding Command="local:MainWindow.ScrollListPageUpCommand" Key="PageUp" />
+        <KeyBinding Command="local:MainWindow.ScrollListPageDownCommand" Key="PageDown" />
+        <KeyBinding Command="local:MainWindow.ScrollListHomeCommand" Key="Home" />
+        <KeyBinding Command="local:MainWindow.ScrollListEndCommand" Key="End" />
+        <!-- </elig0n> -->
     </Window.InputBindings>
 
     <Window.Resources>
@@ -65,7 +81,7 @@
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
-            <Grid DockPanel.Dock="Top">
+            <Grid Name="grd0" DockPanel.Dock="Top">
                 <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15"
                          VerticalContentAlignment="Center">
                     <TextBox.InputBindings>
@@ -74,6 +90,12 @@
                         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
                         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Tab" Modifiers="Shift" />
                         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Tab" />
+                        <!-- elig0n --> 
+                        <KeyBinding Command="local:MainWindow.ScrollListPageUpCommand" Key="Prior" />
+                        <KeyBinding Command="local:MainWindow.ScrollListPageDownCommand" Key="PageDown" />
+                        <KeyBinding Command="local:MainWindow.ScrollListHomeCommand" Key="Home" />
+                        <KeyBinding Command="local:MainWindow.ScrollListEndCommand" Key="End" />
+                        <!-- end elig0n -->
                     </TextBox.InputBindings>
                 </TextBox>
                 <TextBlock Margin="0,0,10,0" Width="15" HorizontalAlignment="Right" TextAlignment="Center"
