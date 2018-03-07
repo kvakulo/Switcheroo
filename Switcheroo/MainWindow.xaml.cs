@@ -56,12 +56,10 @@ namespace Switcheroo
         public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
-        /* <elig0n> */
         public static readonly RoutedUICommand ScrollListPageDownCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListPageUpCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListHomeCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListEndCommand = new RoutedUICommand();
-        /* </elig0n> */
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
