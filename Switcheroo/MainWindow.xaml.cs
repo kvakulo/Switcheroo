@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -41,6 +42,7 @@ using Switcheroo.Properties;
 using Application = System.Windows.Application;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
+using MouseCursor = System.Windows.Forms.Cursor;
 
 namespace Switcheroo
 {
@@ -56,6 +58,8 @@ namespace Switcheroo
         public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+
+        private static readonly ICalculateWindowPosition WindowPositionCalculator = new WindowPositionCalculator();
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
@@ -268,7 +272,7 @@ namespace Switcheroo
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
 
             var foregroundWindowMovedToBottom = false;
-            
+
             // Move first window to the bottom of the list if it's related to the foreground window
             if (firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow))
             {
@@ -282,9 +286,9 @@ namespace Switcheroo
 
             foreach (var window in _unfilteredWindowList)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
+                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.Title) });
                 window.FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.ProcessTitle)});
+                    new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.ProcessTitle) });
             }
 
             lb.DataContext = null;
@@ -333,9 +337,37 @@ namespace Switcheroo
             SizeToContent = SizeToContent.Manual;
             SizeToContent = SizeToContent.WidthAndHeight;
 
+            var windowPosition =
+                WindowPositionCalculator.CalculateWindowPosition(PickScreen(), ActualWidth, ActualHeight);
+
             // Position the window in the center of the screen
-            Left = (SystemParameters.PrimaryScreenWidth/2) - (ActualWidth/2);
-            Top = (SystemParameters.PrimaryScreenHeight/2) - (ActualHeight/2);
+            Left = windowPosition.Left;
+            Top = windowPosition.Top;
+        }
+
+        /// <summary>
+        /// Decides which screen to pop Switcheroo up
+        /// </summary>
+        /// <returns></returns>
+        private Screen PickScreen()
+        {
+            Screen screen;
+            switch (Settings.Default.MultiMonitor)
+            {
+                case 0:
+                    screen = Screen.PrimaryScreen;
+                    break;
+                case 1:
+                    screen = Screen.FromHandle(_foregroundWindow.HWnd);
+                    break;
+                case 2:
+                    screen = Screen.AllScreens.First(s => s.Bounds.Contains(MouseCursor.Position.X, MouseCursor.Position.Y));
+                    break;
+                default:
+                    screen = Screen.PrimaryScreen;
+                    break;
+            }
+            return screen;
         }
 
         /// <summary>
@@ -606,7 +638,7 @@ namespace Switcheroo
             foreach (var win in windows)
             {
                 bool isClosed = await _windowCloser.TryCloseAsync(win);
-                if(isClosed)
+                if (isClosed)
                     RemoveWindow(win);
             }
 
