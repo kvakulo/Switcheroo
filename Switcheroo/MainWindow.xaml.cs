@@ -25,6 +25,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.Caching;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,6 +36,7 @@ using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using ManagedWinapi;
+using ManagedWinapi.Accessibility;
 using ManagedWinapi.Windows;
 using Switcheroo.Core;
 using Switcheroo.Core.Matchers;
@@ -73,6 +76,8 @@ namespace Switcheroo
             SetUpHotKey();
 
             SetUpAltTabHook();
+
+            SetUpUwpWindowMonitoring();
 
             CheckForUpdates();
 
@@ -158,7 +163,72 @@ namespace Switcheroo
         private void SetUpAltTabHook()
         {
             _altTabHook = new AltTabHook();
-            _altTabHook.Pressed += AltTabPressed;
+            _altTabHook.Pressed += (sender, args) =>
+            {
+                if (!Settings.Default.AltTabHook)
+                {
+                    // Ignore Alt+Tab presses if the hook is not activated by the user
+                    return;
+                }
+
+                _foregroundWindow = SystemWindow.ForegroundWindow;
+
+                if (_foregroundWindow.ClassName == "MultitaskingViewFrame")
+                {
+                    // If Windows' task switcher is on the screen then don't do anything
+                    return;
+                }
+
+                args.Handled = true;
+                Dispatcher.Invoke(() => AltTabPressed(sender, args));
+            };
+        }
+
+        private void SetUpUwpWindowMonitoring()
+        {
+            new Task(() =>
+            {
+                var eventListener = new AccessibleEventListener();
+                eventListener.MinimalEventType = AccessibleEventType.EVENT_SYSTEM_FOREGROUND;
+                eventListener.MaximalEventType = AccessibleEventType.EVENT_SYSTEM_FOREGROUND;
+                eventListener.Enabled = true;
+
+                eventListener.EventOccurred += (sender, args) =>
+                {
+                    var appWindow = new AppWindow(args.HWnd);
+
+                    Debug.WriteLine(args.HWnd + " is in foreground. Title: " + appWindow.Title);
+
+                    if (appWindow.IsAltTabWindow() && appWindow.IsUwpApp)
+                    {
+                        for (var i = 0; i < 10; i++)
+                        {
+                            Debug.WriteLine(args.HWnd + " is an UWP app with processTitle " + appWindow.ProcessTitle);
+
+                            if (appWindow.ProcessTitle == "Windows App")
+                            {
+                                Thread.Sleep(50);
+                                continue;
+                            }
+
+                            // Preload icon and title
+                            var windowIcon = appWindow.LargeWindowIcon;
+                            if (windowIcon != null)
+                            {
+                                var bitmapIcon = new IconToBitmapImageConverter().Convert(windowIcon);
+                                MemoryCache.Default.Set("IconImage-" + args.HWnd + "-shortCache", bitmapIcon,
+                                    DateTimeOffset.Now.AddHours(24));
+                                MemoryCache.Default.Set("IconImage-" + args.HWnd + "-longCache", bitmapIcon,
+                                    DateTimeOffset.Now.AddHours(24));
+
+                                Debug.WriteLine(args.HWnd + " got an icon");
+                            }
+
+                            break;
+                        }
+                    }
+                };
+            }).Start();
         }
 
         private void SetUpNotifyIcon()
@@ -268,7 +338,7 @@ namespace Switcheroo
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
 
             var foregroundWindowMovedToBottom = false;
-            
+
             // Move first window to the bottom of the list if it's related to the foreground window
             if (firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow))
             {
@@ -282,9 +352,9 @@ namespace Switcheroo
 
             foreach (var window in _unfilteredWindowList)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
+                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.Title) });
                 window.FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.ProcessTitle)});
+                    new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.ProcessTitle) });
             }
 
             lb.DataContext = null;
@@ -334,8 +404,8 @@ namespace Switcheroo
             SizeToContent = SizeToContent.WidthAndHeight;
 
             // Position the window in the center of the screen
-            Left = (SystemParameters.PrimaryScreenWidth/2) - (ActualWidth/2);
-            Top = (SystemParameters.PrimaryScreenHeight/2) - (ActualHeight/2);
+            Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
+            Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);
         }
 
         /// <summary>
@@ -463,22 +533,6 @@ namespace Switcheroo
 
         private void AltTabPressed(object sender, AltTabHookEventArgs e)
         {
-            if (!Settings.Default.AltTabHook)
-            {
-                // Ignore Alt+Tab presses if the hook is not activated by the user
-                return;
-            }
-
-            _foregroundWindow = SystemWindow.ForegroundWindow;
-
-            if (_foregroundWindow.ClassName == "MultitaskingViewFrame")
-            {
-                // If Windows' task switcher is on the screen then don't do anything
-                return;
-            }
-
-            e.Handled = true;
-
             if (Visibility != Visibility.Visible)
             {
                 tb.IsEnabled = true;
@@ -607,7 +661,7 @@ namespace Switcheroo
             foreach (var win in windows)
             {
                 bool isClosed = await _windowCloser.TryCloseAsync(win);
-                if(isClosed)
+                if (isClosed)
                     RemoveWindow(win);
             }
 
