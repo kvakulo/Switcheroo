@@ -166,18 +166,20 @@
                                     <ColumnDefinition Width="400" />
                                     <ColumnDefinition Width="106" />
                                 </Grid.ColumnDefinitions>
-                                <Image Height="19" Grid.Row="0" Grid.Column="0" Margin="3,0"
-                                       Opacity="{Binding IsBeingClosed, Converter={StaticResource ImageOpacityConverter}, Mode=OneTime}">
-                                    <Image.Source>
-                                        <PriorityBinding>
-                                            <Binding Path="HWnd"
+                                <Border Grid.Row="0" Grid.Column="0" Margin="3,0"
+                                        Background="{Binding Background, Mode=OneTime}">
+                                    <Image Opacity="{Binding IsBeingClosed, Converter={StaticResource ImageOpacityConverter}, Mode=OneTime}">
+                                        <Image.Source>
+                                            <PriorityBinding>
+                                                <Binding Path="HWnd"
                                                      Converter="{StaticResource WindowHandleToIconConverter}"
                                                      IsAsync="True" />
-                                            <Binding Path="HWnd"
+                                                <Binding Path="HWnd"
                                                      Converter="{StaticResource WindowHandleToCachedIconConverter}" />
-                                        </PriorityBinding>
-                                    </Image.Source>
-                                </Image>
+                                            </PriorityBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Border>
                                 <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedTitle}"
                                            Grid.Row="0" Grid.Column="1" Margin="3,0">
                                     <TextBlock.Foreground>

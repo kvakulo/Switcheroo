@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 using Switcheroo.Core;
 
 namespace Switcheroo
@@ -73,6 +75,16 @@ namespace Switcheroo
                 _isBeingClosed = value;
                 NotifyOfPropertyChange(() => IsBeingClosed);
             }
+        }
+
+        public bool IsUwpApp
+        {
+            get { return AppWindow.IsUwpApp; }
+        }
+
+        public Brush Background
+        {
+            get { return IsUwpApp ? SystemParameters.WindowGlassBrush : Brushes.Transparent; }
         }
 
         #endregion
