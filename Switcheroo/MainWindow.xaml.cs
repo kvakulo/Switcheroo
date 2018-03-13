@@ -61,6 +61,7 @@ namespace Switcheroo
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
         private SystemWindow _foregroundWindow;
+        private bool _altTabAutoSwitch;
 
         public MainWindow()
         {
@@ -102,6 +103,13 @@ namespace Switcheroo
                 {
                     Opacity = 0;
                 }
+                else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    _altTabAutoSwitch = false;
+                    tb.Text = "";
+                    tb.IsEnabled = true;
+                    tb.Focus();
+                }
             };
 
             KeyUp += (sender, args) =>
@@ -114,6 +122,14 @@ namespace Switcheroo
                 else if (args.Key == Key.Escape)
                 {
                     HideWindow();
+                }
+                else if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                {
+                    Switch();
+                }
+                else if (args.Key == Key.LeftAlt && _altTabAutoSwitch)
+                {
+                    Switch();
                 }
             };
         }
@@ -128,7 +144,7 @@ namespace Switcheroo
             _hotkey.HotkeyPressed += hotkey_HotkeyPressed;
             try
             {
-                _hotkey.Enabled = true;
+                _hotkey.Enabled = Settings.Default.EnableHotKey;
             }
             catch (HotkeyAlreadyInUseException)
             {
@@ -253,7 +269,7 @@ namespace Switcheroo
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
 
             var foregroundWindowMovedToBottom = false;
-            
+
             // Move first window to the bottom of the list if it's related to the foreground window
             if (firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow))
             {
@@ -267,9 +283,9 @@ namespace Switcheroo
 
             foreach (var window in _unfilteredWindowList)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
+                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.Title) });
                 window.FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.ProcessTitle)});
+                    new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.ProcessTitle) });
             }
 
             lb.DataContext = null;
@@ -311,13 +327,16 @@ namespace Switcheroo
         /// </summary>
         private void CenterWindow()
         {
+            // Reset height every time to ensure that resolution changes take effect
+            Border.MaxHeight = SystemParameters.PrimaryScreenHeight;
+
             // Force a rendering before repositioning the window
             SizeToContent = SizeToContent.Manual;
             SizeToContent = SizeToContent.WidthAndHeight;
 
             // Position the window in the center of the screen
-            Left = (SystemParameters.PrimaryScreenWidth/2) - (ActualWidth/2);
-            Top = (SystemParameters.PrimaryScreenHeight/2) - (ActualHeight/2);
+            Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
+            Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);
         }
 
         /// <summary>
@@ -325,11 +344,12 @@ namespace Switcheroo
         /// </summary>
         private void Switch()
         {
-            if (lb.Items.Count > 0)
+            foreach (var item in lb.SelectedItems)
             {
-                var win = (AppWindowViewModel) (lb.SelectedItem ?? lb.Items[0]);
+                var win = (AppWindowViewModel)item;
                 win.AppWindow.SwitchToLastVisibleActivePopup();
             }
+
             HideWindow();
         }
 
@@ -341,17 +361,9 @@ namespace Switcheroo
                 _windowCloser = null;
             }
 
+            _altTabAutoSwitch = false;
             Opacity = 0;
-
-            // Avoid flicker by delaying the "Hide" a bit. This makes sure
-            // that "Opacity = 0" is taking effect before the window is hidden.
-            var timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(50)};
-            timer.Tick += (sender, args) =>
-            {
-                Hide();
-                timer.Stop();
-            };
-            timer.Start();
+            Dispatcher.BeginInvoke(new Action(Hide), DispatcherPriority.Input);
         }
 
         #endregion
@@ -427,8 +439,15 @@ namespace Switcheroo
 
         private void hotkey_HotkeyPressed(object sender, EventArgs e)
         {
+            if (!Settings.Default.EnableHotKey)
+            {
+                return;
+            }
+
             if (Visibility != Visibility.Visible)
             {
+                tb.IsEnabled = true;
+
                 _foregroundWindow = SystemWindow.ForegroundWindow;
                 Show();
                 Activate();
@@ -450,11 +469,19 @@ namespace Switcheroo
                 return;
             }
 
+            _foregroundWindow = SystemWindow.ForegroundWindow;
+
+            if (_foregroundWindow.ClassName == "MultitaskingViewFrame")
+            {
+                // If Windows' task switcher is on the screen then don't do anything
+                return;
+            }
+
             e.Handled = true;
 
             if (Visibility != Visibility.Visible)
             {
-                _foregroundWindow = SystemWindow.ForegroundWindow;
+                tb.IsEnabled = true;
 
                 ActivateAndFocusMainWindow();
 
@@ -466,6 +493,13 @@ namespace Switcheroo
                 else
                 {
                     LoadData(InitialFocus.NextItem);
+                }
+
+                if (Settings.Default.AutoSwitch && !e.CtrlDown)
+                {
+                    _altTabAutoSwitch = true;
+                    tb.IsEnabled = false;
+                    tb.Text = "Press Alt + S to search";
                 }
 
                 Opacity = 1;
@@ -518,6 +552,11 @@ namespace Switcheroo
 
         private void TextChanged(object sender, TextChangedEventArgs args)
         {
+            if (!tb.IsEnabled)
+            {
+                return;
+            }
+
             var query = tb.Text;
 
             var context = new WindowFilterContext<AppWindowViewModel>
@@ -527,7 +566,7 @@ namespace Switcheroo
             };
 
             var filterResults = new WindowFilterer().Filter(context, query).ToList();
-            
+
             foreach (var filterResult in filterResults)
             {
                 filterResult.AppWindow.FormattedTitle =
@@ -550,12 +589,6 @@ namespace Switcheroo
             return new XamlHighlighter().Highlight(bestResult.StringParts);
         }
 
-        private void OnSpaceBarPressed(object sender, ExecutedRoutedEventArgs e)
-        {
-            Switch();
-            e.Handled = true;
-        }
-
         private void OnEnterPressed(object sender, ExecutedRoutedEventArgs e)
         {
             Switch();
@@ -572,8 +605,8 @@ namespace Switcheroo
         {
             if (lb.Items.Count > 0)
             {
-                var win = (AppWindowViewModel) lb.SelectedItem;
-                await TryCloseAndRemoveWindowAsync( win );
+                var win = (AppWindowViewModel)lb.SelectedItem;
+                await TryCloseAndRemoveWindowAsync(win);
             }
             else
             {
@@ -582,48 +615,48 @@ namespace Switcheroo
             e.Handled = true;
         }
 
-		  private async Task<bool> TryCloseAndRemoveWindowAsync( AppWindowViewModel win )
-		  {
-			  if ( win != null )
-			  {
-				  bool isClosed = await _windowCloser.TryCloseAsync( win );
-				  /*if ( isClosed )
-					  RemoveWindow( win );
-                   */
-                
-				  return isClosed;
-			  }
-			  else
-			  {
-				  //	I'm not sure when exactly it happens so I return 'all is good' just in case.
-				  //	At least this doesn't mean that the window prevents closing itself.
-				  return true;
-			  }
-		  }
+        private async Task<bool> TryCloseAndRemoveWindowAsync(AppWindowViewModel win)
+        {
+            if (win != null)
+            {
+                bool isClosed = await _windowCloser.TryCloseAsync(win);
+                /*if ( isClosed )
+                    RemoveWindow( win );
+                 */
 
-		  private async void CloseProcesses( object sender, ExecutedRoutedEventArgs e )
-		  {
-			  if ( lb.Items.Count > 0 )
-			  {
-				  var closingTasks = _filteredWindowList
-					  .ToArray()
-					  .Select( window => TryCloseAndRemoveWindowAsync( window ) )
-					  .ToArray();
+                return isClosed;
+            }
+            else
+            {
+                //	I'm not sure when exactly it happens so I return 'all is good' just in case.
+                //	At least this doesn't mean that the window prevents closing itself.
+                return true;
+            }
+        }
 
-				  var results = await Task.WhenAll( closingTasks );
-				  if ( results.All( closedSuccessfully => closedSuccessfully ) )
-				  {
-					  //	TODO: something. Maybe reset the filter text since we've closed all the windows that fit the filter anyway?
-				  }
-			  }
-			  else
-			  {
-				  HideWindow();
-			  }
+        private async void CloseProcesses(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (lb.Items.Count > 0)
+            {
+                var closingTasks = _filteredWindowList
+                    .ToArray()
+                    .Select(window => TryCloseAndRemoveWindowAsync(window))
+                    .ToArray();
 
-			  e.Handled = true;
-		  }
-        
+                var results = await Task.WhenAll(closingTasks);
+                if (results.All(closedSuccessfully => closedSuccessfully))
+                {
+                    //	TODO: something. Maybe reset the filter text since we've closed all the windows that fit the filter anyway?
+                }
+            }
+            else
+            {
+                HideWindow();
+            }
+
+            e.Handled = true;
+        }
+
         private void RemoveWindow(AppWindowViewModel window)
         {
             int index = _filteredWindowList.IndexOf(window);
@@ -733,4 +766,4 @@ namespace Switcheroo
         }
     }
 }
- 
+

@@ -43,7 +43,23 @@ namespace Switcheroo.Core
                 var processTitle = MemoryCache.Default.Get(key) as string;
                 if (processTitle == null)
                 {
-                    processTitle = Process.ProcessName;
+                    if (IsApplicationFrameWindow())
+                    {
+                        processTitle = "UWP";
+
+                        var underlyingProcess = AllChildWindows.Where(w => w.Process.Id != Process.Id)
+                            .Select(w => w.Process)
+                            .FirstOrDefault();
+
+                        if (underlyingProcess != null && underlyingProcess.ProcessName != "")
+                        {
+                            processTitle = underlyingProcess.ProcessName;
+                        }
+                    }
+                    else
+                    {
+                        processTitle = Process.ProcessName;
+                    }
                     MemoryCache.Default.Add(key, processTitle, DateTimeOffset.Now.AddHours(1));
                 }
                 return processTitle;
@@ -111,6 +127,9 @@ namespace Switcheroo.Core
             if (IsToolWindow()) return false;
             if (IsNoActivate()) return false;
             if (!IsOwnerOrOwnerNotVisible()) return false;
+            if (HasITaskListDeletedProperty()) return false;
+            if (IsCoreWindow()) return false;
+            if (IsApplicationFrameWindow() && !HasAppropriateApplicationViewCloakType()) return false;
 
             return true;
         }
@@ -161,6 +180,51 @@ namespace Switcheroo.Core
         private bool IsOwnerOrOwnerNotVisible()
         {
             return Owner == null || !Owner.Visible;
+        }
+
+        private bool HasITaskListDeletedProperty()
+        {
+            return WinApi.GetProp(HWnd, "ITaskList_Deleted") != IntPtr.Zero;
+        }
+
+        private bool IsCoreWindow()
+        {
+            // Avoids double entries for Windows Store Apps on Windows 10
+            return ClassName == "Windows.UI.Core.CoreWindow";
+        }
+
+        private bool IsApplicationFrameWindow()
+        {
+            // Is a UWP application
+            return ClassName == "ApplicationFrameWindow";
+        }
+
+        private bool HasAppropriateApplicationViewCloakType()
+        {
+            // The ApplicationFrameWindows that host Windows Store Apps like to
+            // hang around in Windows 10 even after the underlying program has been
+            // closed. A way to figure out if the ApplicationFrameWindow is
+            // currently hosting an application is to check if it has a property called
+            // "ApplicationViewCloakType", and that the value != 1.
+            //
+            // I've stumbled upon these values of "ApplicationViewCloakType":
+            //    0 = Program is running on current virtual desktop
+            //    1 = Program is not running
+            //    2 = Program is running on a different virtual desktop
+
+            var hasAppropriateApplicationViewCloakType = false;
+            WinApi.EnumPropsEx(HWnd, (hwnd, lpszString, data, dwData) =>  
+            {
+                var propName = Marshal.PtrToStringAnsi(lpszString);
+                if (propName == "ApplicationViewCloakType")
+                {
+                    hasAppropriateApplicationViewCloakType = data != 1;
+                    return 0;
+                }
+                return 1;
+            }, IntPtr.Zero);
+
+            return hasAppropriateApplicationViewCloakType;
         }
 
         // This method only works on Windows >= Windows Vista

@@ -304,5 +304,12 @@ namespace Switcheroo.Core
             SMTO_ABORTIFHUNG = 0x2,
             SMTO_NOTIMEOUTIFNOTHUNG = 0x8
         }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetProp(IntPtr hWnd, string lpString);
+
+        [DllImport("user32.dll")]
+        public static extern int EnumPropsEx(IntPtr hWnd, EnumPropsExDelegate lpEnumFunc, IntPtr lParam);
+        public delegate int EnumPropsExDelegate(IntPtr hwnd, IntPtr lpszString, long hData, long dwData);
     }
 }

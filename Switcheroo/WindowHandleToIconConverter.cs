@@ -49,8 +49,8 @@ namespace Switcheroo
                 var window = new AppWindow(handle);
                 var icon = ShouldUseSmallTaskbarIcons() ? window.SmallWindowIcon : window.LargeWindowIcon;
                 iconImage = _iconToBitmapConverter.Convert(icon) ?? new BitmapImage();
-                MemoryCache.Default.Add(shortCacheKey, iconImage, DateTimeOffset.Now.AddSeconds(5));
-                MemoryCache.Default.Add(longCacheKey, iconImage, DateTimeOffset.Now.AddMinutes(120));
+                MemoryCache.Default.Set(shortCacheKey, iconImage, DateTimeOffset.Now.AddSeconds(5));
+                MemoryCache.Default.Set(longCacheKey, iconImage, DateTimeOffset.Now.AddMinutes(120));
             }
             return iconImage;
         }

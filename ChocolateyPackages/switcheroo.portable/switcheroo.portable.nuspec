@@ -3,11 +3,11 @@
   <metadata>
     <id>switcheroo.portable</id>
     <title>Switcheroo (Portable)</title>
-    <version>0.8.3.60</version>
+    <version>0.9.2.111</version>
     <authors>Regin Larsen, James Sulak</authors>
     <owners>Regin Larsen</owners>
     <summary>An alternative alt-tab task switcher</summary>
-    <description>Switcheroo is for anyone who spends more time using a keyboard than a mouse. Instead of alt-tabbing through a (long) list of open windows, Switcheroo allows you to quickly switch to any window by typing in just a few characters of its title. It's inspired by Emacs's IDO mode buffer switching and JetBrains' ReSharper.</description>
+    <description>Switcheroo is for anyone who spends more time using a keyboard than a mouse. Instead of alt-tabbing through a (long) list of open windows, Switcheroo allows you to quickly switch to any window by typing in just a few characters of its title.</description>
     <projectUrl>http://www.switcheroo.io</projectUrl>
     <tags>switcheroo</tags>
     <copyright>GNU GPL 3</copyright>

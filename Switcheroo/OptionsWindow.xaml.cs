@@ -18,7 +18,6 @@
  * along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -61,8 +60,13 @@ namespace Switcheroo
                 Shift = _hotkey.Shift
             };
 
+            HotKeyCheckBox.IsChecked = Settings.Default.EnableHotKey;
             HotkeyPreview.Text = _hotkeyViewModel.ToString();
+            HotkeyPreview.IsEnabled = Settings.Default.EnableHotKey;
             AltTabCheckBox.IsChecked = Settings.Default.AltTabHook;
+            AutoSwitch.IsChecked = Settings.Default.AutoSwitch;
+            AutoSwitch.IsEnabled = Settings.Default.AltTabHook;
+            RunAsAdministrator.IsChecked = Settings.Default.RunAsAdmin;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -77,13 +81,18 @@ namespace Switcheroo
             try
             {
                 _hotkey.Enabled = false;
-                // Change the active hotkey
-                _hotkey.Alt = _hotkeyViewModel.Alt;
-                _hotkey.Shift = _hotkeyViewModel.Shift;
-                _hotkey.Ctrl = _hotkeyViewModel.Ctrl;
-                _hotkey.WindowsKey = _hotkeyViewModel.Windows;
-                _hotkey.KeyCode = (Keys) KeyInterop.VirtualKeyFromKey(_hotkeyViewModel.KeyCode);
-                _hotkey.Enabled = true;
+
+                if (Settings.Default.EnableHotKey)
+                {
+                    // Change the active hotkey
+                    _hotkey.Alt = _hotkeyViewModel.Alt;
+                    _hotkey.Shift = _hotkeyViewModel.Shift;
+                    _hotkey.Ctrl = _hotkeyViewModel.Ctrl;
+                    _hotkey.WindowsKey = _hotkeyViewModel.Windows;
+                    _hotkey.KeyCode = (Keys) KeyInterop.VirtualKeyFromKey(_hotkeyViewModel.KeyCode);
+                    _hotkey.Enabled = true;
+                }
+
                 _hotkey.SaveSettings();
             }
             catch (HotkeyAlreadyInUseException)
@@ -94,7 +103,10 @@ namespace Switcheroo
                 closeOptionsWindow = false;
             }
 
+            Settings.Default.EnableHotKey = HotKeyCheckBox.IsChecked.GetValueOrDefault();
             Settings.Default.AltTabHook = AltTabCheckBox.IsChecked.GetValueOrDefault();
+            Settings.Default.AutoSwitch = AutoSwitch.IsChecked.GetValueOrDefault();
+            Settings.Default.RunAsAdmin = RunAsAdministrator.IsChecked.GetValueOrDefault();
             Settings.Default.Save();
 
             if (closeOptionsWindow)
@@ -209,6 +221,27 @@ namespace Switcheroo
             {
                 // It is alright if the hotkey can't be reactivated
             }
+        }
+
+        private void AltTabCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            AutoSwitch.IsEnabled = true;
+        }
+
+        private void AltTabCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            AutoSwitch.IsEnabled = false;
+            AutoSwitch.IsChecked = false;
+        }
+
+        private void HotKeyCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            HotkeyPreview.IsEnabled = true;
+        }
+
+        private void HotKeyCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            HotkeyPreview.IsEnabled = false;
         }
     }
 }

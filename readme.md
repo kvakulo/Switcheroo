@@ -1,9 +1,11 @@
-<img src="logo.png" alt="Switcheroo" width="48px" height="48px"> Switcheroo  [![Build Status](http://img.shields.io/teamcity/codebetter/Switcheroo.svg?style=flat)](http://teamcity.codebetter.com/project.html?projectId=Switcheroo) ![GPL License](https://img.shields.io/badge/license-GPL-brightgreen.svg)
+<img src="logo.png" alt="Switcheroo" width="48px" height="48px"> Switcheroo  [![Build Status](https://img.shields.io/appveyor/ci/kvakulo/switcheroo.svg)](https://ci.appveyor.com/project/kvakulo/switcheroo) ![GPL License](https://img.shields.io/badge/license-GPL-brightgreen.svg)
 ==========
 
 Switcheroo is for anyone who spends more time using a keyboard than a mouse.
 Instead of alt-tabbing through a (long) list of open windows, Switcheroo allows
 you to quickly switch to any window by typing in just a few characters of its title.
+
+## Screenshot
 
 <img src="screenshot.png" alt="Screenshot of Switcheroo in action" width="540px" height="372px">
 
@@ -43,7 +45,7 @@ How to contribute
 
 Please report any bug you encounter by [submitting an issue](https://github.com/kvakulo/Switcheroo/issues/new).
 
-If you have an idea how to improve Switcheroo, then don't by shy to submit it as well.
+If you have an idea how to improve Switcheroo, then don't be shy to submit it as well.
 
 Pull requests are greatly appreciated. If you plan a larger feature, then please get in contact, so we can coordinate the efforts.
 
@@ -75,14 +77,9 @@ along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
 Credits
 -------
 
-[HellBrick](https://github.com/HellBrick) and [ovesen](https://github.com/ovesen) have contributed to Switcheroo.
+[HellBrick](https://github.com/HellBrick), [ovesen](https://github.com/ovesen), [philippotto](https://github.com/philippotto) and [tarikguney](https://github.com/tarikguney) have contributed to Switcheroo.
 
 Switcheroo makes use of these great open source projects:
 
 * [Managed Windows API](http://mwinapi.sourceforge.net), Copyright © 2006 Michael Schier, GNU Lesser General Public License (LGPL)
 * [PortableSettingsProvider](https://github.com/crdx/PortableSettingsProvider), Copyright © crdx, The MIT License (MIT)
-
-Thanks to [JetBrains](http://www.jetbrains.com/) and [CodeBetter](http://codebetter.com/) for providing [continuous integration](http://teamcity.codebetter.com/project.html?projectId=Switcheroo) for Switcheroo.
-
-
-<a href="http://www.jetbrains.com/teamcity" title="TeamCity by JetBrains"><img src="http://www.jetbrains.com/img/banners/Codebetter300x250.png" width="300" height="250"></a>
