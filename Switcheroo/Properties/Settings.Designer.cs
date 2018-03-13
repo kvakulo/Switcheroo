@@ -142,5 +142,17 @@ namespace Switcheroo.Properties {
                 this["EnableHotKey"] = value;
             }
         }
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MultiMonitor {
+            get {
+                return ((int)(this["MultiMonitor"]));
+            }
+            set {
+                this["MultiMonitor"] = value;
+            }
+        }
     }
 }
