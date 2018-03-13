@@ -13,7 +13,7 @@
         <CommandBinding Command="local:MainWindow.CloseWindowCommand"
                         Executed="CloseWindow" />
         <CommandBinding Command="local:MainWindow.CloseProcessesCommand"
-                        Executed="CloseProcesses" />
+                        Executed="CloseWindows" />
         <CommandBinding Command="local:MainWindow.SwitchToWindowCommand"
                         Executed="OnEnterPressed" />
         <CommandBinding Command="local:MainWindow.ScrollListUpCommand"

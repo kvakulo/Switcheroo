@@ -603,55 +603,49 @@ namespace Switcheroo
 
         private async void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            if (lb.Items.Count > 0)
+            var windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
+            foreach (var window in windows)
             {
-                var win = (AppWindowViewModel)lb.SelectedItem;
-                await TryCloseAndRemoveWindowAsync(win);
+                var isClosed = await _windowCloser.TryCloseAsync(window);
+                if (isClosed)
+                {
+                    RemoveWindow(window);
+                }
             }
-            else
+
+            if (lb.Items.Count == 0)
             {
                 HideWindow();
             }
+
             e.Handled = true;
         }
 
-        private async Task<bool> TryCloseAndRemoveWindowAsync(AppWindowViewModel win)
+        private async void CloseWindows(object sender, ExecutedRoutedEventArgs e)
         {
-            if (win != null)
-            {
-                bool isClosed = await _windowCloser.TryCloseAsync(win);
-                /*if ( isClosed )
-                    RemoveWindow( win );
-                 */
+            var windows = lb.Items.Cast<AppWindowViewModel>().ToList();
+            var programsCount = windows.Select(w => w.ProcessTitle).Distinct().Count();
 
-                return isClosed;
-            }
-            else
+            if (windows.Count > 10 || programsCount > 1)
             {
-                //	I'm not sure when exactly it happens so I return 'all is good' just in case.
-                //	At least this doesn't mean that the window prevents closing itself.
-                return true;
-            }
-        }
-
-        private async void CloseProcesses(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (lb.Items.Count > 0)
-            {
-                var closingTasks = _filteredWindowList
-                    .ToArray()
-                    .Select(window => TryCloseAndRemoveWindowAsync(window))
-                    .ToArray();
-
-                var results = await Task.WhenAll(closingTasks);
-                if (results.All(closedSuccessfully => closedSuccessfully))
+                var messageBoxResult = MessageBox.Show(
+                    string.Format("Are you sure you want to close {0} window(s) from {1} program(s)?", windows.Count, programsCount),
+                    "Confirm",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+                if (messageBoxResult != MessageBoxResult.Yes)
                 {
-                    //	TODO: something. Maybe reset the filter text since we've closed all the windows that fit the filter anyway?
+                    return;
                 }
             }
-            else
+
+            foreach (var window in windows)
             {
-                HideWindow();
+                var isClosed = await _windowCloser.TryCloseAsync(window);
+                if (isClosed)
+                {
+                    RemoveWindow(window);
+                }
             }
 
             e.Handled = true;
@@ -766,4 +760,3 @@ namespace Switcheroo
         }
     }
 }
-
