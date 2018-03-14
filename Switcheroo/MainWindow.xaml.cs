@@ -113,6 +113,46 @@ namespace Switcheroo
                     tb.IsEnabled = true;
                     tb.Focus();
                 }
+                else if (args.SystemKey == Key.D1 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(0);
+                }
+                else if (args.SystemKey == Key.D2 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(1);
+                }
+                else if (args.SystemKey == Key.D3 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(2);
+                }
+                else if (args.SystemKey == Key.D4 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(3);
+                }
+                else if (args.SystemKey == Key.D5 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(4);
+                }
+                else if (args.SystemKey == Key.D6 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(5);
+                }
+                else if (args.SystemKey == Key.D7 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(6);
+                }
+                else if (args.SystemKey == Key.D8 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(7);
+                }
+                else if (args.SystemKey == Key.D9 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(8);
+                }
+                else if (args.SystemKey == Key.D0 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(9);
+                }
             };
 
             KeyUp += (sender, args) =>
@@ -135,6 +175,14 @@ namespace Switcheroo
                     Switch();
                 }
             };
+        }
+
+        private void SwitchToIndex(int i)
+        {
+            lb.SelectedIndex = i;
+            ScrollSelectedItemIntoView();
+            Switch();
+            HideWindow();
         }
 
         private void SetUpHotKey()
@@ -284,11 +332,16 @@ namespace Switcheroo
             _filteredWindowList = new ObservableCollection<AppWindowViewModel>(_unfilteredWindowList);
             _windowCloser = new WindowCloser();
 
-            foreach (var window in _unfilteredWindowList)
+            
+            for (var i = 0; i < _unfilteredWindowList.Count; i++)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
-                window.FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.ProcessTitle)});
+                if (i < 10)
+                {
+                    _unfilteredWindowList[i].FormattedTitle = "(" + (i + 1) + ") ";
+                }
+                _unfilteredWindowList[i].FormattedTitle += new XamlHighlighter().Highlight(new[] {new StringPart(_unfilteredWindowList[i].AppWindow.Title)});
+                _unfilteredWindowList[i].FormattedProcessTitle =
+                    new XamlHighlighter().Highlight(new[] {new StringPart(_unfilteredWindowList[i].AppWindow.ProcessTitle)});
             }
 
             lb.DataContext = null;
@@ -689,8 +742,8 @@ namespace Switcheroo
 
         private void ScrollListPageUp(object sender, ExecutedRoutedEventArgs e)
         {
-            var n = Math.Round(lb.ActualHeight / grd0.ActualHeight);
-            
+            double n = NumOfVisibleRows();
+
             if (lb.SelectedIndex - n >= 0)
                 lb.SelectedIndex = Convert.ToInt32(lb.SelectedIndex - n);
             else
@@ -699,10 +752,10 @@ namespace Switcheroo
 
             e.Handled = true;
         }
-        
+
         private void ScrollListPageDown(object sender, ExecutedRoutedEventArgs e)
         {
-            var n = Math.Round(lb.ActualHeight / grd0.ActualHeight);
+            double n = NumOfVisibleRows();
 
             if (n + lb.SelectedIndex <= lb.Items.Count - 1)
                 lb.SelectedIndex = Convert.ToInt32(n);
@@ -713,6 +766,10 @@ namespace Switcheroo
             e.Handled = true;
         }
 
+        private double NumOfVisibleRows()
+        {
+            return Math.Round(lb.ActualHeight / SearchGrid.ActualHeight); 
+        }
 
         private void ScrollListHome(object sender, ExecutedRoutedEventArgs e)
         {

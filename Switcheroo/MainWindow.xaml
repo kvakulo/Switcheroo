@@ -31,6 +31,7 @@
     <Window.InputBindings>
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="Enter" Modifiers="Ctrl" />
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="W" Modifiers="Ctrl" />
+        <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="X" Modifiers="Alt" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
         <KeyBinding Command="local:MainWindow.ScrollListPageUpCommand" Key="PageUp" />
