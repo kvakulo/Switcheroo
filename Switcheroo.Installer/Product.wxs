@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="Switcheroo" Language="1033" Version="1.0.0.0" Manufacturer="Switcheroo Team" UpgradeCode="e660daa7-dd4e-42c5-a38a-c9723e4bf646">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" InstallPrivileges="elevated" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes"/>
+
+    <UI>
+      <UIRef Id="WixUI_Minimal" />
+      <Publish Dialog="ExitDialog"
+               Control="Finish"
+               Event="DoAction"
+               Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Switcheroo After Install" />
+    <WixVariable Id="WixUILicenseRtf" Value="ApacheLicense.rtf" />
+
+    <Feature Id="ProductFeature" Title="Switcheroo" Level="1">
+      <ComponentGroupRef Id="HeatGenerated"/>
+      <Component Directory="INSTALLFOLDER">
+        <File Source="ApacheLicense.rtf"/>
+      </Component>
+    </Feature>
+
+    <Property Id="WixShellExecTarget" Value="[INSTALLFOLDER]switcheroo.exe" />
+    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Switcheroo" />
+      </Directory>
+    </Directory>
+  </Fragment>
+</Wix>
