@@ -179,10 +179,13 @@ namespace Switcheroo
 
         private void SwitchToIndex(int i)
         {
-            lb.SelectedIndex = i;
-            ScrollSelectedItemIntoView();
-            Switch();
-            HideWindow();
+            if (i < lb.Items.Count)
+            {
+                lb.SelectedIndex = i;
+                ScrollSelectedItemIntoView();
+                Switch();
+                HideWindow();
+            }
         }
 
         private void SetUpHotKey()
