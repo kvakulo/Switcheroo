@@ -238,6 +238,28 @@ namespace Switcheroo
                     new MenuItem("Exit", (s, e) => Quit())
                 })
             };
+            
+            _notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(NotifyIconMouseClick);
+        }
+        
+        void NotifyIconMouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (Visibility != Visibility.Visible)
+                {
+                    _foregroundWindow = SystemWindow.ForegroundWindow;
+                    Show();
+                    Activate();
+                    Keyboard.Focus(tb);
+                    LoadData(InitialFocus.NextItem);
+                    Opacity = 1;
+                }
+                else
+                {
+                    HideWindow();
+                }
+            }
         }
 
         private static void RunOnStartup(MenuItem menuItem)
