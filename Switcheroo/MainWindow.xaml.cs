@@ -343,8 +343,6 @@ namespace Switcheroo
             }
 
             lb.DataContext = null;
-
-            lb.DataContext = null;
             lb.DataContext = _filteredWindowList;
 
             FocusItemInList(focus, foregroundWindowMovedToBottom);
