@@ -339,7 +339,7 @@ namespace Switcheroo
             {
                 if (i < 10)
                 {
-                    _unfilteredWindowList[i].FormattedTitle = "(" + (i + 1) + ") ";
+                _unfilteredWindowList[i].FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart("" + (i + 1) + " ", true) });
                 }
                 _unfilteredWindowList[i].FormattedTitle += new XamlHighlighter().Highlight(new[] {new StringPart(_unfilteredWindowList[i].AppWindow.Title)});
                 _unfilteredWindowList[i].FormattedProcessTitle =
