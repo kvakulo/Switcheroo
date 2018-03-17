@@ -335,12 +335,17 @@ namespace Switcheroo
             _filteredWindowList = new ObservableCollection<AppWindowViewModel>(_unfilteredWindowList);
             _windowCloser = new WindowCloser();
 
-            foreach (var window in _unfilteredWindowList)
+            for (var i = 0; i < _unfilteredWindowList.Count; i++)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
-                window.FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.ProcessTitle)});
+                if (i < 10)
+                {
+                    _unfilteredWindowList[i].FormattedTitle = "(" + (i + 1) + ") ";
+                }
+                _unfilteredWindowList[i].FormattedTitle += new XamlHighlighter().Highlight(new[] {new StringPart(_unfilteredWindowList[i].AppWindow.Title)});
+                _unfilteredWindowList[i].FormattedProcessTitle =
+                    new XamlHighlighter().Highlight(new[] {new StringPart(_unfilteredWindowList[i].AppWindow.ProcessTitle)});
             }
+
 
             lb.DataContext = null;
             lb.DataContext = _filteredWindowList;
