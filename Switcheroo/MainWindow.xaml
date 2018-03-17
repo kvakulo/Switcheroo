@@ -18,6 +18,14 @@
                         Executed="ScrollListUp" />
         <CommandBinding Command="local:MainWindow.ScrollListDownCommand"
                         Executed="ScrollListDown" />
+        <CommandBinding Command="local:MainWindow.ScrollListPageUpCommand" 
+                        Executed="ScrollListPageUp" />
+        <CommandBinding Command="local:MainWindow.ScrollListPageDownCommand" 
+                        Executed="ScrollListPageDown" />
+        <CommandBinding Command="local:MainWindow.ScrollListHomeCommand" 
+                        Executed="ScrollListHome" />
+        <CommandBinding Command="local:MainWindow.ScrollListEndCommand" 
+                        Executed="ScrollListEnd" />
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -25,6 +33,10 @@
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="X" Modifiers="Alt" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
+        <KeyBinding Command="local:MainWindow.ScrollListPageUpCommand" Key="PageUp" />
+        <KeyBinding Command="local:MainWindow.ScrollListPageDownCommand" Key="PageDown" />
+        <KeyBinding Command="local:MainWindow.ScrollListHomeCommand" Key="Home" />
+        <KeyBinding Command="local:MainWindow.ScrollListEndCommand" Key="End" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="K" Modifiers="Alt" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="J" Modifiers="Alt" />
     </Window.InputBindings>
@@ -67,7 +79,7 @@
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
-            <Grid DockPanel.Dock="Top">
+            <Grid Name="SearchGrid" DockPanel.Dock="Top">
                 <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15"
                          VerticalContentAlignment="Center">
                     <TextBox.InputBindings>
@@ -76,6 +88,10 @@
                         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
                         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Tab" Modifiers="Shift" />
                         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Tab" />
+                        <KeyBinding Command="local:MainWindow.ScrollListPageUpCommand" Key="Prior" />
+                        <KeyBinding Command="local:MainWindow.ScrollListPageDownCommand" Key="PageDown" />
+                        <KeyBinding Command="local:MainWindow.ScrollListHomeCommand" Key="Home" />
+                        <KeyBinding Command="local:MainWindow.ScrollListEndCommand" Key="End" />
                     </TextBox.InputBindings>
                 </TextBox>
                 <TextBlock Margin="0,0,10,0" Width="15" HorizontalAlignment="Right" TextAlignment="Center"
@@ -200,7 +216,7 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                         <Setter Property="Padding" Value="0,5" />
-                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
+                        <EventSetter Event="MouseLeftButtonUp" Handler="ListBoxItem_MouseLBClick" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <!-- Changes inactive selection color to be same as selected -->
