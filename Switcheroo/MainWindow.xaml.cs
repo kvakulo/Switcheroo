@@ -658,12 +658,6 @@ namespace Switcheroo
                 e.Handled = true;
         }
 
-        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            Switch();
-            e.Handled = true;
-        }
-
         private async void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
             var windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
