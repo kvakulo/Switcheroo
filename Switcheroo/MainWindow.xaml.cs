@@ -651,7 +651,7 @@ namespace Switcheroo
 
         private void ListBoxItem_MouseLBClick(object sender, MouseButtonEventArgs e)
         {
-                if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
                 {
                     Switch();
                 }
