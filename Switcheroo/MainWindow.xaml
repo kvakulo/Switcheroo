@@ -29,7 +29,6 @@
     </Window.CommandBindings>
 
     <Window.InputBindings>
-        <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="Enter" Modifiers="Ctrl" />
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="W" Modifiers="Ctrl" />
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="X" Modifiers="Alt" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
@@ -38,6 +37,8 @@
         <KeyBinding Command="local:MainWindow.ScrollListPageDownCommand" Key="PageDown" />
         <KeyBinding Command="local:MainWindow.ScrollListHomeCommand" Key="Home" />
         <KeyBinding Command="local:MainWindow.ScrollListEndCommand" Key="End" />
+        <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="K" Modifiers="Alt" />
+        <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="J" Modifiers="Alt" />
     </Window.InputBindings>
 
     <Window.Resources>
