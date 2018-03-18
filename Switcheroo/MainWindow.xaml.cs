@@ -56,6 +56,7 @@ namespace Switcheroo
         public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand CloseProcessesCommand = new RoutedUICommand();
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
@@ -268,7 +269,7 @@ namespace Switcheroo
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
 
             var foregroundWindowMovedToBottom = false;
-            
+
             // Move first window to the bottom of the list if it's related to the foreground window
             if (firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow))
             {
@@ -282,9 +283,9 @@ namespace Switcheroo
 
             foreach (var window in _unfilteredWindowList)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
+                window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.Title) });
                 window.FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.ProcessTitle)});
+                    new XamlHighlighter().Highlight(new[] { new StringPart(window.AppWindow.ProcessTitle) });
             }
 
             lb.DataContext = null;
@@ -334,8 +335,8 @@ namespace Switcheroo
             SizeToContent = SizeToContent.WidthAndHeight;
 
             // Position the window in the center of the screen
-            Left = (SystemParameters.PrimaryScreenWidth/2) - (ActualWidth/2);
-            Top = (SystemParameters.PrimaryScreenHeight/2) - (ActualHeight/2);
+            Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
+            Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);
         }
 
         /// <summary>
@@ -603,15 +604,42 @@ namespace Switcheroo
         private async void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
             var windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
-            foreach (var win in windows)
+            foreach (var window in windows)
             {
-                bool isClosed = await _windowCloser.TryCloseAsync(win);
-                if(isClosed)
-                    RemoveWindow(win);
+                var isClosed = await _windowCloser.TryCloseAsync(window);
+                if (isClosed)
+                {
+                    RemoveWindow(window);
+                }
             }
 
             if (lb.Items.Count == 0)
+            {
                 HideWindow();
+            }
+
+            e.Handled = true;
+        }
+
+        private async void CloseWindows(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (ConfirmPanel.Height == 0)
+            {
+                ShowConfirmPanel();
+                TimedAction.ExecuteWithDelay(HideConfirmPanel, TimeSpan.FromSeconds(3));
+                return;
+            }
+
+            var windows = lb.Items.Cast<AppWindowViewModel>().ToList();
+
+            foreach (var window in windows)
+            {
+                var isClosed = await _windowCloser.TryCloseAsync(window);
+                if (isClosed)
+                {
+                    RemoveWindow(window);
+                }
+            }
 
             e.Handled = true;
         }
@@ -716,6 +744,24 @@ namespace Switcheroo
             HelpPanel.BeginAnimation(HeightProperty, new DoubleAnimation(HelpPanel.Height, newHeight, duration));
         }
 
+        private void ShowConfirmPanel()
+        {
+            var duration = new Duration(TimeSpan.FromSeconds(0.150));
+            var newHeight = 17;
+            ConfirmPanel.BeginAnimation(HeightProperty, new DoubleAnimation(ConfirmPanel.Height, newHeight, duration));
+        }
+
+        private void HideConfirmPanel()
+        {
+            if (ConfirmPanel.Height == 0)
+            {
+                return;
+            }
+
+            var duration = new Duration(TimeSpan.FromSeconds(0.150));
+            var newHeight = 0;
+            ConfirmPanel.BeginAnimation(HeightProperty, new DoubleAnimation(ConfirmPanel.Height, newHeight, duration));
+        }
         #endregion
 
         private enum InitialFocus

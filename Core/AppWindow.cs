@@ -109,8 +109,8 @@ namespace Switcheroo.Core
                 return new AppWindow(ownerHandle);
             }
         }
-
-        public new static IEnumerable<AppWindow> AllToplevelWindows
+        
+	public new static IEnumerable<AppWindow> AllToplevelWindows
         {
             get
             {

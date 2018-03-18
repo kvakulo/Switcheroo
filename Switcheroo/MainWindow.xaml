@@ -12,6 +12,8 @@
     <Window.CommandBindings>
         <CommandBinding Command="local:MainWindow.CloseWindowCommand"
                         Executed="CloseWindow" />
+        <CommandBinding Command="local:MainWindow.CloseProcessesCommand"
+                        Executed="CloseWindows" />
         <CommandBinding Command="local:MainWindow.SwitchToWindowCommand"
                         Executed="OnEnterPressed" />
         <CommandBinding Command="local:MainWindow.ScrollListUpCommand"
@@ -23,6 +25,7 @@
     <Window.InputBindings>
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="W" Modifiers="Ctrl" />
         <KeyBinding Command="local:MainWindow.CloseWindowCommand" Key="X" Modifiers="Alt" />
+        <KeyBinding Command="local:MainWindow.CloseProcessesCommand"  Gesture="Ctrl+Shift+W"/>
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="K" Modifiers="Alt" />
@@ -66,6 +69,11 @@
                         <Bold>esc</Bold> to dismiss switcheroo
                     </TextBlock>
                 </StackPanel>
+            </DockPanel>
+            <DockPanel Margin="4,0,4,0" Name="ConfirmPanel" Background="#fff3cd" Height="0" DockPanel.Dock="Top">
+                <TextBlock FontSize="10" DockPanel.Dock="Left" Foreground="#856404">
+                    press <Bold>ctrl + shift + w</Bold> again to close all windows in the list
+                </TextBlock>
             </DockPanel>
             <Grid DockPanel.Dock="Top">
                 <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15"
