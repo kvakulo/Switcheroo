@@ -56,6 +56,10 @@ namespace Switcheroo
         public static readonly RoutedUICommand SwitchToWindowCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListDownCommand = new RoutedUICommand();
         public static readonly RoutedUICommand ScrollListUpCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand ScrollListPageDownCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand ScrollListPageUpCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand ScrollListHomeCommand = new RoutedUICommand();
+        public static readonly RoutedUICommand ScrollListEndCommand = new RoutedUICommand();
         private OptionsWindow _optionsWindow;
         private AboutWindow _aboutWindow;
         private AltTabHook _altTabHook;
@@ -109,6 +113,46 @@ namespace Switcheroo
                     tb.IsEnabled = true;
                     tb.Focus();
                 }
+                else if (args.SystemKey == Key.D1 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(0);
+                }
+                else if (args.SystemKey == Key.D2 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(1);
+                }
+                else if (args.SystemKey == Key.D3 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(2);
+                }
+                else if (args.SystemKey == Key.D4 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(3);
+                }
+                else if (args.SystemKey == Key.D5 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(4);
+                }
+                else if (args.SystemKey == Key.D6 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(5);
+                }
+                else if (args.SystemKey == Key.D7 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(6);
+                }
+                else if (args.SystemKey == Key.D8 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(7);
+                }
+                else if (args.SystemKey == Key.D9 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(8);
+                }
+                else if (args.SystemKey == Key.D0 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(9);
+                }
             };
 
             KeyUp += (sender, args) =>
@@ -131,6 +175,17 @@ namespace Switcheroo
                     Switch();
                 }
             };
+        }
+
+        private void SwitchToIndex(int i)
+        {
+            if (i < lb.Items.Count)
+            {
+                lb.SelectedIndex = i;
+                ScrollSelectedItemIntoView();
+                Switch();
+                HideWindow();
+            }
         }
 
         private void SetUpHotKey()
@@ -683,6 +738,53 @@ namespace Switcheroo
             }
         }
 
+        private void ScrollListPageUp(object sender, ExecutedRoutedEventArgs e)
+        {
+            double n = NumOfVisibleRows();
+
+            if (lb.SelectedIndex - n >= 0)
+                lb.SelectedIndex = Convert.ToInt32(lb.SelectedIndex - n);
+            else
+                lb.SelectedIndex = 0;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
+
+        private void ScrollListPageDown(object sender, ExecutedRoutedEventArgs e)
+        {
+            double n = NumOfVisibleRows();
+
+            if (n + lb.SelectedIndex <= lb.Items.Count - 1)
+                lb.SelectedIndex = Convert.ToInt32(n);
+            else
+                lb.SelectedIndex = lb.Items.Count - 1;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
+
+        private double NumOfVisibleRows()
+        {
+            return Math.Round(lb.ActualHeight / SearchGrid.ActualHeight); 
+        }
+
+        private void ScrollListHome(object sender, ExecutedRoutedEventArgs e)
+        {
+            lb.SelectedIndex = 0;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
+
+        private void ScrollListEnd(object sender, ExecutedRoutedEventArgs e)
+        {
+            lb.SelectedIndex = lb.Items.Count-1;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
+
         private void ScrollSelectedItemIntoView()
         {
             var selectedItem = lb.SelectedItem;
@@ -722,6 +824,25 @@ namespace Switcheroo
         {
             NextItem,
             PreviousItem
+        }
+        
+        private void MenuItem_Click_toFront(object sender, RoutedEventArgs e)
+        {
+            Switch();
+        }
+
+        private async void MenuItem_Click_toClose(object sender, RoutedEventArgs e)
+        {
+            var windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
+            foreach (var win in windows)
+            {
+                bool isClosed = await _windowCloser.TryCloseAsync(win);
+                if (isClosed)
+                    RemoveWindow(win);
+            }
+
+            if (lb.Items.Count == 0)
+                HideWindow();
         }
     }
 }
