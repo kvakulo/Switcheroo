@@ -70,6 +70,11 @@
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
+            <DockPanel Margin="4,0,4,0" Name="ConfirmPanel" Background="#fff3cd" Height="0" DockPanel.Dock="Top">
+                <TextBlock FontSize="10" DockPanel.Dock="Left" Foreground="#856404">
+                    press <Bold>ctrl + shift + w</Bold> again to close all windows in the list
+                </TextBlock>
+            </DockPanel>
             <Grid DockPanel.Dock="Top">
                 <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15"
                          VerticalContentAlignment="Center">

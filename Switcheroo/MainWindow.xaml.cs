@@ -623,21 +623,14 @@ namespace Switcheroo
 
         private async void CloseWindows(object sender, ExecutedRoutedEventArgs e)
         {
-            var windows = lb.Items.Cast<AppWindowViewModel>().ToList();
-            var programsCount = windows.Select(w => w.ProcessTitle).Distinct().Count();
-
-            if (windows.Count > 10 || programsCount > 1)
+            if (ConfirmPanel.Height == 0)
             {
-                var messageBoxResult = MessageBox.Show(
-                    string.Format("Are you sure you want to close {0} window(s) from {1} program(s)?", windows.Count, programsCount),
-                    "Confirm",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
-                if (messageBoxResult != MessageBoxResult.Yes)
-                {
-                    return;
-                }
+                ShowConfirmPanel();
+                TimedAction.ExecuteWithDelay(HideConfirmPanel, TimeSpan.FromSeconds(3));
+                return;
             }
+
+            var windows = lb.Items.Cast<AppWindowViewModel>().ToList();
 
             foreach (var window in windows)
             {
@@ -751,6 +744,24 @@ namespace Switcheroo
             HelpPanel.BeginAnimation(HeightProperty, new DoubleAnimation(HelpPanel.Height, newHeight, duration));
         }
 
+        private void ShowConfirmPanel()
+        {
+            var duration = new Duration(TimeSpan.FromSeconds(0.150));
+            var newHeight = 17;
+            ConfirmPanel.BeginAnimation(HeightProperty, new DoubleAnimation(ConfirmPanel.Height, newHeight, duration));
+        }
+
+        private void HideConfirmPanel()
+        {
+            if (ConfirmPanel.Height == 0)
+            {
+                return;
+            }
+
+            var duration = new Duration(TimeSpan.FromSeconds(0.150));
+            var newHeight = 0;
+            ConfirmPanel.BeginAnimation(HeightProperty, new DoubleAnimation(ConfirmPanel.Height, newHeight, duration));
+        }
         #endregion
 
         private enum InitialFocus
