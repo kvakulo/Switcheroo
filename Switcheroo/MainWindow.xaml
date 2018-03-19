@@ -200,7 +200,7 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                         <Setter Property="Padding" Value="0,5" />
-                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
+                        <EventSetter Event="MouseLeftButtonUp" Handler="ListBoxItem_MouseLBClick" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <!-- Changes inactive selection color to be same as selected -->
