@@ -109,6 +109,46 @@ namespace Switcheroo
                     tb.IsEnabled = true;
                     tb.Focus();
                 }
+                else if (args.SystemKey == Key.D1 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(0);
+                }
+                else if (args.SystemKey == Key.D2 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(1);
+                }
+                else if (args.SystemKey == Key.D3 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(2);
+                }
+                else if (args.SystemKey == Key.D4 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(3);
+                }
+                else if (args.SystemKey == Key.D5 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(4);
+                }
+                else if (args.SystemKey == Key.D6 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(5);
+                }
+                else if (args.SystemKey == Key.D7 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(6);
+                }
+                else if (args.SystemKey == Key.D8 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(7);
+                }
+                else if (args.SystemKey == Key.D9 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(8);
+                }
+                else if (args.SystemKey == Key.D0 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SwitchToIndex(9);
+                }
             };
 
             KeyUp += (sender, args) =>
@@ -131,6 +171,17 @@ namespace Switcheroo
                     Switch();
                 }
             };
+        }
+
+        private void SwitchToIndex(int i)
+        {
+            if (i < lb.Items.Count)
+            {
+                lb.SelectedIndex = i;
+                ScrollSelectedItemIntoView();
+                Switch();
+                HideWindow();
+            }
         }
 
         private void SetUpHotKey()
