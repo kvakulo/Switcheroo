@@ -118,6 +118,7 @@ namespace Switcheroo
                     _unfilteredWindowList = _unfilteredWindowList.OrderBy(x => x.FormattedProcessTitle).ToList();
                     lb.DataContext = null;
                     lb.DataContext = _unfilteredWindowList;
+                }
                 else if (args.SystemKey == Key.D1 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
                 {
                     SwitchToIndex(0);
