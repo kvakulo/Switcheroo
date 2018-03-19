@@ -79,7 +79,7 @@
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
-           <Grid Name="grd0" DockPanel.Dock="Top">
+           <Grid Name="SearchGrid" DockPanel.Dock="Top">
                 <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15"
                          VerticalContentAlignment="Center">
                     <TextBox.InputBindings>
