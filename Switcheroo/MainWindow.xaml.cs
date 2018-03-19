@@ -723,5 +723,24 @@ namespace Switcheroo
             NextItem,
             PreviousItem
         }
+        
+        private void MenuItem_Click_toFront(object sender, RoutedEventArgs e)
+        {
+            Switch();
+        }
+
+        private async void MenuItem_Click_toClose(object sender, RoutedEventArgs e)
+        {
+            var windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
+            foreach (var win in windows)
+            {
+                bool isClosed = await _windowCloser.TryCloseAsync(win);
+                if (isClosed)
+                    RemoveWindow(win);
+            }
+
+            if (lb.Items.Count == 0)
+                HideWindow();
+        }
     }
 }
