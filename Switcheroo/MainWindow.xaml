@@ -203,6 +203,12 @@
                         <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                     </Style>
                 </ListBox.ItemContainerStyle>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Close" Click="MenuItem_Click_toClose"/>
+                        <MenuItem Header="Bring to Front" Click="MenuItem_Click_toFront"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
                 <!-- Changes inactive selection color to be same as selected -->
                 <ListBox.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
