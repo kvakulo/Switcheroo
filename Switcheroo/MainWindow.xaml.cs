@@ -102,12 +102,18 @@ namespace Switcheroo
                 {
                     Opacity = 0;
                 }
-                else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                else if (args.SystemKey == Key.Q && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
                 {
                     _altTabAutoSwitch = false;
                     tb.Text = "";
                     tb.IsEnabled = true;
                     tb.Focus();
+                }
+                else if (args.SystemKey == Key.D && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    _unfilteredWindowList = _unfilteredWindowList.OrderBy(x => x.FormattedProcessTitle).ToList();
+                    lb.DataContext = null;
+                    lb.DataContext = _unfilteredWindowList;
                 }
             };
 
@@ -498,7 +504,7 @@ namespace Switcheroo
                 {
                     _altTabAutoSwitch = true;
                     tb.IsEnabled = false;
-                    tb.Text = "Press Alt + S to search";
+                    tb.Text = "Press Alt + Q to search";
                 }
 
                 Opacity = 1;
