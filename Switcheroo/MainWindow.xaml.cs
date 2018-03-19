@@ -594,9 +594,12 @@ namespace Switcheroo
             e.Handled = true;
         }
 
-        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ListBoxItem_MouseLBClick(object sender, MouseButtonEventArgs e)
         {
-            Switch();
+            if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
+            {
+                Switch();
+            }
             e.Handled = true;
         }
 
