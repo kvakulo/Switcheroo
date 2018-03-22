@@ -102,6 +102,10 @@ namespace Switcheroo
                 {
                     Opacity = 0;
                 }
+                else if (args.SystemKey == Key.O && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    Options();
+                }
                 else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
                 {
                     _altTabAutoSwitch = false;
