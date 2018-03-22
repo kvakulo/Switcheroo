@@ -102,6 +102,10 @@ namespace Switcheroo
                 {
                     Opacity = 0;
                 }
+                else if (args.SystemKey == Key.Delete)
+                {
+                    CloseWindow2();
+                }
                 else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
                 {
                     _altTabAutoSwitch = false;
@@ -131,6 +135,20 @@ namespace Switcheroo
                     Switch();
                 }
             };
+        }
+        
+        private async void CloseWindow2()
+        {
+            var windows = lb.SelectedItems.Cast<AppWindowViewModel>().ToList();
+            foreach (var win in windows)
+            {
+                bool isClosed = await _windowCloser.TryCloseAsync(win);
+                if (isClosed)
+                    RemoveWindow(win);
+            }
+
+            if (lb.Items.Count == 0)
+                HideWindow();
         }
 
         private void SetUpHotKey()
