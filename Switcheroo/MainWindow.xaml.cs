@@ -61,6 +61,7 @@ namespace Switcheroo
         private AltTabHook _altTabHook;
         private SystemWindow _foregroundWindow;
         private bool _altTabAutoSwitch;
+        private bool _sorted = false;
 
         public MainWindow()
         {
@@ -111,9 +112,7 @@ namespace Switcheroo
                 }
                 else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
                 {
-                    _unfilteredWindowList = _unfilteredWindowList.OrderBy(x => x.FormattedProcessTitle).ToList();
-                    lb.DataContext = null;
-                    lb.DataContext = _unfilteredWindowList;
+                    SortWindowsList();
                 }
             };
 
@@ -137,6 +136,26 @@ namespace Switcheroo
                     Switch();
                 }
             };
+        }
+        
+        private void SortWindowsList()
+        {
+            if (!_sorted)
+            {
+                // sort
+                _unfilteredWindowList = _unfilteredWindowList.OrderBy(x => x.FormattedProcessTitle).ToList();
+
+                // re-populate list
+                lb.DataContext = null;
+                lb.DataContext = _unfilteredWindowList;
+                _sorted = true;
+            }
+            else
+            {
+                // restore original
+                LoadData(InitialFocus.NextItem);
+                _sorted = false;
+            }
         }
 
         private void SetUpHotKey()
