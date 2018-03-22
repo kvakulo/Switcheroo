@@ -61,6 +61,7 @@ namespace Switcheroo
         private AltTabHook _altTabHook;
         private SystemWindow _foregroundWindow;
         private bool _altTabAutoSwitch;
+        private bool _sorted = false;
 
         public MainWindow()
         {
@@ -102,12 +103,16 @@ namespace Switcheroo
                 {
                     Opacity = 0;
                 }
-                else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                else if (args.SystemKey == Key.Q && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
                 {
                     _altTabAutoSwitch = false;
                     tb.Text = "";
                     tb.IsEnabled = true;
                     tb.Focus();
+                }
+                else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    SortWindowsList();
                 }
             };
 
@@ -131,6 +136,26 @@ namespace Switcheroo
                     Switch();
                 }
             };
+        }
+        
+        private void SortWindowsList()
+        {
+            if (!_sorted)
+            {
+                // sort
+                _unfilteredWindowList = _unfilteredWindowList.OrderBy(x => x.FormattedProcessTitle).ToList();
+
+                // re-populate list
+                lb.DataContext = null;
+                lb.DataContext = _unfilteredWindowList;
+                _sorted = true;
+            }
+            else
+            {
+                // restore original
+                LoadData(InitialFocus.NextItem);
+                _sorted = false;
+            }
         }
 
         private void SetUpHotKey()
@@ -498,7 +523,7 @@ namespace Switcheroo
                 {
                     _altTabAutoSwitch = true;
                     tb.IsEnabled = false;
-                    tb.Text = "Press Alt + S to search";
+                    tb.Text = "Press Alt + Q to search";
                 }
 
                 Opacity = 1;
