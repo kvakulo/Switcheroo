@@ -61,6 +61,8 @@ namespace Switcheroo
         private AltTabHook _altTabHook;
         private SystemWindow _foregroundWindow;
         private bool _altTabAutoSwitch;
+        private bool _numericalSearch = false;
+
 
         public MainWindow()
         {
@@ -108,6 +110,11 @@ namespace Switcheroo
                     tb.Text = "";
                     tb.IsEnabled = true;
                     tb.Focus();
+                }
+                else if (args.SystemKey == Key.A && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    _numericalSearch = !_numericalSearch;
+                    LoadData(InitialFocus.NextItem);
                 }
             };
 
@@ -282,7 +289,11 @@ namespace Switcheroo
 
             foreach (var window in _unfilteredWindowList)
             {
-                window.FormattedTitle = new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
+                if (_numericalSearch)
+                {
+                    window.FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart("" + (i + 1) + " ", true) });
+                }
+                window.FormattedTitle += new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.Title)});
                 window.FormattedProcessTitle =
                     new XamlHighlighter().Highlight(new[] {new StringPart(window.AppWindow.ProcessTitle)});
             }
@@ -557,6 +568,23 @@ namespace Switcheroo
             }
 
             var query = tb.Text;
+            
+            if (_numericalSearch)
+            {
+                int m = 0;
+                if (Int32.TryParse(tb.Text, out m))
+                {
+                    if (m <= lb.Items.Count && m > 0)
+                    {
+                        lb.SelectedItem = lb.Items[m - 1];
+                    }
+                }
+                else
+                {
+                    lb.SelectedItem = lb.Items[0];
+                }
+                return;
+            }
 
             var context = new WindowFilterContext<AppWindowViewModel>
             {
