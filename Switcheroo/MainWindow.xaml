@@ -207,6 +207,7 @@
                     <ContextMenu>
                         <MenuItem Header="Close" Click="MenuItem_Click_toClose"/>
                         <MenuItem Header="Bring to Front" Click="MenuItem_Click_toFront"/>
+                        <MenuItem Header="Duplicate" Click="MenuItem_Duplicate"/>
                     </ContextMenu>
                 </ListBox.ContextMenu>
                 <!-- Changes inactive selection color to be same as selected -->

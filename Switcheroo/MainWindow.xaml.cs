@@ -742,5 +742,16 @@ namespace Switcheroo
             if (lb.Items.Count == 0)
                 HideWindow();
         }
+
+        private void MenuItem_Duplicate(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in lb.SelectedItems)
+            {
+                var torun = _unfilteredWindowList[lb.SelectedIndex].AppWindow.ExecutablePath.ToString();
+                System.Diagnostics.Process.Start(torun);
+            }
+
+            HideWindow();
+        }
     }
 }
