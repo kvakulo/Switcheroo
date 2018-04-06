@@ -1,4 +1,4 @@
-﻿<Window x:Class="Switcheroo.MainWindow" WindowStartupLocation="CenterScreen" Topmost="True"
+<Window x:Class="Switcheroo.MainWindow" WindowStartupLocation="CenterScreen" Topmost="True"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Switcheroo"
@@ -203,6 +203,13 @@
                         <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                     </Style>
                 </ListBox.ItemContainerStyle>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Close" Click="MenuItem_Click_toClose"/>
+                        <MenuItem Header="Bring to Front" Click="MenuItem_Click_toFront"/>
+                        <MenuItem Header="Duplicate" Click="MenuItem_Duplicate"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
                 <!-- Changes inactive selection color to be same as selected -->
                 <ListBox.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
