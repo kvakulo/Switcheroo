@@ -61,6 +61,10 @@ namespace Switcheroo.Core
                     icon = Icon.ExtractAssociatedIcon(executablePath);
                 }
             }
+            catch (ArgumentException)
+            {
+                // Could not extract icon since executablePath is invalid or UNC path
+            }
             catch (Win32Exception)
             {
                 // Could not extract icon
