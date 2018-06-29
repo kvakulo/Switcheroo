@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Drawing;
 using ManagedWinapi.Windows.Contents;
+using System.Text.RegularExpressions;
 
 namespace ManagedWinapi.Windows
 {
@@ -819,6 +820,36 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// The ID of the process which created this window.
+        /// </summary>
+        public int ProcessId
+        {
+            get
+            {
+                int pid;
+                GetWindowThreadProcessId(HWnd, out pid);
+                return pid;
+            }
+        }
+
+        private static Regex processNameRegex = new Regex("([^\\\\]+?)(?=(\\.exe)?$)");
+
+        /// <summary>
+        /// The name of the process which created this window.
+        /// </summary>
+        public string ProcessName
+        {
+            get
+            {
+                IntPtr handle = OpenProcess(ProcessRights.PROCESS_QUERY_INFORMATION | ProcessRights.PROCESS_VM_READ, false, ProcessId);
+                int exeBufferSize = 512;
+                StringBuilder exeBuffer = new StringBuilder(exeBufferSize);
+                QueryFullProcessImageName(handle, 0, exeBuffer, out exeBufferSize);
+                return processNameRegex.Match(exeBuffer.ToString()).Value;
+            }
+        }
+
+        /// <summary>
         ///  The Thread which created this window.
         /// </summary>
         public ProcessThread Thread
@@ -1425,6 +1456,27 @@ namespace ManagedWinapi.Windows
 
         [DllImport("user32.dll")]
         private static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, RDW flags);
+
+        private enum ProcessRights
+        {
+            PROCESS_TERMINATE = 0x1,
+            PROCESS_CREATE_THREAD = 0x2,
+            PROCESS_SET_SESSIONID = 0x4,
+            PROCESS_VM_OPERATION = 0x8,
+            PROCESS_VM_READ = 0x10,
+            PROCESS_VM_WRITE = 0x20,
+            PROCESS_DUP_HANDLE = 0x40,
+            PROCESS_CREATE_PROCESS = 0x80,
+            PROCESS_SET_QUOTA = 0x100,
+            PROCESS_SET_INFORMATION = 0x200,
+            PROCESS_QUERY_INFORMATION = 0x400,
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr OpenProcess(ProcessRights dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool QueryFullProcessImageName(IntPtr hProcess, int dwFlags, StringBuilder lpExeName, out int lpdwSize);
 
         #endregion
     }

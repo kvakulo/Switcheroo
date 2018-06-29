@@ -26,7 +26,6 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using ManagedWinapi.Windows;
 
 namespace Switcheroo.Core
@@ -47,62 +46,21 @@ namespace Switcheroo.Core
                     if (IsApplicationFrameWindow())
                     {
                         processTitle = "UWP";
-
-                        var underlyingProcess = AllChildWindows.Where(w => w.Process.Id != Process.Id)
-                            .Select(w => w.Process)
-                            .FirstOrDefault();
-
-                        if (underlyingProcess != null && underlyingProcess.ProcessName != "")
+                        var underlyingProcessWindow = AllChildWindows.Where(w => w.ProcessId != ProcessId).FirstOrDefault();
+                        if (underlyingProcessWindow != null && underlyingProcessWindow.ProcessName != "")
                         {
-                            processTitle = underlyingProcess.ProcessName;
+                            processTitle = underlyingProcessWindow.ProcessName;
                         }
                     }
                     else
                     {
-                        processTitle = getWindowProcessName(HWnd);
+                        processTitle = ProcessName;
 
                     }
                     MemoryCache.Default.Add(key, processTitle, DateTimeOffset.Now.AddHours(1));
                 }
                 return processTitle;
             }
-        }
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
-
-        private enum ProcessRights
-        {
-            PROCESS_TERMINATE = 0x1,
-            PROCESS_CREATE_THREAD = 0x2,
-            PROCESS_SET_SESSIONID = 0x4,
-            PROCESS_VM_OPERATION = 0x8,
-            PROCESS_VM_READ = 0x10,
-            PROCESS_VM_WRITE = 0x20,
-            PROCESS_DUP_HANDLE = 0x40,
-            PROCESS_CREATE_PROCESS = 0x80,
-            PROCESS_SET_QUOTA = 0x100,
-            PROCESS_SET_INFORMATION = 0x200,
-            PROCESS_QUERY_INFORMATION = 0x400,
-        }
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern IntPtr OpenProcess(ProcessRights dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool QueryFullProcessImageName(IntPtr hProcess, int dwFlags, StringBuilder lpExeName, out int lpdwSize);
-
-        private static Regex processNameRegex = new Regex("([^\\\\]+?)(?=(\\.exe)?$)");
-
-        private static string getWindowProcessName(IntPtr hwnd)
-        {
-            int pid;
-            GetWindowThreadProcessId(hwnd, out pid);
-            IntPtr handle = OpenProcess(ProcessRights.PROCESS_QUERY_INFORMATION | ProcessRights.PROCESS_VM_READ, false, pid);
-            int exeBufferSize = 512;
-            StringBuilder exeBuffer = new StringBuilder(exeBufferSize);
-            QueryFullProcessImageName(handle, 0, exeBuffer, out exeBufferSize);
-            return processNameRegex.Match(exeBuffer.ToString()).Value;
         }
 
         public Icon LargeWindowIcon

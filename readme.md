@@ -77,7 +77,7 @@ along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
 Credits
 -------
 
-[HellBrick](https://github.com/HellBrick), [ovesen](https://github.com/ovesen), [philippotto](https://github.com/philippotto), [tarikguney](https://github.com/tarikguney), [holymoo](https://github.com/holymoo), [elig0n](https://github.com/elig0n) and [trond-snekvik](https://github.com/trond-snekvik) have contributed to Switcheroo.
+[HellBrick](https://github.com/HellBrick), [ovesen](https://github.com/ovesen), [philippotto](https://github.com/philippotto), [tarikguney](https://github.com/tarikguney), [holymoo](https://github.com/holymoo), [elig0n](https://github.com/elig0n), [trond-snekvik](https://github.com/trond-snekvik), and [daanzu](https://github.com/daanzu) have contributed to Switcheroo.
 
 Switcheroo makes use of these great open source projects:
 
