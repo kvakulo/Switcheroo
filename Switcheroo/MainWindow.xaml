@@ -38,7 +38,7 @@
         <KeyBinding Command="local:MainWindow.ScrollListPageUpCommand" Key="PageUp" />
         <KeyBinding Command="local:MainWindow.ScrollListPageDownCommand" Key="PageDown" />
         <KeyBinding Command="local:MainWindow.ScrollListHomeCommand" Key="Home" />
-        <KeyBinding Command="local:MainWindow.ScrollListEndCommand" Key="End" /
+        <KeyBinding Command="local:MainWindow.ScrollListEndCommand" Key="End" />
     </Window.InputBindings>
 
     <Window.Resources>
