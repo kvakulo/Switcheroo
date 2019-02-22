@@ -113,7 +113,7 @@ namespace Switcheroo
                     tb.IsEnabled = true;
                     tb.Focus();
                 }
-                else if (args.SystemKey == Key.D && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                else if (args.SystemKey == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
                 {
                     _unfilteredWindowList = _unfilteredWindowList.OrderBy(x => x.FormattedProcessTitle).ToList();
                     lb.DataContext = null;
