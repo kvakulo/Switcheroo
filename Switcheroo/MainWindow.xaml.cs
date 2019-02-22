@@ -119,6 +119,14 @@ namespace Switcheroo
                     lb.DataContext = null;
                     lb.DataContext = _unfilteredWindowList;
                 }
+                else if ((args.SystemKey == Key.Up || args.SystemKey == Key.K) && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    PreviousItem();
+                }
+                else if ((args.SystemKey == Key.Down || args.SystemKey == Key.J) && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                {
+                    NextItem();
+                }
                 else if (args.SystemKey == Key.D1 && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
                 {
                     SwitchToIndex(0);
