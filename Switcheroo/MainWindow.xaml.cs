@@ -772,6 +772,53 @@ namespace Switcheroo
                 ScrollSelectedItemIntoView();
             }
         }
+        
+        private void ScrollListPageUp(object sender, ExecutedRoutedEventArgs e)
+        {
+            double n = NumOfVisibleRows();
+
+            if (lb.SelectedIndex - n >= 0)
+                lb.SelectedIndex = Convert.ToInt32(lb.SelectedIndex - n);
+            else
+                lb.SelectedIndex = 0;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
+
+        private void ScrollListPageDown(object sender, ExecutedRoutedEventArgs e)
+        {
+            double n = NumOfVisibleRows();
+
+            if (n + lb.SelectedIndex <= lb.Items.Count - 1)
+                lb.SelectedIndex = Convert.ToInt32(n);
+            else
+                lb.SelectedIndex = lb.Items.Count - 1;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
+
+        private double NumOfVisibleRows()
+        {
+            return Math.Round(lb.ActualHeight / SearchGrid.ActualHeight); 
+        }
+
+        private void ScrollListHome(object sender, ExecutedRoutedEventArgs e)
+        {
+            lb.SelectedIndex = 0;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
+
+        private void ScrollListEnd(object sender, ExecutedRoutedEventArgs e)
+        {
+            lb.SelectedIndex = lb.Items.Count-1;
+            ScrollSelectedItemIntoView();
+
+            e.Handled = true;
+        }
 
         private void ScrollListPageUp(object sender, ExecutedRoutedEventArgs e)
         {

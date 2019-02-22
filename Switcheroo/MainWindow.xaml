@@ -1,4 +1,4 @@
-<Window x:Class="Switcheroo.MainWindow" WindowStartupLocation="CenterScreen" Topmost="True"
+﻿<Window x:Class="Switcheroo.MainWindow" WindowStartupLocation="CenterScreen" Topmost="True"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Switcheroo"
@@ -18,6 +18,14 @@
                         Executed="ScrollListUp" />
         <CommandBinding Command="local:MainWindow.ScrollListDownCommand"
                         Executed="ScrollListDown" />
+        <CommandBinding Command="local:MainWindow.ScrollListPageUpCommand" 
+                        Executed="ScrollListPageUp" />
+        <CommandBinding Command="local:MainWindow.ScrollListPageDownCommand" 
+                        Executed="ScrollListPageDown" />
+        <CommandBinding Command="local:MainWindow.ScrollListHomeCommand" 
+                        Executed="ScrollListHome" />
+        <CommandBinding Command="local:MainWindow.ScrollListEndCommand" 
+                        Executed="ScrollListEnd" />
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -27,6 +35,10 @@
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="K" Modifiers="Alt" />
         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="J" Modifiers="Alt" />
+        <KeyBinding Command="local:MainWindow.ScrollListPageUpCommand" Key="PageUp" />
+        <KeyBinding Command="local:MainWindow.ScrollListPageDownCommand" Key="PageDown" />
+        <KeyBinding Command="local:MainWindow.ScrollListHomeCommand" Key="Home" />
+        <KeyBinding Command="local:MainWindow.ScrollListEndCommand" Key="End" />
     </Window.InputBindings>
 
     <Window.Resources>
@@ -67,7 +79,7 @@
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
-            <Grid DockPanel.Dock="Top">
+           <Grid Name="SearchGrid" DockPanel.Dock="Top">
                 <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15"
                          VerticalContentAlignment="Center">
                     <TextBox.InputBindings>
@@ -76,6 +88,10 @@
                         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Down" />
                         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Tab" Modifiers="Shift" />
                         <KeyBinding Command="local:MainWindow.ScrollListDownCommand" Key="Tab" />
+                        <KeyBinding Command="local:MainWindow.ScrollListPageUpCommand" Key="Prior" />
+                        <KeyBinding Command="local:MainWindow.ScrollListPageDownCommand" Key="PageDown" />
+                        <KeyBinding Command="local:MainWindow.ScrollListHomeCommand" Key="Home" />
+                        <KeyBinding Command="local:MainWindow.ScrollListEndCommand" Key="End" />
                     </TextBox.InputBindings>
                 </TextBox>
                 <TextBlock Margin="0,0,10,0" Width="15" HorizontalAlignment="Right" TextAlignment="Center"
@@ -203,13 +219,6 @@
                         <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                     </Style>
                 </ListBox.ItemContainerStyle>
-                <ListBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Close" Click="MenuItem_Click_toClose"/>
-                        <MenuItem Header="Bring to Front" Click="MenuItem_Click_toFront"/>
-                        <MenuItem Header="Duplicate" Click="MenuItem_Duplicate"/>
-                    </ContextMenu>
-                </ListBox.ContextMenu>
                 <!-- Changes inactive selection color to be same as selected -->
                 <ListBox.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
