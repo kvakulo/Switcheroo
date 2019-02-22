@@ -261,10 +261,6 @@ namespace Switcheroo
                     LoadData(InitialFocus.NextItem);
                     Opacity = 1;
                 }
-                else
-                {
-                    HideWindow();
-                }
             }
         }
 
