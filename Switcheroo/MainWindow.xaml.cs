@@ -246,10 +246,10 @@ namespace Switcheroo
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new[]
                 {
-                    new MenuItem("Options", (s, e) => Options()),
+                    new MenuItem("&Options", (s, e) => Options()),
                     runOnStartupMenuItem,
-                    new MenuItem("About", (s, e) => About()),
-                    new MenuItem("Exit", (s, e) => Quit())
+                    new MenuItem("&About", (s, e) => About()),
+                    new MenuItem("E&xit", (s, e) => Quit())
                 })
             };
             
