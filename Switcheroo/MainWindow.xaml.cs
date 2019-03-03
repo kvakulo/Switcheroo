@@ -122,7 +122,7 @@ namespace Switcheroo
                 {
                     HideWindow();
                 }
-                else if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                else if (args.SystemKey == Key.LeftAlt && !Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && _altTabAutoSwitch)
                 {
                     Switch();
                 }
