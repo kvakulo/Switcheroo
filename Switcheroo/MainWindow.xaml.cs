@@ -378,7 +378,15 @@ namespace Switcheroo
             foreach (var item in lb.SelectedItems)
             {
                 var win = (AppWindowViewModel)item;
+                Screen active_screen = PickScreen();
+                Screen window_screen = Screen.AllScreens.First(s => s.Bounds.Contains(win.AppWindow.Location.X, win.AppWindow.Location.Y));
+
                 win.AppWindow.SwitchToLastVisibleActivePopup();
+
+                if (Settings.Default.MoveWindows && active_screen != window_screen)
+                {
+                    win.AppWindow.MoveToActiveScreen(window_screen, active_screen);
+                }
             }
 
             HideWindow();

@@ -68,6 +68,7 @@ namespace Switcheroo
             AutoSwitch.IsEnabled = Settings.Default.AltTabHook;
             RunAsAdministrator.IsChecked = Settings.Default.RunAsAdmin;
 	        MultiMonSelector.SelectedIndex = Settings.Default.MultiMonitor;
+            MoveWindows.IsChecked = Settings.Default.MoveWindows;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -109,6 +110,7 @@ namespace Switcheroo
             Settings.Default.AutoSwitch = AutoSwitch.IsChecked.GetValueOrDefault();
             Settings.Default.RunAsAdmin = RunAsAdministrator.IsChecked.GetValueOrDefault();
 			Settings.Default.MultiMonitor = MultiMonSelector.SelectedIndex;
+            Settings.Default.MoveWindows = MoveWindows.IsChecked.GetValueOrDefault();
             Settings.Default.Save();
 
             if (closeOptionsWindow)

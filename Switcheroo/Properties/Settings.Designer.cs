@@ -145,6 +145,21 @@ namespace Switcheroo.Properties {
 		
 		[global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MoveWindows
+        {
+            get
+            {
+                return ((bool)(this["MoveWindows"]));
+            }
+            set
+            {
+                this["MoveWindows"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int MultiMonitor {
             get {
