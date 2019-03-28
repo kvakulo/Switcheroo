@@ -26,6 +26,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
 using ManagedWinapi.Windows;
 
 namespace Switcheroo.Core
@@ -98,6 +99,33 @@ namespace Switcheroo.Core
         {
             var lastActiveVisiblePopup = GetLastActiveVisiblePopup();
             WinApi.SwitchToThisWindow(lastActiveVisiblePopup, true);
+        }
+
+        public void MoveToActiveScreen(Screen from_screen, Screen to_screen)
+        {
+            var lastActiveVisiblePopup = GetLastActiveVisiblePopup();
+            int X = to_screen.Bounds.X + Location.X - from_screen.Bounds.X;
+            int Y = to_screen.Bounds.Y + Location.Y - from_screen.Bounds.Y;
+
+            // make sure the window is not moved out of bound
+            if (X > (to_screen.Bounds.X + to_screen.Bounds.Width) )
+            {
+                X = to_screen.Bounds.X;
+                if (Size.Width < to_screen.Bounds.Width)
+                {
+                    X = to_screen.Bounds.X + to_screen.Bounds.Width / 2 - Size.Width / 2;
+                }
+            }
+            if (Y > (to_screen.Bounds.Y + to_screen.Bounds.Height))
+            {
+                Y = to_screen.Bounds.Y;
+                if (Size.Height < to_screen.Bounds.Height)
+                {
+                    Y = to_screen.Bounds.Y + to_screen.Bounds.Height / 2 - Size.Height / 2;
+                }
+            }
+
+            WinApi.SetWindowPos(lastActiveVisiblePopup, WinApi.HWND_Z_ORDER.HWND_TOP, X, Y, Size.Width, Size.Height, WinApi.SetWindowFlags.SWP_SHOWWINDOW | WinApi.SetWindowFlags.SWP_NOSIZE);
         }
 
         public AppWindow Owner
