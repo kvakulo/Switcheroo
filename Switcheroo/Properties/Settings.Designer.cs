@@ -142,5 +142,22 @@ namespace Switcheroo.Properties {
                 this["EnableHotKey"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Light")]
+        public string Theme
+        {
+            set
+            {
+                this["Theme"] = value;
+                Switcheroo.Theme.LoadTheme(); 
+            }
+            get
+            {
+                return ((string)(this["Theme"]));
+            }
+
+        }
     }
 }
