@@ -37,6 +37,9 @@
                 <Italic>* Requires a restart of Switcheroo</Italic>
             </TextBlock>
             <CheckBox x:Name="DarkTheme" Margin="5,5,5,1" Content="Enable Dark Theme"/>
+            <TextBlock Margin="25,0,5,10" FontSize="10" Foreground="DimGray" TextWrapping="Wrap">
+                <Italic>* Requires a restart of Switcheroo</Italic>
+            </TextBlock>
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
