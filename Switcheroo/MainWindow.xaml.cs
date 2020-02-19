@@ -31,6 +31,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using ManagedWinapi;
@@ -64,6 +65,8 @@ namespace Switcheroo
 
         public MainWindow()
         {
+            SetupTheme();
+
             InitializeComponent();
 
             SetUpKeyBindings();
@@ -84,6 +87,37 @@ namespace Switcheroo
         #region Private Methods
 
         /// =================================
+        /// 
+        private void SetupTheme()
+        {
+            if (Settings.Default.DarkTheme)
+            {
+                // Apply dark theme
+                var darkGray = BrushFromHex("#353535");
+                var lightGray = BrushFromHex("#dddddd");
+                Resources.Add("BorderColor", Brushes.Black);
+                Resources.Add("TextBoxBgColor", darkGray);
+                Resources.Add("TextBoxTextColor", Brushes.White);
+                Resources.Add("ListboxBgColor", darkGray);
+                Resources.Add("ItemTextColor", lightGray);
+            }
+            else
+            {
+                // Add default theme colors
+                Resources.Add("BorderColor", Brushes.White);
+                Resources.Add("TextBoxBgColor", Brushes.White);
+                Resources.Add("TextBoxTextColor", Brushes.Black);
+                Resources.Add("ListboxBgColor", Brushes.White);
+                Resources.Add("ItemTextColor", Brushes.Black);
+            }
+        }
+
+        private Brush BrushFromHex(string hex)
+        {
+            var converter = new BrushConverter();
+            var brush = (Brush)converter.ConvertFromString(hex);
+            return brush;
+        }
 
         private void SetUpKeyBindings()
         {

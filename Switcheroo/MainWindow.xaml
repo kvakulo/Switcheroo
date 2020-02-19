@@ -34,7 +34,7 @@
         <local:WindowHandleToCachedIconConverter x:Key="WindowHandleToCachedIconConverter" />
     </Window.Resources>
 
-    <Border Padding="3" Background="White" BorderBrush="DarkGray" BorderThickness="1" Name="Border">
+    <Border Padding="3" Background="{StaticResource BorderColor}" BorderBrush="DarkGray" BorderThickness="1" Name="Border">
         <DockPanel LastChildFill="True">
             <DockPanel Margin="4,0,4,0" Name="HelpPanel" Background="Transparent" Height="0" DockPanel.Dock="Top">
                 <TextBlock FontSize="10" DockPanel.Dock="Left">
@@ -69,7 +69,7 @@
             </DockPanel>
             <Grid DockPanel.Dock="Top">
                 <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15"
-                         VerticalContentAlignment="Center">
+                         VerticalContentAlignment="Center" Background="{StaticResource TextBoxBgColor}" Foreground="{StaticResource TextBoxTextColor}">
                     <TextBox.InputBindings>
                         <!-- For now, leave these here.  Would it be better to route them upward? -->
                         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
@@ -109,7 +109,7 @@
                 </TextBlock>
             </Grid>
             <ListBox Name="lb" SelectionMode="Extended" ItemsSource="{Binding}" MinWidth="522" BorderThickness="0"
-                     Margin="-1,3,-1,0" Padding="0" DockPanel.Dock="Bottom">
+                     Margin="-1,3,-1,0" Padding="0" DockPanel.Dock="Bottom" Background="{StaticResource ListboxBgColor}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -179,11 +179,7 @@
                                     </Image.Source>
                                 </Image>
                                 <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedTitle}"
-                                           Grid.Row="0" Grid.Column="1" Margin="3,0">
-                                    <TextBlock.Foreground>
-                                        <SolidColorBrush
-                                            Color="{Binding IsBeingClosed, Converter={StaticResource TitleColorConverter}, Mode=OneTime}" />
-                                    </TextBlock.Foreground>
+                                           Grid.Row="0" Grid.Column="1" Margin="3,0" Foreground="{StaticResource ItemTextColor}">
                                 </TextBlock>
                                 <TextBlock
                                     local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedProcessTitle}"
