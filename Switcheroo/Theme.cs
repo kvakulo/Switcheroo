@@ -33,7 +33,7 @@ namespace Switcheroo
             switch (mode)
             {
                 case Mode.Light:
-                    Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                    Background = new SolidColorBrush(Color.FromRgb(248, 248, 248));
                     Foreground = new SolidColorBrush(Color.FromRgb(0,0,0));
                     break;
                 case Mode.Dark:
