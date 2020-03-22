@@ -5,10 +5,14 @@ Switcheroo is for anyone who spends more time using a keyboard than a mouse.
 Instead of alt-tabbing through a (long) list of open windows, Switcheroo allows
 you to quickly switch to any window by typing in just a few characters of its title.
 
-## Screenshot
+## Screenshots
 
 <img src="screenshot.png" alt="Screenshot of Switcheroo in action" width="540px" height="372px">
 
+**Light and Dark mode**
+
+<img src="light.png" alt="Screenshot of Switcheroo in action" width="540px">
+<img src="dark.png" alt="Screenshot of Switcheroo in action" width="540px">
 
 Download
 --------
@@ -17,6 +21,9 @@ Download
 
 If you use [Chocolatey](https://chocolatey.org), Switcheroo can be installed with `choco install switcheroo`.
 
+Download (light/dark)
+--------
+**[Download Switcheroo here](https://github.com/crar01/Switcheroo/releases)**
 
 Usage
 -----
