@@ -36,6 +36,13 @@
                 <LineBreak />
                 <Italic>* Requires a restart of Switcheroo</Italic>
             </TextBlock>
+            <TextBlock Margin="25,0,5,10" Foreground="DimGray" TextWrapping="Wrap">
+                Theme
+            </TextBlock>
+            <ComboBox Name="Theme" Margin="25,0,30,10">
+                <ComboBoxItem IsSelected="True">Light</ComboBoxItem>
+                <ComboBoxItem>Dark</ComboBoxItem>
+            </ComboBox>
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

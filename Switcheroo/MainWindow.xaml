@@ -1,4 +1,4 @@
-﻿<Window x:Class="Switcheroo.MainWindow" WindowStartupLocation="CenterScreen" Topmost="True"
+﻿<Window x:Name="MainWindow1" x:Class="Switcheroo.MainWindow" WindowStartupLocation="CenterScreen" Topmost="True"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Switcheroo"
@@ -6,8 +6,8 @@
         Closing="OnClose" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="True"
         SizeToContent="WidthAndHeight"
         Title="" MinWidth="542" Deactivated="MainWindow_OnLostFocus" Loaded="MainWindow_OnLoaded"
-        BorderBrush="Transparent" BorderThickness="1"
-        Background="Transparent">
+        BorderThickness="1" 
+       >
 
     <Window.CommandBindings>
         <CommandBinding Command="local:MainWindow.CloseWindowCommand"
@@ -67,9 +67,9 @@
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
-            <Grid DockPanel.Dock="Top">
-                <TextBox Name="tb" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15"
-                         VerticalContentAlignment="Center">
+            <Grid x:Name="GridMain" DockPanel.Dock="Top">
+                <TextBox Name="txtSearch" Padding="5" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="15"
+                         VerticalContentAlignment="Center" BorderBrush="{x:Null}">
                     <TextBox.InputBindings>
                         <!-- For now, leave these here.  Would it be better to route them upward? -->
                         <KeyBinding Command="local:MainWindow.ScrollListUpCommand" Key="Up" />
@@ -108,7 +108,7 @@
                     </TextBlock.Triggers>
                 </TextBlock>
             </Grid>
-            <ListBox Name="lb" SelectionMode="Extended" ItemsSource="{Binding}" MinWidth="522" BorderThickness="0"
+            <ListBox Name="lblProgramName" SelectionMode="Extended" ItemsSource="{Binding}" MinWidth="522" BorderThickness="0"
                      Margin="-1,3,-1,0" Padding="0" DockPanel.Dock="Bottom">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -121,8 +121,6 @@
                                                              IfTrue="{StaticResource FadeOutOpacity}" IfFalse="1.0" />
 
                                 <Color x:Key="FadeOutColor">Silver</Color>
-                                <local:BoolToColorConverter x:Key="TitleColorConverter"
-                                                            IfTrue="{StaticResource FadeOutColor}" IfFalse="Black" />
                                 <local:BoolToColorConverter x:Key="ProcessColorConverter"
                                                             IfTrue="{StaticResource FadeOutColor}" IfFalse="Gray" />
 
@@ -162,9 +160,9 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="22" />
-                                    <ColumnDefinition Width="400" />
-                                    <ColumnDefinition Width="106" />
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="390" />
+                                    <ColumnDefinition Width="105" />
                                 </Grid.ColumnDefinitions>
                                 <Image Height="19" Grid.Row="0" Grid.Column="0" Margin="3,0"
                                        Opacity="{Binding IsBeingClosed, Converter={StaticResource ImageOpacityConverter}, Mode=OneTime}">
@@ -180,10 +178,7 @@
                                 </Image>
                                 <TextBlock local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedTitle}"
                                            Grid.Row="0" Grid.Column="1" Margin="3,0">
-                                    <TextBlock.Foreground>
-                                        <SolidColorBrush
-                                            Color="{Binding IsBeingClosed, Converter={StaticResource TitleColorConverter}, Mode=OneTime}" />
-                                    </TextBlock.Foreground>
+                                   
                                 </TextBlock>
                                 <TextBlock
                                     local:FormattedTextAttribute.FormattedText="{Binding Path=FormattedProcessTitle}"
@@ -200,6 +195,8 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                         <Setter Property="Padding" Value="0,5" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Opacity" Value="1" />
                         <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                     </Style>
                 </ListBox.ItemContainerStyle>
