@@ -343,10 +343,22 @@ namespace Switcheroo
         /// </summary>
         private void Switch()
         {
-            foreach (var item in lb.SelectedItems)
+            if (lb.SelectedItems.Count > 0)
+                foreach (var item in lb.SelectedItems)
+                {
+                    var win = (AppWindowViewModel)item;
+                    win.AppWindow.SwitchToLastVisibleActivePopup();
+                }
+            else
             {
-                var win = (AppWindowViewModel)item;
-                win.AppWindow.SwitchToLastVisibleActivePopup();
+                try
+                {
+                    Process.Start(tb.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
             HideWindow();
