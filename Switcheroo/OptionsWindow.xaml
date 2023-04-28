@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Switcheroo Options" ResizeMode="NoResize" SizeToContent="WidthAndHeight"
-        ShowInTaskbar="False" WindowStyle="ToolWindow" Background="{x:Static SystemColors.WindowBrush}" Height="380"
+        ShowInTaskbar="False" WindowStyle="ToolWindow" Background="{x:Static SystemColors.WindowBrush}" Height="455.818"
         MaxWidth="350">
     <Window.Resources>
     </Window.Resources>
@@ -29,6 +29,10 @@
                 Use <Span FontFamily="Consolas" FontWeight="Bold">Ctrl + Alt + Tab</Span> for displaying Switcheroo with search activated, or
                 press <Span FontFamily="Consolas" FontWeight="Bold">Alt + S</Span> when the Switcheroo overlay appears.
             </TextBlock>
+            <CheckBox x:Name="CurrentScreenWindows" Margin="5,5,5,1" Content="Dynamic Screen Detection"/>
+            <TextBlock Margin="25,0,5,10" FontSize="10" Foreground="DimGray" TextWrapping="Wrap" Text="Automatically displays the software on the screen where the user's cursor is located."/>
+            <CheckBox x:Name="ShowInCurrentScreen" Margin="5,5,5,1" Content="Multi-Screen Window List"/>
+            <TextBlock Margin="25,0,5,10" FontSize="10" Foreground="DimGray" TextWrapping="Wrap" Text="Displays a list of windows available on the screen where the user's cursor is located for improved user experience."/>
             <CheckBox x:Name="RunAsAdministrator" Margin="5,5,5,1" Content="Run as Administrator *"/>
             <TextBlock Margin="25,0,5,10" FontSize="10" Foreground="DimGray" TextWrapping="Wrap">
                 This is needed if you want <Span FontFamily="Consolas" FontWeight="Bold">Alt + Tab</Span> to work when programs
