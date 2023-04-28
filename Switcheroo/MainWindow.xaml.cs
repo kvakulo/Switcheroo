@@ -263,7 +263,7 @@ namespace Switcheroo
         /// </summary>
         private void LoadData(InitialFocus focus)
         {
-            _unfilteredWindowList = new WindowFinder().GetWindows().Select(window => new AppWindowViewModel(window)).ToList();
+            _unfilteredWindowList = new WindowFinder().GetWindows(Settings.Default.ShowOnlyCursorScreenWindows).Select(window => new AppWindowViewModel(window)).ToList();
 
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
 
@@ -334,8 +334,17 @@ namespace Switcheroo
             SizeToContent = SizeToContent.WidthAndHeight;
 
             // Position the window in the center of the screen
-            Left = (SystemParameters.PrimaryScreenWidth/2) - (ActualWidth/2);
-            Top = (SystemParameters.PrimaryScreenHeight/2) - (ActualHeight/2);
+            if (Settings.Default.ShowInCursorScreen)
+            {
+                Screen MouseScreen = Screen.FromPoint(System.Windows.Forms.Cursor.Position);
+                Left = MouseScreen.Bounds.X + (MouseScreen.Bounds.Width / 2) - (ActualWidth / 2);
+                Top = (MouseScreen.Bounds.Height / 2) - (ActualHeight / 2);
+            }
+            else
+            {
+                Left = (SystemParameters.PrimaryScreenWidth / 2) - (ActualWidth / 2);
+                Top = (SystemParameters.PrimaryScreenHeight / 2) - (ActualHeight / 2);
+            }
         }
 
         /// <summary>

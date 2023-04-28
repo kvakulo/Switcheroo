@@ -25,10 +25,10 @@ namespace Switcheroo.Core
 {
     public class WindowFinder
     {
-        public List<AppWindow> GetWindows()
+        public List<AppWindow> GetWindows(bool CrrentScreenOnly)
         {
             return AppWindow.AllToplevelWindows
-                .Where(a => a.IsAltTabWindow())
+                .Where(a => a.IsAltTabWindow() && (CrrentScreenOnly ? a.IsCurrentScreenWindow() : true))
                 .ToList();
         }
     }
