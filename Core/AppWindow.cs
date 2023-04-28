@@ -26,6 +26,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
 using ManagedWinapi.Windows;
 
 namespace Switcheroo.Core
@@ -118,7 +119,19 @@ namespace Switcheroo.Core
                     .Select(w => new AppWindow(w.HWnd));
             }
         }
-
+        public bool IsCurrentScreenWindow()
+        {
+            Screen WindowScreen = Screen.FromHandle(HWnd);
+            Screen MouseScreen = Screen.FromPoint(Cursor.Position);
+            if (WindowScreen.DeviceName == MouseScreen.DeviceName)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool IsAltTabWindow()
         {
             if (!Visible) return false;

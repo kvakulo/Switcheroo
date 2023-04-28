@@ -67,6 +67,8 @@ namespace Switcheroo
             AutoSwitch.IsChecked = Settings.Default.AutoSwitch;
             AutoSwitch.IsEnabled = Settings.Default.AltTabHook;
             RunAsAdministrator.IsChecked = Settings.Default.RunAsAdmin;
+            ShowInCurrentScreen.IsChecked = Settings.Default.ShowInCursorScreen;
+            CurrentScreenWindows.IsChecked = Settings.Default.ShowOnlyCursorScreenWindows;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -107,6 +109,8 @@ namespace Switcheroo
             Settings.Default.AltTabHook = AltTabCheckBox.IsChecked.GetValueOrDefault();
             Settings.Default.AutoSwitch = AutoSwitch.IsChecked.GetValueOrDefault();
             Settings.Default.RunAsAdmin = RunAsAdministrator.IsChecked.GetValueOrDefault();
+            Settings.Default.ShowInCursorScreen = ShowInCurrentScreen.IsChecked.GetValueOrDefault();
+            Settings.Default.ShowOnlyCursorScreenWindows = CurrentScreenWindows.IsChecked.GetValueOrDefault();
             Settings.Default.Save();
 
             if (closeOptionsWindow)
